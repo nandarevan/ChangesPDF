@@ -236,6 +236,7 @@ export async function imagesToWord(
     await import('docx');
 
   const docChildren: any[] = [];
+  const docFont = 'Cambria';
   const baseName = files[0].name.replace(/\.[^/.]+$/, '');
 
   for (let i = 0; i < files.length; i++) {
@@ -1072,6 +1073,7 @@ export async function pdfToWord(
   };
 
   const docChildren: any[] = [];
+  const docFont = 'Cambria';
   let globalHasBorder = false;
   let globalBorderColor = '246599';
   let hasCoverPage = false;
@@ -1464,17 +1466,13 @@ export async function pdfToWord(
       const bTop = pageBorderInfo.bounds.top + Math.round(8 * scale);
       const bBottom = pageBorderInfo.bounds.bottom - Math.round(8 * scale);
 
-      // Check Header space above first text line
-      const firstLineY = processedLines[0]?.y ?? 0;
-      const firstLineTopPx = Math.max(0, Math.round((ptHeight - firstLineY) * scale));
+      // Scan top-left and top-right corners for header logos on page 1 (top 110pt area)
+      const maxScanH = Math.min(viewport.height - bTop, Math.round(110 * scale));
 
-      // Restrict logo scan vertically: stop at least 25pt (50px) above the first text line, capped at 75pt height
-      const maxScanH = Math.min(firstLineTopPx - bTop - Math.round(25 * scale), Math.round(75 * scale));
-
-      if (maxScanH >= 20 * scale && isContractDocument && pageNum === 1) {
-        // Restrict logo search strictly to top-left and top-right margin corners (max 140pt from margin)
-        // Center of the page is NEVER scanned, preventing any title text ("PERJANJIAN KERJA SAMA") from being cropped into logos
-        const cornerW = Math.round(140 * scale);
+      if (isContractDocument && pageNum === 1) {
+        // Restrict logo search strictly to top-left and top-right margin corners (max 180pt from margin)
+        // Center of the page is NEVER scanned, preventing any title text from being cropped into logos
+        const cornerW = Math.round(180 * scale);
         const leftImgData = ctx.getImageData(bLeft, bTop, cornerW, maxScanH);
         const rightStartX = Math.max(bLeft + cornerW + 10, bRight - cornerW);
         const rightWidth = bRight - rightStartX;
@@ -1512,8 +1510,8 @@ export async function pdfToWord(
         const rH = rMaxY - rMinY;
 
         // Strict criteria for dual logo: genuine 2D graphic with aspect ratio < 3.5
-        const isRealLeftLogo = lCount > 250 && lW > 25 * scale && lH > 18 * scale && lW / lH < 3.5;
-        const isRealRightLogo = rCount > 250 && rW > 25 * scale && rH > 18 * scale && rW / rH < 3.5;
+        const isRealLeftLogo = lCount > 200 && lW > 20 * scale && lH > 15 * scale;
+        const isRealRightLogo = rCount > 200 && rW > 20 * scale && rH > 15 * scale;
 
         if (isRealLeftLogo && isRealRightLogo) {
           const pad = 4;
@@ -1701,7 +1699,7 @@ export async function pdfToWord(
                 new TextRun({
                   text: r.text,
                   bold: true,
-                  font: 'Arial',
+                  font: docFont,
                   size: 28, // 14pt bold title
                   color: '000000',
                   noProof: true,
@@ -1766,7 +1764,7 @@ export async function pdfToWord(
                       children: [
                         new TextRun({
                           text: label,
-                          font: 'Arial',
+                          font: docFont,
                           size: 20, // 10pt
                           color: '000000',
                           noProof: true,
@@ -1785,7 +1783,7 @@ export async function pdfToWord(
                       children: [
                         new TextRun({
                           text: value,
-                          font: 'Arial',
+                          font: docFont,
                           size: 20, // 10pt
                           color: '000000',
                           noProof: true,
@@ -1826,7 +1824,7 @@ export async function pdfToWord(
                 new TextRun({
                   text: r.text,
                   bold: true,
-                  font: 'Arial',
+                  font: docFont,
                   size: 22, // 11pt
                   color: '000000',
                   noProof: true,
@@ -1861,7 +1859,7 @@ export async function pdfToWord(
                 new TextRun({
                   text: trimmed,
                   bold: true,
-                  font: 'Arial',
+                  font: docFont,
                   size: 26, // 13pt
                   color: '000000',
                   noProof: true,
@@ -1889,7 +1887,7 @@ export async function pdfToWord(
                 new TextRun({
                   text: r.text,
                   bold: isMajorHeading || r.bold,
-                  font: 'Arial',
+                  font: docFont,
                   size: isMajorHeading ? 21 : 20, // 10.5pt for major, 10pt for sub
                   color: '000000',
                   noProof: true,
@@ -1952,7 +1950,7 @@ export async function pdfToWord(
                       new TextRun({
                         text: r.text,
                         bold: isHeader || r.bold,
-                        font: 'Arial',
+                        font: docFont,
                         size: 19,
                         color: '000000',
                         noProof: true,
@@ -2048,7 +2046,7 @@ export async function pdfToWord(
                 new TextRun({
                   text: r.text,
                   bold: isMajorHeading || r.bold,
-                  font: 'Arial',
+                  font: docFont,
                   size: isMajorHeading ? 22 : 20, // 11pt or 10pt
                   color: '000000',
                   noProof: true,
@@ -2073,7 +2071,7 @@ export async function pdfToWord(
                 new TextRun({
                   text: r.text,
                   bold: r.bold,
-                  font: 'Arial',
+                  font: docFont,
                   size: 20,
                   color: '000000',
                   noProof: true,
@@ -2157,7 +2155,7 @@ export async function pdfToWord(
               new TextRun({
                 text: r.text,
                 bold: r.bold,
-                font: 'Arial',
+                font: docFont,
                 size: Math.round(Math.max(8.5, Math.min(16, r.fontSize || 10)) * 2),
                 color: '000000',
                 noProof: true,
@@ -2189,7 +2187,7 @@ export async function pdfToWord(
         children: [
           new TextRun({
             children: [PageNumber.CURRENT],
-            font: 'Arial',
+            font: docFont,
             size: 16,
             color: '000000',
             noProof: true,
@@ -2216,7 +2214,7 @@ export async function pdfToWord(
                     children: [
                       new TextRun({
                         text: 'Paraf PIHAK PERTAMA',
-                        font: 'Arial',
+                        font: docFont,
                         size: 15,
                         noProof: true,
                         language: { value: 'id-ID' },
@@ -2235,7 +2233,7 @@ export async function pdfToWord(
                     children: [
                       new TextRun({
                         text: 'Paraf PIHAK KEDUA',
-                        font: 'Arial',
+                        font: docFont,
                         size: 15,
                         noProof: true,
                         language: { value: 'id-ID' },
@@ -2274,7 +2272,7 @@ export async function pdfToWord(
         children: [
           new TextRun({
             children: [PageNumber.CURRENT],
-            font: 'Arial',
+            font: docFont,
             size: 18,
             color: '666666',
             noProof: true,
@@ -2325,7 +2323,7 @@ export async function pdfToWord(
       default: {
         document: {
           run: {
-            font: 'Arial',
+            font: docFont,
             size: 20, // 10pt base font
             color: '000000',
             noProof: true,

@@ -29,11 +29,30 @@ export const metadata: Metadata = {
     'free pdf editor',
     'ilovepdf alternative',
   ],
-  metadataBase: new URL('https://changespdf.com'),
+  metadataBase: new URL('https://changespdf.vercel.app'),
   openGraph: {
-    type: 'website',
-    locale: 'en_US',
+    title: 'ChangesPDF – Change, Convert & Edit PDF Files Online for Free',
+    description:
+      'Free online PDF tools to change PDF to Word, merge, split, compress, protect, and convert PDF files. 100% client-side processing – your files never leave your device.',
+    url: 'https://changespdf.vercel.app',
     siteName: 'ChangesPDF',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'ChangesPDF - Free Online PDF Tools',
+      },
+    ],
+    locale: 'id_ID',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'ChangesPDF – Change, Convert & Edit PDF Files Online for Free',
+    description:
+      'Free online PDF tools to change PDF to Word, merge, split, compress, protect, and convert PDF files.',
+    images: ['/og-image.png'],
   },
   icons: {
     icon: [
