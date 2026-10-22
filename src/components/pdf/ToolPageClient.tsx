@@ -426,13 +426,17 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
           let convertedMime =
             'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
 
-          // 1. Try Python High-Fidelity + RapidOCR Engine via /api/pdf-to-word
+          // 1. Try Python High-Fidelity + RapidOCR Engine (Render Backend or local API)
           try {
             const formData = new FormData();
             formData.append('file', files[0]);
             formData.append('ocrMode', ocrMode);
 
-            const resp = await fetch('/api/pdf-to-word', {
+            const backendUrl =
+              process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL ||
+              'https://changespdf-backend.onrender.com';
+
+            const resp = await fetch(`${backendUrl}/api/pdf-to-word`, {
               method: 'POST',
               body: formData,
             });
