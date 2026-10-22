@@ -32,7 +32,7 @@ export interface SmartSuggestion {
 
 interface DropzoneProps {
   acceptedFormats: string[];
-  maxFileSize?: number; // in bytes, default 100MB
+  maxFileSize?: number; // in bytes, default 50MB
   multiple?: boolean;
   onFilesSelected: (files: File[]) => void;
   label?: string;
@@ -42,7 +42,7 @@ interface DropzoneProps {
 
 export default function Dropzone({
   acceptedFormats,
-  maxFileSize = 100 * 1024 * 1024,
+  maxFileSize = 50 * 1024 * 1024,
   multiple = true,
   onFilesSelected,
   label,

@@ -31,6 +31,43 @@ export async function POST(req: NextRequest) {
     const baseName = (file.name || 'document.pdf').replace(/\.[^/.]+$/, '').replace(/_protected$/, '');
     const buffer = Buffer.from(await file.arrayBuffer());
 
+    // 1. Try Render Backend Python if running in serverless / configured
+    const backendUrl = process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL || 'https://changespdf-backend.onrender.com';
+    try {
+      const renderFormData = new FormData();
+      renderFormData.append('file', new Blob([buffer], { type: 'application/pdf' }), file.name);
+      renderFormData.append('password', password);
+      renderFormData.append('forceUnlock', String(forceUnlock));
+
+      const renderResp = await fetch(`${backendUrl}/api/unlock-pdf`, {
+        method: 'POST',
+        body: renderFormData,
+      });
+
+      if (renderResp.ok) {
+        const docBuffer = await renderResp.arrayBuffer();
+        return new NextResponse(Buffer.from(docBuffer), {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/pdf',
+            'Content-Disposition': `attachment; filename="${encodeURIComponent(baseName)}_unlocked.pdf"`,
+            'X-Unlocked-By': 'render-python',
+          },
+        });
+      } else {
+        const errJson = await renderResp.json().catch(() => ({}));
+        if (renderResp.status === 400) {
+          return NextResponse.json(
+            { ok: false, error: errJson.detail || 'Password salah. Pastikan password yang dimasukkan benar.' },
+            { status: 400 }
+          );
+        }
+      }
+    } catch (renderErr) {
+      console.warn('Render backend unlock failed, trying local python...', renderErr);
+    }
+
+    // 2. Fallback to Local Python (e.g. localhost)
     const tempDir = os.tmpdir();
     const uniqueId = `unlock_pdf_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
     tempInPdf = path.join(tempDir, `${uniqueId}_in.pdf`);

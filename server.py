@@ -90,3 +90,60 @@ async def convert_pdf_to_word(
         raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/unlock-pdf")
+async def unlock_pdf_endpoint(
+    background_tasks: BackgroundTasks,
+    file: UploadFile = File(...),
+    password: str = Form(""),
+    forceUnlock: str = Form("false")
+):
+    if not file.filename or not file.filename.lower().endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="Only PDF files are allowed.")
+
+    try:
+        content = await file.read()
+        if len(content) > 50 * 1024 * 1024:
+            raise HTTPException(status_code=413, detail="File size exceeds maximum allowed limit (50MB).")
+
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_in:
+            tmp_in.write(content)
+            tmp_in_path = tmp_in.name
+
+        tmp_out_path = tmp_in_path.replace(".pdf", "_unlocked.pdf")
+
+        script_path = os.path.join(os.path.dirname(__file__), "scripts", "unlock_pdf.py")
+        cmd = [sys.executable, script_path, tmp_in_path, tmp_out_path]
+
+        if password:
+            cmd.extend(["--password", password])
+        if forceUnlock.lower() == "true":
+            cmd.append("--force")
+
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
+        if proc.returncode != 0:
+            cleanup_file(tmp_in_path)
+            cleanup_file(tmp_out_path)
+            err_msg = (proc.stderr or proc.stdout or "Gagal membuka proteksi dokumen PDF.").strip()
+            raise HTTPException(status_code=400, detail=err_msg)
+
+        if not os.path.exists(tmp_out_path) or os.path.getsize(tmp_out_path) == 0:
+            cleanup_file(tmp_in_path)
+            raise HTTPException(status_code=500, detail="Output file not generated.")
+
+        cleanup_file(tmp_in_path)
+        background_tasks.add_task(cleanup_file, tmp_out_path)
+
+        out_name = file.filename.rsplit(".", 1)[0] + "_unlocked.pdf" if file.filename else "unlocked.pdf"
+
+        return FileResponse(
+            tmp_out_path,
+            media_type="application/pdf",
+            filename=out_name,
+            headers={"Content-Disposition": f'attachment; filename="{out_name}"'}
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+

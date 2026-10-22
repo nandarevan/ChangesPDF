@@ -1798,8 +1798,8 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                     <Lock className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-white">Enkripsi & Proteksi Dokumen</h4>
-                    <p className="text-xs text-gray-500 dark:text-white/50">Dokumen akan dikunci menggunakan enkripsi standar bank.</p>
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Enkripsi & Proteksi Dokumen</h4>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Dokumen akan dikunci menggunakan enkripsi standar bank.</p>
                   </div>
                 </div>
 
@@ -1815,7 +1815,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Masukkan password yang kuat"
-                        className="w-full rounded-xl bg-gray-100/70 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] px-4 py-3 pr-11 text-sm text-white placeholder:text-gray-300 dark:text-white/20 focus:border-[#e5322d] focus:outline-none"
+                        className="w-full rounded-xl bg-gray-100/70 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] px-4 py-3 pr-11 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/20 focus:border-[#e5322d] focus:outline-none"
                       />
                       <button
                         type="button"
@@ -1837,7 +1837,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Ketik ulang password di atas"
-                      className="w-full rounded-xl bg-gray-100/70 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] px-4 py-3 text-sm text-white placeholder:text-gray-300 dark:text-white/20 focus:border-[#e5322d] focus:outline-none"
+                      className="w-full rounded-xl bg-gray-100/70 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] px-4 py-3 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/20 focus:border-[#e5322d] focus:outline-none"
                     />
                     {confirmPassword && password !== confirmPassword && (
                       <p className="text-xs text-red-400 mt-1">Konfirmasi password belum cocok.</p>
@@ -1887,6 +1887,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
             )}
 
             {/* Unlock PDF: 2 Opsi (Buka Paksa vs Ketik Password) */}
+            {/* Unlock PDF: 2 Opsi (Buka Paksa vs Ketik Password) */}
             {tool.id === 'unlock-pdf' && (
               <div className="max-w-xl mx-auto rounded-2xl border border-gray-200 dark:border-white/[0.08] bg-gray-50/60 dark:bg-white/[0.02] p-6 space-y-5">
                 <div className="flex items-center gap-3 border-b border-gray-200 dark:border-white/[0.06] pb-4">
@@ -1894,8 +1895,8 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                     <Unlock className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-white">Buka Proteksi Dokumen PDF</h4>
-                    <p className="text-xs text-gray-500 dark:text-white/50">Hapus kata sandi, enkripsi, dan pembatasan izin dokumen secara permanen.</p>
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Buka Proteksi Dokumen PDF</h4>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Hapus kata sandi, enkripsi, dan pembatasan izin dokumen secara permanen.</p>
                   </div>
                 </div>
 
@@ -1911,14 +1912,14 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                         onClick={() => setUnlockMode('force')}
                         className={`relative rounded-xl border p-4 text-left transition-all ${
                           unlockMode === 'force'
-                            ? 'border-[#e5322d] bg-red-500/10 shadow-lg shadow-red-500/10'
-                            : 'border-gray-200 dark:border-white/[0.08] bg-gray-50/60 dark:bg-white/[0.02] hover:bg-white/[0.05] hover:border-gray-300 dark:border-white/20'
+                            ? 'border-[#e5322d] bg-red-50 dark:bg-red-500/10 shadow-lg shadow-red-500/10'
+                            : 'border-gray-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.02] hover:bg-gray-50 dark:hover:bg-white/[0.05] hover:border-gray-300 dark:border-white/20'
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1.5">
                           <div className="flex items-center gap-2">
-                            <Zap className={`h-4 w-4 ${unlockMode === 'force' ? 'text-amber-400' : 'text-gray-400 dark:text-white/40'}`} />
-                            <span className={`text-xs font-bold ${unlockMode === 'force' ? 'text-white' : 'text-gray-700 dark:text-white/70'}`}>
+                            <Zap className={`h-4 w-4 ${unlockMode === 'force' ? 'text-[#e5322d] dark:text-amber-400' : 'text-gray-400 dark:text-white/40'}`} />
+                            <span className={`text-xs font-bold ${unlockMode === 'force' ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-white/70'}`}>
                               Buka Paksa (Tanpa Password)
                             </span>
                           </div>
@@ -1928,7 +1929,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                             </span>
                           )}
                         </div>
-                        <p className="text-[11px] text-gray-500 dark:text-white/50 leading-relaxed">
+                        <p className="text-[11px] text-gray-600 dark:text-white/50 leading-relaxed">
                           Bobol restriksi izin (print, copy teks, edit form) dan bypass proteksi tanpa perlu mengetahui password.
                         </p>
                       </button>
@@ -1939,14 +1940,14 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                         onClick={() => setUnlockMode('password')}
                         className={`relative rounded-xl border p-4 text-left transition-all ${
                           unlockMode === 'password'
-                            ? 'border-[#e5322d] bg-red-500/10 shadow-lg shadow-red-500/10'
-                            : 'border-gray-200 dark:border-white/[0.08] bg-gray-50/60 dark:bg-white/[0.02] hover:bg-white/[0.05] hover:border-gray-300 dark:border-white/20'
+                            ? 'border-[#e5322d] bg-red-50 dark:bg-red-500/10 shadow-lg shadow-red-500/10'
+                            : 'border-gray-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.02] hover:bg-gray-50 dark:hover:bg-white/[0.05] hover:border-gray-300 dark:border-white/20'
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1.5">
                           <div className="flex items-center gap-2">
                             <Lock className={`h-4 w-4 ${unlockMode === 'password' ? 'text-[#e5322d]' : 'text-gray-400 dark:text-white/40'}`} />
-                            <span className={`text-xs font-bold ${unlockMode === 'password' ? 'text-white' : 'text-gray-700 dark:text-white/70'}`}>
+                            <span className={`text-xs font-bold ${unlockMode === 'password' ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-white/70'}`}>
                               Ketik Password Dokumen
                             </span>
                           </div>
@@ -1956,7 +1957,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                             </span>
                           )}
                         </div>
-                        <p className="text-[11px] text-gray-500 dark:text-white/50 leading-relaxed">
+                        <p className="text-[11px] text-gray-600 dark:text-white/50 leading-relaxed">
                           Gunakan jika dokumen memiliki Open Password khusus yang Anda ketahui untuk didekripsi permanen.
                         </p>
                       </button>
@@ -1965,11 +1966,11 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
 
                   {/* Mode Buka Paksa Banner */}
                   {unlockMode === 'force' && (
-                    <div className="rounded-xl bg-gradient-to-r from-amber-500/10 to-violet-500/10 border border-amber-500/20 p-4 text-xs text-amber-200/90 leading-relaxed flex items-start gap-3">
-                      <Zap className="h-4 w-4 text-amber-400 shrink-0 mt-0.5" />
+                    <div className="rounded-xl bg-amber-50 dark:bg-gradient-to-r dark:from-amber-500/10 dark:to-violet-500/10 border border-amber-300 dark:border-amber-500/20 p-4 text-xs leading-relaxed flex items-start gap-3">
+                      <Zap className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
                       <div>
-                        <strong className="text-white block mb-0.5">Mode Buka Paksa Siap Dijalankan</strong>
-                        <span>
+                        <strong className="text-amber-950 dark:text-white block mb-0.5 font-bold">Mode Buka Paksa Siap Dijalankan</strong>
+                        <span className="text-amber-900 dark:text-amber-200/90 font-medium">
                           Sistem akan membobol proteksi izin (print, copy teks, edit form) dan menghapus enkripsi dokumen PDF tanpa meminta password.
                         </span>
                       </div>
@@ -1988,7 +1989,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                           value={unlockPassword}
                           onChange={(e) => setUnlockPassword(e.target.value)}
                           placeholder="Ketik password dokumen yang benar..."
-                          className="w-full rounded-xl bg-gray-100/70 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] px-4 py-3 pr-11 text-sm text-white placeholder:text-gray-300 dark:text-white/20 focus:border-[#e5322d] focus:outline-none"
+                          className="w-full rounded-xl bg-gray-100/70 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] px-4 py-3 pr-11 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/20 focus:border-[#e5322d] focus:outline-none"
                         />
                         <button
                           type="button"
@@ -2000,12 +2001,12 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                       </div>
 
                       {!unlockPassword.trim() ? (
-                        <div className="flex items-center gap-2 rounded-xl bg-amber-500/10 border border-amber-500/20 p-3 mt-1.5 text-xs text-amber-300">
-                          <AlertCircle className="h-4 w-4 shrink-0 text-amber-400" />
+                        <div className="flex items-center gap-2 rounded-xl bg-amber-50 dark:bg-amber-500/10 border border-amber-300 dark:border-amber-500/20 p-3 mt-1.5 text-xs text-amber-800 dark:text-amber-300">
+                          <AlertCircle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
                           <span>Harap ketik password dokumen di atas terlebih dahulu untuk membuka proteksi.</span>
                         </div>
                       ) : (
-                        <p className="text-[11px] text-emerald-400/80 pt-1 flex items-center gap-1.5">
+                        <p className="text-[11px] text-emerald-600 dark:text-emerald-400/80 pt-1 flex items-center gap-1.5 font-medium">
                           <Check className="h-3.5 w-3.5" />
                           <span>Password siap diverifikasi dan dihapus secara bersih dari dokumen.</span>
                         </p>
@@ -2024,8 +2025,8 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                     <Eraser className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-semibold text-white">Hapus Watermark dari PDF</h4>
-                    <p className="text-xs text-gray-500 dark:text-white/50">Hapus watermark teks miring/lurus, stempel, dan cap draf tanpa merusak teks utama dokumen.</p>
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Hapus Watermark dari PDF</h4>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">Hapus watermark teks miring/lurus, stempel, dan cap draf tanpa merusak teks utama dokumen.</p>
                   </div>
                 </div>
 
