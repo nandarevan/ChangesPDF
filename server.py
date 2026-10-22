@@ -201,4 +201,92 @@ async def protect_pdf_endpoint(
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+@app.post("/api/remove-watermark")
+async def remove_watermark_endpoint(
+    background_tasks: BackgroundTasks,
+    file: UploadFile = File(...),
+    text: str = Form(""),
+    mode: str = Form("custom")
+):
+    if not file.filename or not file.filename.lower().endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="Only PDF files are allowed.")
+
+    try:
+        content = await file.read()
+        if len(content) > 50 * 1024 * 1024:
+            raise HTTPException(status_code=413, detail="File size exceeds maximum allowed limit (50MB).")
+
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_in:
+            tmp_in.write(content)
+            tmp_in_path = tmp_in.name
+
+        tmp_out_path = tmp_in_path.replace(".pdf", "_clean.pdf")
+
+        script_path = os.path.join(os.path.dirname(__file__), "scripts", "remove_watermark.py")
+        cmd = [sys.executable, script_path, tmp_in_path, tmp_out_path]
+
+        if text.strip():
+            cmd.extend(["--text", text.strip()])
+        if mode == "common":
+            cmd.append("--common")
+
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=90)
+        if proc.returncode != 0:
+            cleanup_file(tmp_in_path)
+            cleanup_file(tmp_out_path)
+            err_msg = (proc.stderr or proc.stdout or "Gagal menghapus watermark dari dokumen PDF.").strip()
+            raise HTTPException(status_code=400, detail=err_msg)
+
+        if not os.path.exists(tmp_out_path) or os.path.getsize(tmp_out_path) == 0:
+            cleanup_file(tmp_in_path)
+            raise HTTPException(status_code=500, detail="Output file not generated.")
+
+        cleanup_file(tmp_in_path)
+        background_tasks.add_task(cleanup_file, tmp_out_path)
+
+        out_name = file.filename.rsplit(".", 1)[0] + "_clean.pdf" if file.filename else "clean.pdf"
+
+        return FileResponse(
+            tmp_out_path,
+            media_type="application/pdf",
+            filename=out_name,
+            headers={"Content-Disposition": f'attachment; filename="{out_name}"'}
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/api/check-watermark")
+async def check_watermark_endpoint(
+    file: UploadFile = File(...),
+    text: str = Form("")
+):
+    if not file.filename or not text.strip():
+        return {"ok": True, "found": False, "matchesCount": 0}
+
+    try:
+        content = await file.read()
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_in:
+            tmp_in.write(content)
+            tmp_in_path = tmp_in.name
+
+        script_path = os.path.join(os.path.dirname(__file__), "scripts", "remove_watermark.py")
+        cmd = [sys.executable, script_path, tmp_in_path, "--check", "--text", text.strip()]
+
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=20)
+        cleanup_file(tmp_in_path)
+
+        import json
+        import re
+        match = re.search(r'CHECK_RESULT:\s*(\{.*\})', proc.stdout or "")
+        if match:
+            data = json.loads(match.group(1))
+            return {"ok": True, "found": bool(data.get("found")), "matchesCount": int(data.get("matchesCount", 0))}
+
+        return {"ok": True, "found": False, "matchesCount": 0}
+    except Exception as e:
+        return {"ok": True, "found": False, "matchesCount": 0}
+
+
 

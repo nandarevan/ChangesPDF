@@ -39,6 +39,35 @@ export async function POST(req: NextRequest) {
     const baseName = (file.name || 'document.pdf').replace(/\.[^/.]+$/, '').replace(/_watermarked$/, '');
     const buffer = Buffer.from(await file.arrayBuffer());
 
+    // 1. Try Render Backend Python
+    const backendUrl = process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL || 'https://changespdf-backend.onrender.com';
+    try {
+      const renderFormData = new FormData();
+      renderFormData.append('file', new Blob([buffer], { type: 'application/pdf' }), file.name);
+      renderFormData.append('text', text);
+      renderFormData.append('mode', mode);
+
+      const renderResp = await fetch(`${backendUrl}/api/remove-watermark`, {
+        method: 'POST',
+        body: renderFormData,
+      });
+
+      if (renderResp.ok) {
+        const docBuffer = await renderResp.arrayBuffer();
+        return new NextResponse(Buffer.from(docBuffer), {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/pdf',
+            'Content-Disposition': `attachment; filename="${encodeURIComponent(baseName)}_clean.pdf"`,
+            'X-Cleaned-By': 'render-python',
+          },
+        });
+      }
+    } catch (renderErr) {
+      console.warn('Render backend remove-watermark failed, trying local python...', renderErr);
+    }
+
+    // 2. Fallback to Local Python
     const tempDir = os.tmpdir();
     const uniqueId = `rm_wm_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
     tempInPdf = path.join(tempDir, `${uniqueId}_in.pdf`);

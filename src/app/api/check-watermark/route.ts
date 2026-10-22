@@ -27,6 +27,28 @@ export async function POST(req: NextRequest) {
     }
 
     const buffer = Buffer.from(await file.arrayBuffer());
+
+    // 1. Try Render Backend Python
+    const backendUrl = process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL || 'https://changespdf-backend.onrender.com';
+    try {
+      const renderFormData = new FormData();
+      renderFormData.append('file', new Blob([buffer], { type: 'application/pdf' }), file.name);
+      renderFormData.append('text', text);
+
+      const renderResp = await fetch(`${backendUrl}/api/check-watermark`, {
+        method: 'POST',
+        body: renderFormData,
+      });
+
+      if (renderResp.ok) {
+        const checkData = await renderResp.json();
+        return NextResponse.json(checkData);
+      }
+    } catch (renderErr) {
+      console.warn('Render backend check-watermark failed, trying local python...', renderErr);
+    }
+
+    // 2. Fallback to Local Python
     const tempDir = os.tmpdir();
     const uniqueId = `chk_wm_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
     tempInPdf = path.join(tempDir, `${uniqueId}_in.pdf`);
