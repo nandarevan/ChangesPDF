@@ -92,9 +92,38 @@ def unlock_pdf(input_path: str, output_path: str, password: str = "", force_unlo
                 "Silakan pilih opsi 'Ketik Password Dokumen' dan masukkan password yang benar."
             )
                 
-    # Save completely decrypted (encryption=0 removes all encryption and permissions permanently)
-    doc.save(output_path, encryption=fitz.PDF_ENCRYPT_NONE, deflate=True, garbage=4, clean=True)
+    # Cleanly remove all encryption and permissions permanently:
+    # Creating a new unencrypted document and copying all pages via insert_pdf guarantees
+    # that any residual encryption dictionaries, permissions locks, or owner/user security
+    # envelopes from the original PDF are 100% stripped from the output.
+    new_doc = fitz.open()
+    new_doc.insert_pdf(doc)
+    
+    # Preserve metadata and table of contents
+    try:
+        if doc.metadata:
+            new_doc.set_metadata(doc.metadata)
+    except Exception:
+        pass
+        
+    try:
+        toc = doc.get_toc(False)
+        if toc:
+            new_doc.set_toc(toc)
+    except Exception:
+        pass
+
+    new_doc.save(output_path, encryption=fitz.PDF_ENCRYPT_NONE, deflate=True, garbage=4, clean=True)
+    new_doc.close()
     doc.close()
+    
+    # Double check output file has no encryption remaining
+    verify_doc = fitz.open(output_path)
+    if verify_doc.is_encrypted:
+        verify_doc.close()
+        raise RuntimeError("Gagal menghapus proteksi dokumen. Enkripsi PDF masih aktif.")
+    verify_doc.close()
+    
     return {"status": "unlocked", "method": auth_method}
 
 if __name__ == "__main__":

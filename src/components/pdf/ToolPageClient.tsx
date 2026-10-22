@@ -2042,12 +2042,12 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                         onClick={() => setRemoveWatermarkMode('custom')}
                         className={`relative rounded-xl border p-4 text-left transition-all ${
                           removeWatermarkMode === 'custom'
-                            ? 'border-[#e5322d] bg-red-500/10 shadow-lg shadow-red-500/10'
-                            : 'border-gray-200 dark:border-white/[0.08] bg-gray-50/60 dark:bg-white/[0.02] hover:bg-white/[0.05] hover:border-gray-300 dark:border-white/20'
+                            ? 'border-[#e5322d] bg-red-50 dark:bg-red-500/10 shadow-lg shadow-red-500/10'
+                            : 'border-gray-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.02] hover:bg-gray-50 dark:hover:bg-white/[0.05] hover:border-gray-300 dark:border-white/20'
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1.5">
-                          <span className={`text-xs font-bold ${removeWatermarkMode === 'custom' ? 'text-white' : 'text-gray-700 dark:text-white/70'}`}>
+                          <span className={`text-xs font-bold ${removeWatermarkMode === 'custom' ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-white/70'}`}>
                             Ketik Teks Watermark
                           </span>
                           {removeWatermarkMode === 'custom' && (
@@ -2056,7 +2056,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                             </span>
                           )}
                         </div>
-                        <p className="text-[11px] text-gray-500 dark:text-white/50 leading-relaxed">
+                        <p className="text-[11px] text-gray-600 dark:text-white/50 leading-relaxed">
                           Ketik kata atau teks watermark tertentu yang tercetak pada halaman PDF Anda.
                         </p>
                       </button>
@@ -2067,12 +2067,12 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                         onClick={() => setRemoveWatermarkMode('common')}
                         className={`relative rounded-xl border p-4 text-left transition-all ${
                           removeWatermarkMode === 'common'
-                            ? 'border-[#e5322d] bg-red-500/10 shadow-lg shadow-red-500/10'
-                            : 'border-gray-200 dark:border-white/[0.08] bg-gray-50/60 dark:bg-white/[0.02] hover:bg-white/[0.05] hover:border-gray-300 dark:border-white/20'
+                            ? 'border-[#e5322d] bg-red-50 dark:bg-red-500/10 shadow-lg shadow-red-500/10'
+                            : 'border-gray-200 dark:border-white/[0.08] bg-white dark:bg-white/[0.02] hover:bg-gray-50 dark:hover:bg-white/[0.05] hover:border-gray-300 dark:border-white/20'
                         }`}
                       >
                         <div className="flex items-center justify-between mb-1.5">
-                          <span className={`text-xs font-bold ${removeWatermarkMode === 'common' ? 'text-white' : 'text-gray-700 dark:text-white/70'}`}>
+                          <span className={`text-xs font-bold ${removeWatermarkMode === 'common' ? 'text-gray-900 dark:text-white' : 'text-gray-700 dark:text-white/70'}`}>
                             Bersihkan Watermark Umum
                           </span>
                           {removeWatermarkMode === 'common' && (
@@ -2081,7 +2081,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                             </span>
                           )}
                         </div>
-                        <p className="text-[11px] text-gray-500 dark:text-white/50 leading-relaxed">
+                        <p className="text-[11px] text-gray-600 dark:text-white/50 leading-relaxed">
                           Deteksi otomatis stempel standar seperti DRAFT, CONFIDENTIAL, SAMPLE, COPY, dan cap tanda air.
                         </p>
                       </button>
