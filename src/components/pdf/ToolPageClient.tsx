@@ -229,8 +229,18 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
 
     try {
       const progressInterval = setInterval(() => {
-        setProgress((p) => Math.min(p + Math.random() * 20, 92));
-      }, 200);
+        setProgress((p) => {
+          if (p < 60) {
+            return p + 8 + Math.random() * 6;
+          } else if (p < 85) {
+            return p + 2 + Math.random() * 3;
+          } else if (p < 98) {
+            // Keep inching forward smoothly so it never freezes/gets stuck
+            return p + 0.4;
+          }
+          return 99;
+        });
+      }, 350);
 
       const baseName = files[0].name.replace(/\.[^/.]+$/, '');
       let outputResult: ProcessResult;
