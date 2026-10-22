@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ========== 3-Color Design Tokens: Soft Red, Soft White, Soft Black ========== */
+:root {
+  /* Light Mode (Default) */
+  --color-bg: #f5f6fa;
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-text-main: #1e2022;
+  --color-text-muted: #64748b;
+  --color-border: #e2e8f0;
+  
+  /* Brand Soft Red (iLovePDF signature tone) */
+  --color-red-primary: #e5322d;
+  --color-red-hover: #d32722;
+  --color-red-soft: rgba(229, 50, 45, 0.08);
+  --color-red-border: rgba(229, 50, 45, 0.25);
+  --color-red-shadow: rgba(229, 50, 45, 0.2);
+}
+
+html.dark {
+  /* Dark Mode */
+  --color-bg: #121316;
+  --color-surface: #1a1b1f;
+  --color-surface-raised: #222329;
+  --color-text-main: #f4f5f8;
+  --color-text-muted: #94a3b8;
+  --color-border: #2c2e35;
+
+  --color-red-primary: #e5322d;
+  --color-red-hover: #f2443f;
+  --color-red-soft: rgba(229, 50, 45, 0.14);
+  --color-red-border: rgba(229, 50, 45, 0.35);
+  --color-red-shadow: rgba(229, 50, 45, 0.3);
+}
+
+/* ========== Base Reset ========== */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg);
+  color: var(--color-text-main);
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  min-height: 100dvh;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* ========== Selection ========== */
+::selection {
+  background-color: var(--color-red-primary);
+  color: #ffffff;
+}
+
+/* ========== Scrollbar Styling ========== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(140, 140, 150, 0.25);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(140, 140, 150, 0.45);
+}
+
+/* ========== Interactive Tool Card (iLovePDF Style) ========== */
+.tool-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.tool-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-red-primary);
+  box-shadow: 0 10px 25px -5px var(--color-red-shadow), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+}
+
+/* ========== Soft Red Accent Text ========== */
+.text-brand-red {
+  color: var(--color-red-primary);
+}
+
+/* ========== Soft Red Button ========== */
+.btn-brand-red {
+  background-color: var(--color-red-primary);
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: all 0.18s ease;
+  box-shadow: 0 4px 14px 0 var(--color-red-shadow);
+}
+
+.btn-brand-red:hover {
+  background-color: var(--color-red-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px 0 var(--color-red-shadow);
+}
+
+.btn-brand-red:active {
+  transform: translateY(0);
+}
+
+/* ========== Focus Ring ========== */
+:focus-visible {
+  outline: 2px solid var(--color-red-primary);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* ========== Hide Next.js Dev Indicators ========== */
+nextjs-portal,
+[data-nextjs-dev-tools-button],
+[data-nextjs-toast],
+div[data-next-badge],
+div[data-nextjs-indicator],
+[data-nextjs-dev-indicator],
+div[data-nextjs-dialog-overlay] {
+  display: none !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

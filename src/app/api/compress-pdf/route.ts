@@ -1,0 +1,114 @@
+import { NextRequest, NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
+import { execFile } from 'child_process';
+import { promisify } from 'util';
+
+const execFileAsync = promisify(execFile);
+
+function getPythonPath(): string {
+  const homeDir = os.homedir();
+  const candidatePaths = [
+    process.env.PYTHON_PATH || '',
+    'C:\\laragon\\bin\\python\\python-3.13\\python.exe',
+    path.join(homeDir, 'AppData', 'Local', 'Python', 'pythoncore-3.15-64', 'python.exe'),
+    path.join(homeDir, 'AppData', 'Local', 'Programs', 'Python', 'Python313', 'python.exe'),
+    path.join(homeDir, 'AppData', 'Local', 'Programs', 'Python', 'Python312', 'python.exe'),
+    path.join(homeDir, 'AppData', 'Local', 'Programs', 'Python', 'Python311', 'python.exe'),
+    'C:\\Program Files\\Python313\\python.exe',
+    'C:\\Program Files\\Python312\\python.exe',
+    'C:\\Program Files\\Python311\\python.exe',
+    'py',
+    'python',
+    'python3',
+  ];
+
+  for (const candidate of candidatePaths) {
+    if (!candidate) continue;
+    if (candidate.includes('\\') || candidate.includes('/')) {
+      if (fs.existsSync(candidate)) {
+        return candidate;
+      }
+    } else {
+      return candidate;
+    }
+  }
+  return 'python';
+}
+
+export async function POST(req: NextRequest) {
+  let tempInPdf = '';
+  let tempOutPdf = '';
+
+  try {
+    const formData = await req.formData();
+    const file = formData.get('file') as File | null;
+    const level = (formData.get('level') as string) || 'recommended';
+
+    if (!file) {
+      return NextResponse.json({ ok: false, error: 'No file uploaded' }, { status: 400 });
+    }
+
+    const baseName = (file.name || 'document.pdf').replace(/\.[^/.]+$/, '');
+    const buffer = Buffer.from(await file.arrayBuffer());
+
+    const tempDir = os.tmpdir();
+    const uniqueId = `compress_pdf_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
+    tempInPdf = path.join(tempDir, `${uniqueId}_in.pdf`);
+    tempOutPdf = path.join(tempDir, `${uniqueId}_out.pdf`);
+
+    fs.writeFileSync(tempInPdf, buffer);
+
+    const pythonPath = getPythonPath();
+    const scriptPath = path.join(process.cwd(), 'scripts', 'compress_pdf.py');
+
+    if (!fs.existsSync(scriptPath)) {
+      throw new Error(`Compress script not found at ${scriptPath}`);
+    }
+
+    const { stdout } = await execFileAsync(pythonPath, [scriptPath, tempInPdf, tempOutPdf, '--level', level], {
+      timeout: 120000,
+    });
+
+    if (!fs.existsSync(tempOutPdf) || fs.statSync(tempOutPdf).size === 0) {
+      throw new Error('PDF compression failed: Output file not created.');
+    }
+
+    let stats = { original_size: buffer.length, compressed_size: fs.statSync(tempOutPdf).size, savings_percent: 0 };
+    try {
+      const match = stdout.match(/\{"original_size":.*\}/);
+      if (match) {
+        stats = JSON.parse(match[0]);
+      }
+    } catch {}
+
+    const compressedBuffer = fs.readFileSync(tempOutPdf);
+
+    return new NextResponse(compressedBuffer, {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': `attachment; filename="${encodeURIComponent(baseName)}_compressed.pdf"`,
+        'X-Original-Size': String(stats.original_size),
+        'X-Compressed-Size': String(stats.compressed_size),
+        'X-Savings-Percent': String(stats.savings_percent),
+      },
+    });
+  } catch (error: any) {
+    console.error('PDF compression failed:', error);
+    return NextResponse.json(
+      {
+        ok: false,
+        fallback: true,
+        error: error.message || String(error),
+      },
+      { status: 500 }
+    );
+  } finally {
+    try {
+      if (tempInPdf && fs.existsSync(tempInPdf)) fs.unlinkSync(tempInPdf);
+      if (tempOutPdf && fs.existsSync(tempOutPdf)) fs.unlinkSync(tempOutPdf);
+    } catch {}
+  }
+}
