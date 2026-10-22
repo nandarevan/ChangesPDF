@@ -39,10 +39,22 @@ async def convert_pdf_to_word(
     file: UploadFile = File(...),
     ocrMode: str = Form("auto")
 ):
+    # Validate ocrMode
+    if ocrMode not in ("auto", "force", "off"):
+        ocrMode = "auto"
+
+    # Validate file
+    if not file.filename or not file.filename.lower().endswith(".pdf"):
+        raise HTTPException(status_code=400, detail="Only PDF files are allowed.")
+
     try:
+        # Read content with 50MB limit
+        content = await file.read()
+        if len(content) > 50 * 1024 * 1024:
+            raise HTTPException(status_code=413, detail="File size exceeds maximum allowed limit (50MB).")
+
         # Create temp files
         with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_in:
-            content = await file.read()
             tmp_in.write(content)
             tmp_in_path = tmp_in.name
 
