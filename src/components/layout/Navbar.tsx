@@ -63,13 +63,13 @@ export default function Navbar() {
     if (isDark) {
       document.documentElement.classList.remove('dark');
       try {
-        localStorage.setItem('changepdf_theme', 'light');
+        localStorage.setItem('changespdf_theme', 'light');
       } catch (e) {}
       setIsDark(false);
     } else {
       document.documentElement.classList.add('dark');
       try {
-        localStorage.setItem('changepdf_theme', 'dark');
+        localStorage.setItem('changespdf_theme', 'dark');
       } catch (e) {}
       setIsDark(true);
     }
@@ -114,7 +114,7 @@ export default function Navbar() {
           <div className="relative flex h-9 w-9 items-center justify-center transition-transform group-hover:scale-105">
             <NextImage
               src="/logo.png"
-              alt="ChangePDF Logo"
+              alt="ChangesPDF Logo"
               width={36}
               height={36}
               className="h-9 w-9 object-contain drop-shadow-sm"
@@ -122,7 +122,7 @@ export default function Navbar() {
             />
           </div>
           <span className="text-xl font-bold tracking-tight text-[#1e2022] dark:text-white">
-            Change
+            Changes
             <span className="text-[#e5322d]">
               PDF
             </span>

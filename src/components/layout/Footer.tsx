@@ -43,21 +43,21 @@ export default function Footer() {
           <Link href="/" className="flex items-center gap-2 shrink-0">
             <Image
               src="/logo.png"
-              alt="ChangePDF Logo"
+              alt="ChangesPDF Logo"
               width={36}
               height={36}
               className="h-9 w-9 object-contain"
             />
           </Link>
           <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-3xl">
-            <strong className="text-gray-800 dark:text-gray-200">ChangePDF</strong> adalah toolkit PDF online gratis yang memungkinkan Anda mengelola file PDF langsung di browser. Ubah PDF ke Word, gabungkan berkas, pisahkan dokumen, kompres file, hapus watermark, dan lainnya — tanpa perlu mengunggah ke server mana pun. File Anda tetap berada di perangkat Anda untuk privasi dan keamanan total.
+            <strong className="text-gray-800 dark:text-gray-200">ChangesPDF</strong> adalah toolkit PDF online gratis yang memungkinkan Anda mengelola file PDF langsung di browser. Ubah PDF ke Word, gabungkan berkas, pisahkan dokumen, kompres file, hapus watermark, dan lainnya — tanpa perlu mengunggah ke server mana pun. File Anda tetap berada di perangkat Anda untuk privasi dan keamanan total.
           </p>
         </div>
 
         {/* Bottom Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-gray-100 dark:border-[#2c2e35] pt-6">
           <p className="text-xs text-gray-500 dark:text-gray-400">
-            © 2026 ChangePDF • Created by <span className="text-[#1e2022] dark:text-white font-semibold">Nanda Revan Saputro</span>. All rights reserved.
+            © 2026 ChangesPDF • Created by <span className="text-[#1e2022] dark:text-white font-semibold">Nanda Revan Saputro</span>. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <Link

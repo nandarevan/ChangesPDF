@@ -210,7 +210,7 @@ export default async function ToolPage({
               Pertanyaan yang Sering Diajukan
             </h2>
             <p className="text-sm text-gray-500 dark:text-gray-400 text-center mb-8">
-              Semua yang perlu Anda ketahui mengenai penggunaan {tool.title} di ChangePDF.
+              Semua yang perlu Anda ketahui mengenai penggunaan {tool.title} di ChangesPDF.
             </p>
             <div className="space-y-3">
               {tool.faqs.map((faq, index) => (

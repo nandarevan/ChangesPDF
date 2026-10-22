@@ -96,13 +96,13 @@ export default function HomePage() {
   const websiteSchema = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    name: 'ChangePDF',
-    url: 'https://changepdf.com',
+    name: 'ChangesPDF',
+    url: 'https://changespdf.com',
     description:
       'Free online PDF tools to change PDF to Word, merge, split, compress, protect, and convert PDF files directly in your browser.',
     potentialAction: {
       '@type': 'SearchAction',
-      target: 'https://changepdf.com/{search_term_string}',
+      target: 'https://changespdf.com/{search_term_string}',
       'query-input': 'required name=search_term_string',
     },
   };
@@ -134,7 +134,7 @@ export default function HomePage() {
               <div className="relative p-2.5 rounded-2xl bg-white dark:bg-[#1e2022] shadow-sm border border-gray-200/90 dark:border-[#2c2e35] hover:scale-105 transition-transform duration-200">
                 <NextImage
                   src="/logo.png"
-                  alt="ChangePDF"
+                  alt="ChangesPDF"
                   width={56}
                   height={56}
                   className="h-12 w-12 sm:h-14 sm:w-14 object-contain"
@@ -314,7 +314,7 @@ export default function HomePage() {
                 Solusi Cerdas Pengelolaan Dokumen PDF
               </h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed text-sm sm:text-base">
-                ChangePDF menyediakan semua kemampuan alat PDF lengkap tanpa instalasi software, tanpa langganan, dan dengan keamanan privasi tertinggi.
+                ChangesPDF menyediakan semua kemampuan alat PDF lengkap tanpa instalasi software, tanpa langganan, dan dengan keamanan privasi tertinggi.
               </p>
             </div>
 
@@ -352,10 +352,10 @@ export default function HomePage() {
 
             <div className="rounded-2xl border border-gray-200 dark:border-[#2c2e35] bg-gray-50/50 dark:bg-[#1a1b1f] p-8 space-y-3">
               <h3 className="text-lg font-bold text-[#1e2022] dark:text-white">
-                Mengapa Memilih ChangePDF?
+                Mengapa Memilih ChangesPDF?
               </h3>
               <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                Kebanyakan converter online mengharuskan pengunggahan dokumen ke server luar. ChangePDF memberikan kemudahan dengan memproses langsung di perangkat Anda tanpa risiko kebocoran data.
+                Kebanyakan converter online mengharuskan pengunggahan dokumen ke server luar. ChangesPDF memberikan kemudahan dengan memproses langsung di perangkat Anda tanpa risiko kebocoran data.
               </p>
               <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
                 Baik Anda membutuhkan <strong className="text-[#1e2022] dark:text-gray-200">PDF ke Word</strong>, penggabungan berkas, hapus watermark, atau buka kunci PDF, semua dapat diselesaikan dalam hitungan detik.

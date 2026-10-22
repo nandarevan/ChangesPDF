@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 import { tools } from '@/lib/tools-data';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://changepdf.com';
+  const baseUrl = 'https://changespdf.com';
   const currentDate = new Date().toISOString();
 
   const toolUrls: MetadataRoute.Sitemap = tools.map((tool) => ({

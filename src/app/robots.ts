@@ -8,7 +8,7 @@ export default function robots(): MetadataRoute.Robots {
         allow: '/',
       },
     ],
-    sitemap: 'https://changepdf.com/sitemap.xml',
-    host: 'https://changepdf.com',
+    sitemap: 'https://changespdf.com/sitemap.xml',
+    host: 'https://changespdf.com',
   };
 }

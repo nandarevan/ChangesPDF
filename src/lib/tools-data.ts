@@ -28,7 +28,7 @@ export const tools: ToolData[] = [
     iconName: 'Layers',
     category: 'organize',
     acceptedFormats: ['.pdf'],
-    seoTitle: 'Merge PDF Files Online – Combine PDFs for Free | ChangePDF',
+    seoTitle: 'Merge PDF Files Online – Combine PDFs for Free | ChangesPDF',
     seoDescription:
       'Merge and combine multiple PDF files into one document online for free. No upload needed – 100% client-side processing. Fast, secure, and private.',
     seoKeywords: [
@@ -36,7 +36,7 @@ export const tools: ToolData[] = [
       'combine pdf',
       'join pdf',
       'merge pdf online free',
-      'change pdf merge',
+      'changes pdf merge',
     ],
     faqs: [
       {
@@ -52,7 +52,7 @@ export const tools: ToolData[] = [
       {
         question: 'Are my files uploaded to a server?',
         answer:
-          'No. ChangePDF processes everything locally in your browser. Your files never leave your device, ensuring complete privacy and security.',
+          'No. ChangesPDF processes everything locally in your browser. Your files never leave your device, ensuring complete privacy and security.',
       },
     ],
   },
@@ -65,7 +65,7 @@ export const tools: ToolData[] = [
     iconName: 'Scissors',
     category: 'organize',
     acceptedFormats: ['.pdf'],
-    seoTitle: 'Split PDF Online – Extract Pages from PDF for Free | ChangePDF',
+    seoTitle: 'Split PDF Online – Extract Pages from PDF for Free | ChangesPDF',
     seoDescription:
       'Split PDF files and extract specific pages online for free. Select page ranges, remove pages, or split into individual files. 100% private and secure.',
     seoKeywords: [
@@ -73,7 +73,7 @@ export const tools: ToolData[] = [
       'extract pages from pdf',
       'separate pdf pages',
       'split pdf online free',
-      'change pdf split',
+      'changes pdf split',
     ],
     faqs: [
       {
@@ -104,12 +104,12 @@ export const tools: ToolData[] = [
     category: 'convert',
     acceptedFormats: ['.pdf'],
     seoTitle:
-      'Change PDF to Word Online with OCR – Convert Scanned PDF to DOCX Free | ChangePDF',
+      'Changes PDF to Word Online with OCR – Convert Scanned PDF to DOCX Free | ChangesPDF',
     seoDescription:
       'Convert PDF and scanned documents to editable Word DOCX online for free. AI-Powered OCR accurately extracts text from scanned pages and images.',
     seoKeywords: [
       'pdf to word',
-      'change pdf to word',
+      'changes pdf to word',
       'convert pdf to docx',
       'ocr pdf to word',
       'scanned pdf to word',
@@ -120,22 +120,22 @@ export const tools: ToolData[] = [
       {
         question: 'Can I convert scanned PDFs or photo documents to Word?',
         answer:
-          'Yes! ChangePDF includes high-accuracy AI OCR (Optical Character Recognition) powered by RapidOCR to extract text directly from scanned documents, photocopies, and images so you can edit and type freely in Microsoft Word.',
+          'Yes! ChangesPDF includes high-accuracy AI OCR (Optical Character Recognition) powered by RapidOCR to extract text directly from scanned documents, photocopies, and images so you can edit and type freely in Microsoft Word.',
       },
       {
         question: 'How do I change PDF to Word?',
         answer:
-          'Upload your PDF file, choose your preferred OCR mode (Auto-Detect, Force Full OCR, or Digital Only), and ChangePDF will convert it to an editable Word document (.docx).',
+          'Upload your PDF file, choose your preferred OCR mode (Auto-Detect, Force Full OCR, or Digital Only), and ChangesPDF will convert it to an editable Word document (.docx).',
       },
       {
         question: 'Will the text and formatting be preserved?',
         answer:
-          'Yes, ChangePDF detects headings, paragraphs, lists, and alignments, producing clean, structured Word documents ready for editing.',
+          'Yes, ChangesPDF detects headings, paragraphs, lists, and alignments, producing clean, structured Word documents ready for editing.',
       },
       {
         question: 'Is this free to use?',
         answer:
-          'Yes, ChangePDF is completely free. There are no hidden charges, no sign-up required, and no watermarks added to your converted documents.',
+          'Yes, ChangesPDF is completely free. There are no hidden charges, no sign-up required, and no watermarks added to your converted documents.',
       },
     ],
   },
@@ -149,7 +149,7 @@ export const tools: ToolData[] = [
     category: 'convert',
     acceptedFormats: ['.doc', '.docx'],
     seoTitle:
-      'Word to PDF Converter – Convert DOCX to PDF Online Free | ChangePDF',
+      'Word to PDF Converter – Convert DOCX to PDF Online Free | ChangesPDF',
     seoDescription:
       'Convert Word documents to PDF online for free. Change DOCX to PDF while preserving formatting and layout. Fast, secure, and no installation needed.',
     seoKeywords: [
@@ -163,7 +163,7 @@ export const tools: ToolData[] = [
       {
         question: 'How do I convert Word to PDF?',
         answer:
-          'Simply upload your Word document (.doc or .docx), and ChangePDF will convert it to a PDF file that you can download instantly.',
+          'Simply upload your Word document (.doc or .docx), and ChangesPDF will convert it to a PDF file that you can download instantly.',
       },
       {
         question: 'Will the document formatting be preserved?',
@@ -186,7 +186,7 @@ export const tools: ToolData[] = [
     iconName: 'Image',
     category: 'convert',
     acceptedFormats: ['.jpg', '.jpeg'],
-    seoTitle: 'JPG to PDF Converter – Convert JPG Images to PDF Online Free | ChangePDF',
+    seoTitle: 'JPG to PDF Converter – Convert JPG Images to PDF Online Free | ChangesPDF',
     seoDescription:
       'Convert JPG and JPEG images to PDF online for free. Combine multiple JPG photos into one clean PDF document with landscape and portrait options.',
     seoKeywords: [
@@ -223,7 +223,7 @@ export const tools: ToolData[] = [
     iconName: 'ImageDown',
     category: 'convert',
     acceptedFormats: ['.pdf'],
-    seoTitle: 'PDF to JPG Converter – Convert PDF to Images Online Free | ChangePDF',
+    seoTitle: 'PDF to JPG Converter – Convert PDF to Images Online Free | ChangesPDF',
     seoDescription:
       'Convert PDF pages to high-quality JPG or PNG images online for free. Export all pages or individual image files.',
     seoKeywords: [
@@ -231,7 +231,7 @@ export const tools: ToolData[] = [
       'pdf to image',
       'pdf to png',
       'convert pdf to jpg',
-      'change pdf to jpg',
+      'changes pdf to jpg',
     ],
     faqs: [
       {
@@ -242,7 +242,7 @@ export const tools: ToolData[] = [
       {
         question: 'What is the image quality?',
         answer:
-          'ChangePDF renders PDF pages at high resolution (300 DPI equivalent) to ensure crisp, clear images suitable for presentations, documents, or web use.',
+          'ChangesPDF renders PDF pages at high resolution (300 DPI equivalent) to ensure crisp, clear images suitable for presentations, documents, or web use.',
       },
       {
         question: 'Can I convert specific pages only?',
@@ -260,7 +260,7 @@ export const tools: ToolData[] = [
     iconName: 'ImageDown',
     category: 'convert',
     acceptedFormats: ['.pdf'],
-    seoTitle: 'PDF to PNG Converter – Convert PDF to PNG Online Free | ChangePDF',
+    seoTitle: 'PDF to PNG Converter – Convert PDF to PNG Online Free | ChangesPDF',
     seoDescription:
       'Convert PDF pages to lossless high-resolution PNG images online for free. Export all pages or individual PNG files.',
     seoKeywords: [
@@ -268,7 +268,7 @@ export const tools: ToolData[] = [
       'convert pdf to png',
       'pdf to png converter',
       'export pdf to png',
-      'change pdf to png',
+      'changes pdf to png',
     ],
     faqs: [
       {
@@ -297,7 +297,7 @@ export const tools: ToolData[] = [
     iconName: 'Image',
     category: 'convert',
     acceptedFormats: ['.png'],
-    seoTitle: 'PNG to PDF Converter – Convert PNG Images to PDF Online Free | ChangePDF',
+    seoTitle: 'PNG to PDF Converter – Convert PNG Images to PDF Online Free | ChangesPDF',
     seoDescription:
       'Convert PNG images to PDF online for free. Combine multiple PNG files into one clean PDF document.',
     seoKeywords: [
@@ -334,7 +334,7 @@ export const tools: ToolData[] = [
     iconName: 'Image',
     category: 'convert',
     acceptedFormats: ['.jpg', '.jpeg'],
-    seoTitle: 'JPG to PNG Converter – Convert JPG to PNG Online Free | ChangePDF',
+    seoTitle: 'JPG to PNG Converter – Convert JPG to PNG Online Free | ChangesPDF',
     seoDescription:
       'Convert JPG images to PNG online for free. 100% full resolution with zero borders or quality loss.',
     seoKeywords: [
@@ -365,7 +365,7 @@ export const tools: ToolData[] = [
     iconName: 'ImageDown',
     category: 'convert',
     acceptedFormats: ['.png'],
-    seoTitle: 'PNG to JPG Converter – Convert PNG to JPG Online Free | ChangePDF',
+    seoTitle: 'PNG to JPG Converter – Convert PNG to JPG Online Free | ChangesPDF',
     seoDescription:
       'Convert PNG images to JPG online for free. Fast, high-quality, 100% full original resolution.',
     seoKeywords: [
@@ -391,7 +391,7 @@ export const tools: ToolData[] = [
     iconName: 'ImageDown',
     category: 'convert',
     acceptedFormats: ['.doc', '.docx'],
-    seoTitle: 'Word to JPG Converter – Convert DOCX to JPG Online Free | ChangePDF',
+    seoTitle: 'Word to JPG Converter – Convert DOCX to JPG Online Free | ChangesPDF',
     seoDescription:
       'Convert Word documents (.docx, .doc) to JPG images online for free. High resolution 300 DPI output with preserved formatting.',
     seoKeywords: [
@@ -422,7 +422,7 @@ export const tools: ToolData[] = [
     iconName: 'FileOutput',
     category: 'convert',
     acceptedFormats: ['.jpg', '.jpeg'],
-    seoTitle: 'JPG to Word Converter – Convert JPG to DOCX Online Free | ChangePDF',
+    seoTitle: 'JPG to Word Converter – Convert JPG to DOCX Online Free | ChangesPDF',
     seoDescription:
       'Convert JPG images into Microsoft Word documents (.docx) online for free. Fast, private, and preserves full image quality.',
     seoKeywords: [
@@ -453,7 +453,7 @@ export const tools: ToolData[] = [
     iconName: 'ImageDown',
     category: 'convert',
     acceptedFormats: ['.doc', '.docx'],
-    seoTitle: 'Word to PNG Converter – Convert DOCX to PNG Online Free | ChangePDF',
+    seoTitle: 'Word to PNG Converter – Convert DOCX to PNG Online Free | ChangesPDF',
     seoDescription:
       'Convert Word documents to lossless PNG images online for free. Pixel-perfect rendering for presentations, web, and printing.',
     seoKeywords: [
@@ -479,7 +479,7 @@ export const tools: ToolData[] = [
     iconName: 'FileOutput',
     category: 'convert',
     acceptedFormats: ['.png'],
-    seoTitle: 'PNG to Word Converter – Convert PNG to DOCX Online Free | ChangePDF',
+    seoTitle: 'PNG to Word Converter – Convert PNG to DOCX Online Free | ChangesPDF',
     seoDescription:
       'Convert PNG images into Microsoft Word documents (.docx) online for free. High resolution and perfectly scaled document pages.',
     seoKeywords: [
@@ -505,7 +505,7 @@ export const tools: ToolData[] = [
     iconName: 'Minimize2',
     category: 'optimize',
     acceptedFormats: ['.pdf'],
-    seoTitle: 'Compress PDF – Reduce PDF File Size Online Free | ChangePDF',
+    seoTitle: 'Compress PDF – Reduce PDF File Size Online Free | ChangesPDF',
     seoDescription:
       'Compress PDF files and reduce file size online for free. Optimize PDFs for email, web upload, or storage. No quality loss, 100% secure and private.',
     seoKeywords: [
@@ -513,7 +513,7 @@ export const tools: ToolData[] = [
       'reduce pdf size',
       'pdf compressor',
       'compress pdf online free',
-      'change pdf size',
+      'changes pdf size',
     ],
     faqs: [
       {
@@ -524,7 +524,7 @@ export const tools: ToolData[] = [
       {
         question: 'Will compression affect quality?',
         answer:
-          'ChangePDF optimizes the PDF structure and compresses embedded resources intelligently. Text quality remains unchanged; images are compressed with minimal visible quality loss.',
+          'ChangesPDF optimizes the PDF structure and compresses embedded resources intelligently. Text quality remains unchanged; images are compressed with minimal visible quality loss.',
       },
       {
         question: 'Is there a file size limit?',
@@ -542,7 +542,7 @@ export const tools: ToolData[] = [
     iconName: 'FileArchive',
     category: 'optimize',
     acceptedFormats: ['.doc', '.docx'],
-    seoTitle: 'Compress Word – Reduce DOCX File Size Online Free | ChangePDF',
+    seoTitle: 'Compress Word – Reduce DOCX File Size Online Free | ChangesPDF',
     seoDescription:
       'Compress Word documents (.docx, .doc) online for free. Reduce file size for email or storage while preserving formatting, images, and layout.',
     seoKeywords: [
@@ -562,12 +562,12 @@ export const tools: ToolData[] = [
       {
         question: 'Will compression change the formatting or text?',
         answer:
-          'No! All text, fonts, tables, margins, and document formatting are preserved 100% intact. ChangePDF optimizes embedded images and stream packaging without damaging document fidelity.',
+          'No! All text, fonts, tables, margins, and document formatting are preserved 100% intact. ChangesPDF optimizes embedded images and stream packaging without damaging document fidelity.',
       },
       {
         question: 'Are both .docx and .doc files supported?',
         answer:
-          'Yes, ChangePDF supports both modern .docx documents and legacy .doc Word formats.',
+          'Yes, ChangesPDF supports both modern .docx documents and legacy .doc Word formats.',
       },
     ],
   },
@@ -581,7 +581,7 @@ export const tools: ToolData[] = [
     category: 'organize',
     acceptedFormats: ['.pdf'],
     seoTitle:
-      'Organize PDF Pages – Reorder, Rotate & Delete Pages Free | ChangePDF',
+      'Organize PDF Pages – Reorder, Rotate & Delete Pages Free | ChangesPDF',
     seoDescription:
       'Organize PDF pages online for free. Rearrange, rotate, and delete pages with a visual drag-and-drop editor. Thumbnail previews for easy page management.',
     seoKeywords: [
@@ -619,7 +619,7 @@ export const tools: ToolData[] = [
     category: 'security',
     acceptedFormats: ['.pdf'],
     seoTitle:
-      'Protect PDF with Password – Encrypt PDF Online Free | ChangePDF',
+      'Protect PDF with Password – Encrypt PDF Online Free | ChangesPDF',
     seoDescription:
       'Add password protection to your PDF files online for free. Encrypt PDFs with secure passwords. 100% client-side – your files never leave your device.',
     seoKeywords: [
@@ -638,12 +638,12 @@ export const tools: ToolData[] = [
       {
         question: 'How secure is the encryption?',
         answer:
-          'ChangePDF uses industry-standard encryption. Since processing happens entirely in your browser, your file and password never leave your device.',
+          'ChangesPDF uses industry-standard encryption. Since processing happens entirely in your browser, your file and password never leave your device.',
       },
       {
         question: 'Can I remove password protection?',
         answer:
-          'Currently, ChangePDF supports adding password protection. To remove a password, you would need to open the PDF with the correct password in a PDF reader and save it without protection.',
+          'Currently, ChangesPDF supports adding password protection. To remove a password, you would need to open the PDF with the correct password in a PDF reader and save it without protection.',
       },
     ],
   },
@@ -656,7 +656,7 @@ export const tools: ToolData[] = [
     iconName: 'Droplets',
     category: 'security',
     acceptedFormats: ['.pdf'],
-    seoTitle: 'Add Watermark to PDF Online Free | ChangePDF',
+    seoTitle: 'Add Watermark to PDF Online Free | ChangesPDF',
     seoDescription:
       'Add custom text or image watermarks to PDF documents online for free. Customize position, opacity, rotation, and more. 100% secure and private.',
     seoKeywords: [
@@ -664,7 +664,7 @@ export const tools: ToolData[] = [
       'add watermark to pdf',
       'pdf watermark',
       'stamp pdf',
-      'change pdf watermark',
+      'changes pdf watermark',
     ],
     faqs: [
       {
@@ -693,7 +693,7 @@ export const tools: ToolData[] = [
     iconName: 'Unlock',
     category: 'security',
     acceptedFormats: ['.pdf'],
-    seoTitle: 'Unlock PDF Online – Remove PDF Password Free | ChangePDF',
+    seoTitle: 'Unlock PDF Online – Remove PDF Password Free | ChangesPDF',
     seoDescription:
       'Unlock password-protected PDF files online for free. Remove owner and user passwords instantly. Fast, secure, and private.',
     seoKeywords: [
@@ -725,7 +725,7 @@ export const tools: ToolData[] = [
     iconName: 'Eraser',
     category: 'security',
     acceptedFormats: ['.pdf'],
-    seoTitle: 'Remove Watermark from PDF Online Free | ChangePDF',
+    seoTitle: 'Remove Watermark from PDF Online Free | ChangesPDF',
     seoDescription:
       'Remove text watermarks, confidential stamps, and unwanted overlays from PDF files online. Clean, fast, and free.',
     seoKeywords: [

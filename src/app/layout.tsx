@@ -12,13 +12,13 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'ChangePDF – Change, Convert & Edit PDF Files Online for Free',
-    template: '%s | ChangePDF',
+    default: 'ChangesPDF – Change, Convert & Edit PDF Files Online for Free',
+    template: '%s | ChangesPDF',
   },
   description:
     'Free online PDF tools to change PDF to Word, merge, split, compress, protect, and convert PDF files. 100% client-side processing – your files never leave your device.',
   keywords: [
-    'change pdf',
+    'changes pdf',
     'pdf tools',
     'merge pdf',
     'split pdf',
@@ -29,11 +29,11 @@ export const metadata: Metadata = {
     'free pdf editor',
     'ilovepdf alternative',
   ],
-  metadataBase: new URL('https://changepdf.com'),
+  metadataBase: new URL('https://changespdf.com'),
   openGraph: {
     type: 'website',
     locale: 'en_US',
-    siteName: 'ChangePDF',
+    siteName: 'ChangesPDF',
   },
   icons: {
     icon: [
@@ -66,7 +66,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{
             __html: `
               try {
-                var theme = localStorage.getItem('changepdf_theme');
+                var theme = localStorage.getItem('changespdf_theme');
                 if (theme === 'dark') {
                   document.documentElement.classList.add('dark');
                 } else {

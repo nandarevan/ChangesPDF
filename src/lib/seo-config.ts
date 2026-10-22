@@ -2,8 +2,8 @@ import type { Metadata } from 'next';
 import type { ToolData } from './tools-data';
 import { getToolBySlug } from './tools-data';
 
-const SITE_URL = 'https://changepdf.com';
-const SITE_NAME = 'ChangePDF';
+const SITE_URL = 'https://changespdf.com';
+const SITE_NAME = 'ChangesPDF';
 
 export function getToolMetadata(slug: string): Metadata {
   const tool = getToolBySlug(slug);
@@ -140,12 +140,12 @@ export function generateToolSchema(tool: ToolData): object[] {
 
 export function getHomeMetadata(): Metadata {
   return {
-    title: 'ChangePDF – Change, Convert & Edit PDF Files Online for Free',
+    title: 'ChangesPDF – Change, Convert & Edit PDF Files Online for Free',
     description:
       'Free online PDF tools to change PDF to Word, merge, split, compress, protect, and convert PDF files. 100% client-side processing – your files never leave your device. iLovePDF alternative.',
     keywords: [
-      'change pdf',
-      'change pdf to word',
+      'changes pdf',
+      'changes pdf to word',
       'pdf converter',
       'merge pdf',
       'split pdf',
@@ -162,9 +162,9 @@ export function getHomeMetadata(): Metadata {
       canonical: SITE_URL,
     },
     openGraph: {
-      title: 'ChangePDF – Change, Convert & Edit PDF Files Online for Free',
+      title: 'ChangesPDF – Change, Convert & Edit PDF Files Online for Free',
       description:
-        'Free online PDF tools. Change PDF to Word, merge, split, compress, and more. 100% private – files never leave your browser.',
+        'Free online PDF tools. Changes PDF to Word, merge, split, compress, and more. 100% private – files never leave your browser.',
       url: SITE_URL,
       siteName: SITE_NAME,
       type: 'website',
@@ -172,7 +172,7 @@ export function getHomeMetadata(): Metadata {
     },
     twitter: {
       card: 'summary_large_image',
-      title: 'ChangePDF – Free Online PDF Tools',
+      title: 'ChangesPDF – Free Online PDF Tools',
       description:
         'Change, convert, and edit PDF files online for free. 100% client-side and secure.',
     },
