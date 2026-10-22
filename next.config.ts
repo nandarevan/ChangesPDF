@@ -4,6 +4,17 @@ const nextConfig: NextConfig = {
   devIndicators: false,
   cacheComponents: true,
   partialPrefetching: true,
+  outputFileTracingExcludes: {
+    '*': [
+      'node_modules/@next/swc-win32-x64-msvc/**',
+      'node_modules/@napi-rs/canvas-win32-x64-msvc/**',
+      'node_modules/@img/**',
+      'node_modules/typescript/**',
+      'public/changepdf.jpg',
+      'public/changepdf.jpg',
+      'public/*.pdf',
+    ],
+  },
   turbopack: {
     rules: {
       "*.css": {
@@ -12,16 +23,13 @@ const nextConfig: NextConfig = {
       },
     },
   },
-  // Webpack configuration for pdfjs-dist compatibility
   webpack: (config) => {
-    // Prevent canvas from being bundled (not needed in browser)
     config.resolve.alias = {
       ...config.resolve.alias,
       canvas: false,
     };
     return config;
   },
-  // Allow external CDN for pdf.js worker
   async headers() {
     return [
       {

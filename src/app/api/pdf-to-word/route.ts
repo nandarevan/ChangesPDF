@@ -8,33 +8,10 @@ import { promisify } from 'util';
 const execFileAsync = promisify(execFile);
 
 function getPythonPath(): string {
-  const homeDir = os.homedir();
-  const candidatePaths = [
-    process.env.PYTHON_PATH || '',
-    'C:\\laragon\\bin\\python\\python-3.13\\python.exe',
-    path.join(homeDir, 'AppData', 'Local', 'Python', 'pythoncore-3.15-64', 'python.exe'),
-    path.join(homeDir, 'AppData', 'Local', 'Programs', 'Python', 'Python313', 'python.exe'),
-    path.join(homeDir, 'AppData', 'Local', 'Programs', 'Python', 'Python312', 'python.exe'),
-    path.join(homeDir, 'AppData', 'Local', 'Programs', 'Python', 'Python311', 'python.exe'),
-    'C:\\Program Files\\Python313\\python.exe',
-    'C:\\Program Files\\Python312\\python.exe',
-    'C:\\Program Files\\Python311\\python.exe',
-    'py',
-    'python',
-    'python3',
-  ];
-
-  for (const candidate of candidatePaths) {
-    if (!candidate) continue;
-    if (candidate.includes('\\') || candidate.includes('/')) {
-      if (fs.existsSync(candidate)) {
-        return candidate;
-      }
-    } else {
-      return candidate;
-    }
+  if (process.env.PYTHON_PATH) {
+    return process.env.PYTHON_PATH;
   }
-  return 'python';
+  return process.platform === 'win32' ? 'python' : 'python3';
 }
 
 export async function GET(req: NextRequest) {
