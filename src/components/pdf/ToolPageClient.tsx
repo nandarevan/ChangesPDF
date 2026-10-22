@@ -1018,7 +1018,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                       value={splitRanges}
                       onChange={(e) => setSplitRanges(e.target.value)}
                       placeholder={`Contoh: 1-2, 3-${detectedPageCount || 5}`}
-                      className="w-full rounded-xl bg-gray-100/70 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] px-4 py-3 text-sm text-white placeholder:text-gray-300 dark:text-white/20 focus:border-[#e5322d] focus:outline-none"
+                      className="w-full rounded-xl bg-gray-100/70 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] px-4 py-3 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/20 focus:border-[#e5322d] focus:outline-none"
                     />
 
                     {/* Quick Range Presets */}
@@ -1557,7 +1557,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                           value={watermarkText}
                           onChange={(e) => setWatermarkText(e.target.value)}
                           placeholder="Contoh: CONFIDENTIAL, DRAFT, RAHASIA"
-                          className="w-full rounded-xl bg-gray-100/70 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] px-4 py-3 text-sm text-white placeholder:text-gray-400 dark:text-white/30 focus:border-[#e5322d] focus:outline-none"
+                          className="w-full rounded-xl bg-gray-100/70 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] px-4 py-3 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/30 focus:border-[#e5322d] focus:outline-none"
                         />
                         {/* Preset quick pills */}
                         <div className="flex flex-wrap items-center gap-1.5 mt-2">
@@ -2100,7 +2100,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                           value={removeWatermarkText}
                           onChange={(e) => setRemoveWatermarkText(e.target.value)}
                           placeholder="Ketik kata watermark di sini (contoh: DRAFT, RAHASIA, NAMA PERUSAHAAN)..."
-                          className="w-full rounded-xl bg-gray-100/70 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] px-4 py-3 text-sm text-white placeholder:text-gray-300 dark:text-white/20 focus:border-[#e5322d] focus:outline-none"
+                          className="w-full rounded-xl bg-gray-100/70 dark:bg-white/[0.04] border border-gray-200 dark:border-white/[0.08] px-4 py-3 text-sm text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-white/20 focus:border-[#e5322d] focus:outline-none"
                         />
 
                         {/* Validasi / Notifikasi Real-Time Keberadaan Watermark */}
