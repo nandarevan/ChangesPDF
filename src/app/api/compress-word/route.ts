@@ -54,12 +54,18 @@ export async function POST(req: NextRequest) {
             'X-Compressed-By': 'render-python',
           },
         });
+      } else {
+        const errJson = await renderResp.json().catch(() => ({}));
+        return NextResponse.json(
+          { ok: false, error: errJson.detail || 'Gagal mengompres dokumen Word.' },
+          { status: renderResp.status || 500 }
+        );
       }
-    } catch (renderErr) {
+    } catch (renderErr: any) {
       console.warn('Render backend compress-word failed, trying local python...', renderErr);
     }
 
-    // 2. Fallback to Local Python
+    // 2. Fallback to Local Python (only runs in local dev where python is installed)
     const tempDir = os.tmpdir();
     const uniqueId = `compress_word_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
     tempInDocx = path.join(tempDir, `${uniqueId}_in${extension}`);

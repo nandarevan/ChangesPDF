@@ -52,6 +52,12 @@ export async function POST(req: NextRequest) {
             'X-Compressed-By': 'render-python',
           },
         });
+      } else {
+        const errJson = await renderResp.json().catch(() => ({}));
+        return NextResponse.json(
+          { ok: false, error: errJson.detail || 'Gagal mengompres dokumen PDF.' },
+          { status: renderResp.status || 500 }
+        );
       }
     } catch (renderErr) {
       console.warn('Render backend compress-pdf failed, trying local python...', renderErr);
