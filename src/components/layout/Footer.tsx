@@ -50,7 +50,7 @@ export default function Footer() {
             />
           </Link>
           <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 leading-relaxed max-w-3xl">
-            <strong className="text-gray-800 dark:text-gray-200">ChangesPDF</strong> adalah toolkit PDF online gratis yang memungkinkan Anda mengelola file PDF langsung di browser. Ubah PDF ke Word, gabungkan berkas, pisahkan dokumen, kompres file, hapus watermark, dan lainnya — tanpa perlu mengunggah ke server mana pun. File Anda tetap berada di perangkat Anda untuk privasi dan keamanan total.
+            <strong className="text-gray-800 dark:text-gray-200">ChangesPDF</strong> adalah toolkit PDF online gratis yang memungkinkan Anda mengelola file PDF langsung di browser. Ubah PDF ke Word, gabungkan berkas, pisahkan dokumen, kompres file, hapus watermark, dan lainnya, tanpa perlu mengunggah ke server mana pun. File Anda tetap berada di perangkat Anda untuk privasi dan keamanan total.
           </p>
         </div>
 

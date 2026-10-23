@@ -17,7 +17,6 @@ import {
   Droplets,
   FileArchive,
   ArrowRight,
-  Sparkles,
   Lock,
   Unlock,
   Eraser,
@@ -148,11 +147,10 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.05 }}
-              className="inline-flex items-center gap-2 rounded-full bg-red-500/10 border border-red-500/20 px-4 py-1.5 mb-6"
+              className="inline-flex items-center rounded-full bg-red-500/10 border border-red-500/20 px-4 py-1.5 mb-6"
             >
-              <Sparkles className="h-3.5 w-3.5 text-[#e5322d]" />
               <span className="text-xs font-semibold text-[#e5322d]">
-                100% Gratis &amp; Langsung di Browser — File Anda Tidak Pernah Keluar dari Perangkat
+                100% Gratis &amp; Langsung di Browser, File Anda Tidak Pernah Keluar dari Perangkat
               </span>
             </motion.div>
 
