@@ -3,7 +3,7 @@
 High-Ratio PDF Compressor using PyMuPDF and Pillow.
 Achieves 50% - 85%+ file size reduction by intelligent image downscaling,
 clean JPEG/PNG optimization, font subsetting, and full PDF stream deflation.
-Guarantees visual rendering integrity (no black screens or corrupted masks).
+Guarantees visual rendering integrity (protects logos and transparency masks, zero black boxes).
 """
 
 import sys
@@ -54,28 +54,36 @@ def compress_pdf(input_path: str, output_path: str, level: str = 'recommended') 
 
     doc = fitz.open(input_path)
 
-    # 1. Identify transparency mask xrefs to avoid breaking mask/image dimensions
-    smask_map = {}  # image_xref -> smask_xref
+    # 1. Identify all transparent logos, soft-masks, and masked images to protect them 100%
+    # Logos are tiny (20-50 KB) and skipping them avoids mask desynchronization or black box rendering.
+    protected_xrefs = set()
     for pno in range(len(doc)):
         for img in doc[pno].get_images(full=True):
             xref = img[0]
             smask = img[1] if len(img) > 1 else 0
             if smask > 0:
-                smask_map[xref] = smask
+                protected_xrefs.add(xref)
+                protected_xrefs.add(smask)
+            try:
+                raw_dict = doc.xref_object(xref)
+                if '/SMask' in raw_dict or '/Mask' in raw_dict:
+                    protected_xrefs.add(xref)
+                info = doc.extract_image(xref)
+                if info.get('smask', 0):
+                    protected_xrefs.add(info['smask'])
+                    protected_xrefs.add(xref)
+            except Exception:
+                pass
 
-    # 2. Process all embedded images safely via page.replace_image
+    # 2. Process all content images safely via page.replace_image
     processed_xrefs = set()
     for pno in range(len(doc)):
         page = doc[pno]
         for img in page.get_images(full=True):
             xref = img[0]
-            if xref in processed_xrefs:
+            if xref in processed_xrefs or xref in protected_xrefs:
                 continue
             processed_xrefs.add(xref)
-
-            # Never replace an SMask stream itself
-            if xref in smask_map.values():
-                continue
 
             try:
                 pix = fitz.Pixmap(doc, xref)
@@ -87,16 +95,11 @@ def compress_pdf(input_path: str, output_path: str, level: str = 'recommended') 
                 if w * h < 2000:
                     continue
 
-                # Images with soft mask: keep original dimensions so mask stays 1:1 aligned
-                has_smask = xref in smask_map
-                if has_smask:
-                    new_w, new_h = w, h
-                else:
-                    target_scale = scale_factor
-                    if max(w, h) * target_scale > max_dim:
-                        target_scale = max_dim / float(max(w, h))
-                    new_w = max(1, int(w * target_scale))
-                    new_h = max(1, int(h * target_scale))
+                target_scale = scale_factor
+                if max(w, h) * target_scale > max_dim:
+                    target_scale = max_dim / float(max(w, h))
+                new_w = max(1, int(w * target_scale))
+                new_h = max(1, int(h * target_scale))
 
                 # Convert pixmap to Pillow Image
                 img_bytes = pix.tobytes("png")
@@ -117,7 +120,7 @@ def compress_pdf(input_path: str, output_path: str, level: str = 'recommended') 
                         has_true_alpha = True
 
                 buf = io.BytesIO()
-                if has_true_alpha or has_smask:
+                if has_true_alpha:
                     # Optimize as PNG preserving transparency
                     im_quant = im.quantize(colors=png_colors)
                     im_quant.save(buf, format='PNG', optimize=True)

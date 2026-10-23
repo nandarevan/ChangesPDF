@@ -601,19 +601,32 @@ export async function protectPDF(
   password: string,
   aes: '256' | '128' = '256'
 ): Promise<Uint8Array> {
+  const backendUrl =
+    process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL ||
+    'https://changespdf-backend.onrender.com';
+
   const formData = new FormData();
   formData.append('file', file);
   formData.append('password', password);
   formData.append('aes', aes);
 
-  const res = await fetch('/api/protect-pdf', {
+  // 1. Direct call to Render backend to bypass Vercel 4.5MB payload limit
+  let res: Response | null = await fetch(`${backendUrl}/api/protect-pdf`, {
     method: 'POST',
     body: formData,
-  });
+  }).catch(() => null);
 
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.error || 'Gagal mengenkripsi dokumen PDF.');
+  // 2. Fallback to Vercel proxy if direct call was blocked
+  if (!res || !res.ok) {
+    res = await fetch('/api/protect-pdf', {
+      method: 'POST',
+      body: formData,
+    }).catch(() => null);
+  }
+
+  if (!res || !res.ok) {
+    const data = res ? await res.json().catch(() => ({})) : {};
+    throw new Error(data.detail || data.error || 'Gagal mengenkripsi dokumen PDF.');
   }
 
   const ab = await res.arrayBuffer();
@@ -628,19 +641,32 @@ export async function unlockPDF(
   password: string = '',
   forceUnlock: boolean = false
 ): Promise<Uint8Array> {
+  const backendUrl =
+    process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL ||
+    'https://changespdf-backend.onrender.com';
+
   const formData = new FormData();
   formData.append('file', file);
   formData.append('password', password);
   formData.append('forceUnlock', String(forceUnlock));
 
-  const res = await fetch('/api/unlock-pdf', {
+  // 1. Direct call to Render backend to bypass Vercel 4.5MB payload limit
+  let res: Response | null = await fetch(`${backendUrl}/api/unlock-pdf`, {
     method: 'POST',
     body: formData,
-  });
+  }).catch(() => null);
 
-  if (!res.ok) {
-    const data = await res.json().catch(() => ({}));
-    throw new Error(data.error || 'Password salah. Pastikan password yang dimasukkan benar.');
+  // 2. Fallback to Vercel proxy if direct call was blocked
+  if (!res || !res.ok) {
+    res = await fetch('/api/unlock-pdf', {
+      method: 'POST',
+      body: formData,
+    }).catch(() => null);
+  }
+
+  if (!res || !res.ok) {
+    const data = res ? await res.json().catch(() => ({})) : {};
+    throw new Error(data.detail || data.error || 'Password salah. Pastikan password yang dimasukkan benar.');
   }
 
   const ab = await res.arrayBuffer();
