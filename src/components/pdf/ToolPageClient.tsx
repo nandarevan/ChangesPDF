@@ -53,7 +53,7 @@ import {
   imagesToWord,
   wordToImages,
 } from '@/lib/pdf-engine';
-import { downloadBlob, downloadFileList, formatFileSize } from '@/lib/utils';
+import { downloadBlob, downloadFileList, formatFileSize, formatUserErrorMessage } from '@/lib/utils';
 
 type Stage = 'upload' | 'configure' | 'processing' | 'done';
 
@@ -713,9 +713,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
 
       setTimeout(() => setStage('done'), 400);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'An unexpected error occurred during processing.'
-      );
+      setError(formatUserErrorMessage(err));
       setStage('configure');
     }
   }, [
@@ -1969,9 +1967,12 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                     <div className="rounded-xl bg-amber-50 dark:bg-gradient-to-r dark:from-amber-500/10 dark:to-violet-500/10 border border-amber-300 dark:border-amber-500/20 p-4 text-xs leading-relaxed flex items-start gap-3">
                       <Zap className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
                       <div>
-                        <strong className="text-amber-950 dark:text-white block mb-0.5 font-bold">Mode Buka Paksa Siap Dijalankan</strong>
-                        <span className="text-amber-900 dark:text-amber-200/90 font-medium">
-                          Sistem akan membobol proteksi izin (print, copy teks, edit form) dan menghapus enkripsi dokumen PDF tanpa meminta password.
+                        <strong className="text-amber-950 dark:text-white block mb-0.5 font-bold">Informasi Mode Buka Paksa</strong>
+                        <span className="text-amber-900 dark:text-amber-200/90 font-medium block">
+                          Buka Paksa bekerja efektif untuk PDF dengan <strong>pembatasan izin</strong> (larangan print, copy teks, edit formulir) atau PIN/sandi standar.
+                        </span>
+                        <span className="text-amber-900/80 dark:text-amber-200/70 text-[11px] mt-1 block">
+                          Jika file dibuat dari Word/Adobe Acrobat dengan <em>Open Password</em> (sandi wajib saat membuka dokumen), silakan pilih opsi <strong>Ketik Password Dokumen</strong> di samping.
                         </span>
                       </div>
                     </div>
