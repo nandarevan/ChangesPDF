@@ -314,15 +314,25 @@ async def compress_pdf_endpoint(
 
         tmp_out_path = tmp_in_path.replace(".pdf", "_compressed.pdf")
 
-        script_path = os.path.join(os.path.dirname(__file__), "scripts", "compress_pdf.py")
-        cmd = [sys.executable, script_path, tmp_in_path, tmp_out_path, "--level", level]
+        executed = False
+        try:
+            from scripts.compress_pdf import compress_pdf
+            import asyncio
+            await asyncio.to_thread(compress_pdf, tmp_in_path, tmp_out_path, level)
+            executed = True
+        except Exception:
+            executed = False
 
-        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
-        if proc.returncode != 0:
-            cleanup_file(tmp_in_path)
-            cleanup_file(tmp_out_path)
-            err_msg = (proc.stderr or proc.stdout or "Gagal mengompres dokumen PDF.").strip()
-            raise HTTPException(status_code=400, detail=err_msg)
+        if not executed:
+            script_path = os.path.join(os.path.dirname(__file__), "scripts", "compress_pdf.py")
+            cmd = [sys.executable, script_path, tmp_in_path, tmp_out_path, "--level", level]
+
+            proc = subprocess.run(cmd, capture_output=True, text=True, timeout=120)
+            if proc.returncode != 0:
+                cleanup_file(tmp_in_path)
+                cleanup_file(tmp_out_path)
+                err_msg = (proc.stderr or proc.stdout or "Gagal mengompres dokumen PDF.").strip()
+                raise HTTPException(status_code=400, detail=err_msg)
 
         if not os.path.exists(tmp_out_path) or os.path.getsize(tmp_out_path) == 0:
             cleanup_file(tmp_in_path)

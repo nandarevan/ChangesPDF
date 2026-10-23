@@ -78,6 +78,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
   const [stage, setStage] = useState<Stage>('upload');
   const [files, setFiles] = useState<File[]>([]);
   const [progress, setProgress] = useState(0);
+  const [processingStatus, setProcessingStatus] = useState<string>('Memproses di memori...');
   const [resultSize, setResultSize] = useState<number>(0);
   const [result, setResult] = useState<ProcessResult | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -229,24 +230,60 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
 
   const handleProcess = useCallback(async () => {
     if (files.length === 0) return;
+
+    const totalBytes = files.reduce((acc, f) => acc + f.size, 0);
+    const isLargeFile = totalBytes > 3 * 1024 * 1024;
+
     setStage('processing');
-    setProgress(15);
+    setProgress(12);
+    setProcessingStatus(isLargeFile ? 'Menganalisis dan menyiapkan dokumen...' : 'Memproses di memori...');
     setError(null);
 
+    let progressInterval: NodeJS.Timeout | null = null;
     try {
-      const progressInterval = setInterval(() => {
+      progressInterval = setInterval(() => {
         setProgress((p) => {
-          if (p < 60) {
-            return p + 8 + Math.random() * 6;
-          } else if (p < 85) {
-            return p + 2 + Math.random() * 3;
-          } else if (p < 98) {
-            // Keep inching forward smoothly so it never freezes/gets stuck
-            return p + 0.4;
+          let next = p;
+          if (isLargeFile) {
+            // Smooth pacing for files > 3MB so progress never rushes or freezes at 99%
+            if (p < 40) {
+              next = p + 4 + Math.random() * 3;
+            } else if (p < 70) {
+              next = p + 2 + Math.random() * 2;
+            } else if (p < 88) {
+              next = p + 0.8 + Math.random() * 0.8;
+            } else if (p < 95) {
+              next = p + 0.2;
+            } else {
+              next = 95;
+            }
+          } else {
+            // Standard pacing for smaller files
+            if (p < 60) {
+              next = p + 7 + Math.random() * 5;
+            } else if (p < 85) {
+              next = p + 2.5 + Math.random() * 2;
+            } else if (p < 95) {
+              next = p + 0.5;
+            } else {
+              next = 95;
+            }
           }
-          return 99;
+
+          // Update status text dynamically based on progress
+          if (next < 35) {
+            setProcessingStatus('Menganalisis halaman dan konten...');
+          } else if (next < 70) {
+            setProcessingStatus('Mengompresi dan mengoptimalkan gambar...');
+          } else if (next < 90) {
+            setProcessingStatus('Menyusun ulang struktur berkas...');
+          } else {
+            setProcessingStatus('Menyelesaikan dokumen...');
+          }
+
+          return next;
         });
-      }, 350);
+      }, 400);
 
       const baseName = files[0].name.replace(/\.[^/.]+$/, '');
       let outputResult: ProcessResult;
@@ -823,8 +860,9 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
         }
       }
 
-      clearInterval(progressInterval);
+      if (progressInterval) clearInterval(progressInterval);
       setProgress(100);
+      setProcessingStatus('Selesai!');
       setResult(outputResult);
 
       if (outputResult.type === 'single') {
@@ -835,6 +873,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
 
       setTimeout(() => setStage('done'), 400);
     } catch (err) {
+      if (progressInterval) clearInterval(progressInterval);
       setError(formatUserErrorMessage(err));
       setStage('configure');
     }
@@ -885,6 +924,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
     setStage('upload');
     setFiles([]);
     setProgress(0);
+    setProcessingStatus('Memproses di memori...');
     setResult(null);
     setResultSize(0);
     setError(null);
@@ -2527,7 +2567,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
 
             <div className="w-full max-w-md space-y-3">
               <div className="flex justify-between text-sm text-gray-600 dark:text-gray-300">
-                <span>Memproses di memori...</span>
+                <span>{processingStatus}</span>
                 <span className="font-semibold text-[#e5322d]">{Math.round(progress)}%</span>
               </div>
               <div className="h-2.5 w-full rounded-full bg-gray-200 dark:bg-white/[0.08] overflow-hidden">
@@ -2541,7 +2581,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
             </div>
 
             <p className="text-xs text-gray-400 dark:text-gray-500">
-              100% Client-Side • Dokumen Anda aman dan tidak pernah diunggah
+              Dokumen Anda diproses dengan aman dan privasi terjaga
             </p>
           </motion.div>
         )}
