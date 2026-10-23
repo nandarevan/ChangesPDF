@@ -1370,7 +1370,7 @@ export async function pdfToWord(
       const isListItem =
         !isFullWidth &&
         (/^([IVXLCDM]+|\d+(\.\d+)*|[a-zA-Z]|\(?[0-9a-zA-Z]\)?)[\.\)]\s/.test(trimmedText) ||
-          /^[•\-\–—]\s/.test(trimmedText));
+          /^[•\-\u2013\u2014]\s/.test(trimmedText));
 
       const isCentered =
         !isFullWidth &&
@@ -2452,7 +2452,7 @@ export async function wordToPdf(file: File): Promise<Uint8Array> {
     try {
       const raw = await file.text();
       // Extract printable text chunks
-      const matches = raw.match(/[a-zA-Z0-9\s.,!?:;"'()\-–—/\\@#$%&*+=\[\]{}<>]+/g);
+      const matches = raw.match(/[a-zA-Z0-9\s.,!?:;"'()\\-\u2013\u2014/\\@#$%&*+=\[\]{}<>]+/g);
       if (matches && matches.length > 0) {
         text = matches.filter((m) => m.trim().length > 3).join(' ');
       } else {
@@ -2577,5 +2577,198 @@ export async function wordToPdf(file: File): Promise<Uint8Array> {
   }
 
   return pdfDoc.save();
+}
+
+/**
+ * Convert PDF pages to PowerPoint presentation slides (.pptx).
+ */
+export async function pdfToPPT(file: File): Promise<Uint8Array> {
+  const backendUrl = process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL || 'https://changespdf-backend.onrender.com';
+  const formData = new FormData();
+  formData.append('file', file);
+
+  let resp = await fetch(`${backendUrl}/api/pdf-to-ppt`, {
+    method: 'POST',
+    body: formData,
+  }).catch(() => null);
+
+  if (!resp || !resp.ok) {
+    resp = await fetch('/api/pdf-to-ppt', {
+      method: 'POST',
+      body: formData,
+    }).catch(() => null);
+  }
+
+  if (!resp || !resp.ok) {
+    const errJson = resp ? await resp.json().catch(() => ({})) : {};
+    throw new Error(errJson.detail || errJson.error || 'Gagal mengonversi PDF ke PowerPoint.');
+  }
+
+  return new Uint8Array(await resp.arrayBuffer());
+}
+
+/**
+ * Convert PowerPoint presentation (.pptx, .ppt) to PDF format.
+ */
+export async function pptToPDF(file: File): Promise<Uint8Array> {
+  const backendUrl = process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL || 'https://changespdf-backend.onrender.com';
+  const formData = new FormData();
+  formData.append('file', file);
+
+  let resp = await fetch(`${backendUrl}/api/ppt-to-pdf`, {
+    method: 'POST',
+    body: formData,
+  }).catch(() => null);
+
+  if (!resp || !resp.ok) {
+    resp = await fetch('/api/ppt-to-pdf', {
+      method: 'POST',
+      body: formData,
+    }).catch(() => null);
+  }
+
+  if (!resp || !resp.ok) {
+    const errJson = resp ? await resp.json().catch(() => ({})) : {};
+    throw new Error(errJson.detail || errJson.error || 'Gagal mengonversi PowerPoint ke PDF.');
+  }
+
+  return new Uint8Array(await resp.arrayBuffer());
+}
+
+/**
+ * Compress JPG / JPEG image file.
+ */
+export async function compressJPG(file: File, level: string = 'recommended'): Promise<Uint8Array> {
+  const quality = level === 'extreme' ? 0.50 : level === 'low' ? 0.82 : 0.70;
+  const maxDim = level === 'extreme' ? 1600 : level === 'low' ? 3000 : 2200;
+
+  try {
+    const bitmap = await createImageBitmap(file);
+    let { width, height } = bitmap;
+    if (Math.max(width, height) > maxDim) {
+      const scale = maxDim / Math.max(width, height);
+      width = Math.max(1, Math.round(width * scale));
+      height = Math.max(1, Math.round(height * scale));
+    }
+    const canvas = document.createElement('canvas');
+    canvas.width = width;
+    canvas.height = height;
+    const ctx = canvas.getContext('2d');
+    if (ctx) {
+      ctx.drawImage(bitmap, 0, 0, width, height);
+      const blob = await new Promise<Blob | null>((resolve) =>
+        canvas.toBlob(resolve, 'image/jpeg', quality)
+      );
+      if (blob && blob.size < file.size) {
+        return new Uint8Array(await blob.arrayBuffer());
+      }
+    }
+  } catch {}
+
+  const backendUrl = process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL || 'https://changespdf-backend.onrender.com';
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('level', level);
+
+  let resp = await fetch(`${backendUrl}/api/compress-jpg`, {
+    method: 'POST',
+    body: formData,
+  }).catch(() => null);
+
+  if (!resp || !resp.ok) {
+    resp = await fetch('/api/compress-jpg', {
+      method: 'POST',
+      body: formData,
+    }).catch(() => null);
+  }
+
+  if (resp && resp.ok) {
+    return new Uint8Array(await resp.arrayBuffer());
+  }
+
+  return new Uint8Array(await file.arrayBuffer());
+}
+
+/**
+ * Compress PNG image while preserving 100% alpha transparency.
+ */
+export async function compressPNG(file: File, level: string = 'recommended'): Promise<Uint8Array> {
+  const maxDim = level === 'extreme' ? 1600 : level === 'low' ? 3200 : 2400;
+
+  try {
+    const bitmap = await createImageBitmap(file);
+    let { width, height } = bitmap;
+    if (Math.max(width, height) > maxDim) {
+      const scale = maxDim / Math.max(width, height);
+      width = Math.max(1, Math.round(width * scale));
+      height = Math.max(1, Math.round(height * scale));
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+        ctx.clearRect(0, 0, width, height);
+        ctx.drawImage(bitmap, 0, 0, width, height);
+        const blob = await new Promise<Blob | null>((resolve) =>
+          canvas.toBlob(resolve, 'image/png')
+        );
+        if (blob && blob.size < file.size) {
+          return new Uint8Array(await blob.arrayBuffer());
+        }
+      }
+    }
+  } catch {}
+
+  const backendUrl = process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL || 'https://changespdf-backend.onrender.com';
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('level', level);
+
+  let resp = await fetch(`${backendUrl}/api/compress-png`, {
+    method: 'POST',
+    body: formData,
+  }).catch(() => null);
+
+  if (!resp || !resp.ok) {
+    resp = await fetch('/api/compress-png', {
+      method: 'POST',
+      body: formData,
+    }).catch(() => null);
+  }
+
+  if (resp && resp.ok) {
+    return new Uint8Array(await resp.arrayBuffer());
+  }
+
+  return new Uint8Array(await file.arrayBuffer());
+}
+
+/**
+ * Compress PowerPoint (.pptx / .ppt) presentation.
+ */
+export async function compressPPT(file: File, level: string = 'recommended'): Promise<Uint8Array> {
+  const backendUrl = process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL || 'https://changespdf-backend.onrender.com';
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('level', level);
+
+  let resp = await fetch(`${backendUrl}/api/compress-ppt`, {
+    method: 'POST',
+    body: formData,
+  }).catch(() => null);
+
+  if (!resp || !resp.ok) {
+    resp = await fetch('/api/compress-ppt', {
+      method: 'POST',
+      body: formData,
+    }).catch(() => null);
+  }
+
+  if (!resp || !resp.ok) {
+    const errJson = resp ? await resp.json().catch(() => ({})) : {};
+    throw new Error(errJson.detail || errJson.error || 'Gagal mengompres dokumen PowerPoint.');
+  }
+
+  return new Uint8Array(await resp.arrayBuffer());
 }
 

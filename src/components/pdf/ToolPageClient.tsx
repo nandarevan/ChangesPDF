@@ -27,6 +27,7 @@ import {
   Zap,
   ShieldOff,
   AlertCircle,
+  Presentation,
 } from 'lucide-react';
 import Dropzone from '@/components/pdf/Dropzone';
 import PageGrid from '@/components/pdf/PageGrid';
@@ -52,6 +53,11 @@ import {
   convertImages,
   imagesToWord,
   wordToImages,
+  pdfToPPT,
+  pptToPDF,
+  compressJPG,
+  compressPNG,
+  compressPPT,
 } from '@/lib/pdf-engine';
 import { downloadBlob, downloadFileList, formatFileSize, formatUserErrorMessage } from '@/lib/utils';
 
@@ -623,6 +629,61 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
           break;
         }
 
+        case 'pdf-to-ppt': {
+          const pptx = await pdfToPPT(files[0]);
+          outputResult = {
+            type: 'single',
+            data: pptx,
+            filename: `${baseName}.pptx`,
+            mimeType: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+          };
+          break;
+        }
+
+        case 'ppt-to-pdf': {
+          const pdf = await pptToPDF(files[0]);
+          outputResult = {
+            type: 'single',
+            data: pdf,
+            filename: `${baseName}.pdf`,
+            mimeType: 'application/pdf',
+          };
+          break;
+        }
+
+        case 'compress-jpg': {
+          const compressed = await compressJPG(files[0], compressionLevel);
+          outputResult = {
+            type: 'single',
+            data: compressed,
+            filename: `${baseName}_compressed.jpg`,
+            mimeType: 'image/jpeg',
+          };
+          break;
+        }
+
+        case 'compress-png': {
+          const compressed = await compressPNG(files[0], compressionLevel);
+          outputResult = {
+            type: 'single',
+            data: compressed,
+            filename: `${baseName}_compressed.png`,
+            mimeType: 'image/png',
+          };
+          break;
+        }
+
+        case 'compress-ppt': {
+          const compressed = await compressPPT(files[0], compressionLevel);
+          outputResult = {
+            type: 'single',
+            data: compressed,
+            filename: `${baseName}_compressed.pptx`,
+            mimeType: 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+          };
+          break;
+        }
+
         case 'organize-pdf': {
           const currentPages =
             organizedPagesRef.current && organizedPagesRef.current.length > 0
@@ -808,6 +869,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
     pageSize,
     marginMode,
     ocrMode,
+    compressionLevel,
   ]);
 
   const handleDownload = useCallback(() => {
@@ -1202,7 +1264,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                       </p>
                     </div>
                     <span className="text-xs font-semibold px-2.5 py-1 rounded-md bg-red-500/10 border border-red-500/30 text-[#e5322d]">
-                      {orientation === 'landscape' ? '📜 Landscape Aktif' : '📄 Portrait Aktif'}
+                      {orientation === 'landscape' ? 'Landscape Aktif' : 'Portrait Aktif'}
                     </span>
                   </div>
 
@@ -1219,7 +1281,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                       <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-lg font-bold ${
                         orientation === 'portrait' ? 'bg-red-500/15 text-[#e5322d]' : 'bg-white/5 text-gray-400 dark:text-white/40'
                       }`}>
-                        📄
+                        <FileText className="h-5 w-5" />
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
@@ -1246,7 +1308,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                       <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-lg font-bold ${
                         orientation === 'landscape' ? 'bg-red-500/15 text-[#e5322d]' : 'bg-white/5 text-gray-400 dark:text-white/40'
                       }`}>
-                        📜
+                        <FileText className="h-5 w-5 rotate-90" />
                       </div>
                       <div>
                         <div className="flex items-center gap-2">
@@ -1547,16 +1609,17 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
             )}
 
             {/* Compress PDF & Word: Level Selector */}
-            {(tool.id === 'compress-pdf' || tool.id === 'compress-word') && (
+            {/* Compress PDF, Word, PPT, JPG, PNG: Level Selector */}
+            {(tool.id === 'compress-pdf' || tool.id === 'compress-word' || tool.id === 'compress-ppt' || tool.id === 'compress-jpg' || tool.id === 'compress-png') && (
               <div className="rounded-2xl border border-gray-200 dark:border-white/[0.08] bg-gray-50/60 dark:bg-white/[0.02] p-6 space-y-3">
                 <label className="block text-sm font-medium text-gray-700 dark:text-white/70">
-                  Compression Level
+                  Level Kompresi
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   {[
-                    { id: 'extreme', title: 'Extreme', desc: 'Maximum compression' },
-                    { id: 'recommended', title: 'Recommended', desc: 'Good quality & ratio' },
-                    { id: 'low', title: 'Low', desc: 'Highest quality' },
+                    { id: 'extreme', title: 'Extreme', desc: 'Kompresi maksimal, hemat ukuran hingga 85%' },
+                    { id: 'recommended', title: 'Recommended', desc: 'Kualitas seimbang & rasio hemat optimal' },
+                    { id: 'low', title: 'Low', desc: 'Kualitas tertinggi, penurunan ukuran ringan' },
                   ].map((lvl) => (
                     <button
                       key={lvl.id}
@@ -1571,6 +1634,36 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                       <p className="text-xs text-gray-400 dark:text-white/40 mt-1">{lvl.desc}</p>
                     </button>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* PDF to PPT Info Card */}
+            {tool.id === 'pdf-to-ppt' && (
+              <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-5 flex items-center gap-3.5">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/15 text-[#e5322d]">
+                  <Presentation className="h-5 w-5" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-white">Konversi PDF ke Slide PowerPoint (.pptx)</h4>
+                  <p className="text-xs text-gray-600 dark:text-white/60 mt-0.5 leading-relaxed">
+                    Setiap halaman dari dokumen PDF Anda akan dikonversi menjadi slide presentasi PowerPoint dengan ketajaman visual tinggi dan proporsi asli yang dipertahankan.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {/* PPT to PDF Info Card */}
+            {tool.id === 'ppt-to-pdf' && (
+              <div className="rounded-2xl border border-red-500/20 bg-red-500/5 p-5 flex items-center gap-3.5">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/15 text-[#e5322d]">
+                  <Presentation className="h-5 w-5" />
+                </div>
+                <div>
+                  <h4 className="text-sm font-bold text-white">Konversi Presentasi PowerPoint ke Dokumen PDF</h4>
+                  <p className="text-xs text-gray-600 dark:text-white/60 mt-0.5 leading-relaxed">
+                    File presentasi PowerPoint (.pptx / .ppt) Anda akan dikonversi menjadi satu dokumen PDF yang rapi dengan tata letak slide dan grafik yang terjaga.
+                  </p>
                 </div>
               </div>
             )}
@@ -2384,6 +2477,20 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                     : !unlockPassword.trim()
                     ? 'Ketik Password Dokumen Dulu'
                     : 'Buka & Hapus Password PDF'
+                  : tool.id === 'pdf-to-ppt'
+                  ? 'Konversi ke PowerPoint (.pptx)'
+                  : tool.id === 'ppt-to-pdf'
+                  ? 'Konversi ke PDF'
+                  : tool.id === 'compress-pdf'
+                  ? 'Kompres PDF'
+                  : tool.id === 'compress-word'
+                  ? 'Kompres Word'
+                  : tool.id === 'compress-ppt'
+                  ? 'Kompres Presentasi PPT'
+                  : tool.id === 'compress-jpg'
+                  ? 'Kompres Gambar JPG'
+                  : tool.id === 'compress-png'
+                  ? 'Kompres Gambar PNG'
                   : tool.id === 'watermark-pdf'
                   ? 'Terapkan Watermark'
                   : tool.id === 'remove-watermark'
@@ -2465,7 +2572,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                   <>
                     {' '}
                     • Asli: {formatFileSize(files[0].size)}
-                    {(tool.id === 'compress-pdf' || tool.id === 'compress-word') && resultSize < files[0].size && (
+                    {(tool.id === 'compress-pdf' || tool.id === 'compress-word' || tool.id === 'compress-ppt' || tool.id === 'compress-jpg' || tool.id === 'compress-png') && resultSize < files[0].size && (
                       <span className="text-[#e5322d] font-semibold ml-1">
                         (Hemat {Math.round((1 - resultSize / files[0].size) * 100)}%)
                       </span>

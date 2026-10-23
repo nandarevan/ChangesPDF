@@ -22,6 +22,7 @@ import {
   Unlock,
   Eraser,
   Lock,
+  Presentation,
   Sun,
   Moon,
 } from 'lucide-react';
@@ -44,6 +45,7 @@ const iconMap: Record<string, React.ElementType> = {
   Unlock,
   Eraser,
   Lock,
+  Presentation,
 };
 
 export default function Navbar() {

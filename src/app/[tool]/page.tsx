@@ -20,6 +20,7 @@ import {
   Lock,
   Unlock,
   Eraser,
+  Presentation,
   ArrowRight,
   CheckCircle2,
 } from 'lucide-react';
@@ -39,6 +40,7 @@ const iconMap: Record<string, React.ElementType> = {
   Lock,
   Unlock,
   Eraser,
+  Presentation,
 };
 
 // Generate static params for all tool routes

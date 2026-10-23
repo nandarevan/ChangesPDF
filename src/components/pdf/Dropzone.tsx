@@ -107,10 +107,10 @@ export default function Dropzone({
             suggestions.push({
               fileName: file.name,
               detectedType: 'word',
-              title: `⚠️ Peringatan: Dokumen Word (${ext.toUpperCase()}) Tidak Bisa Langsung di ${toolName}`,
+              title: `Peringatan: Dokumen Word (${ext.toUpperCase()}) Tidak Bisa Langsung di ${toolName}`,
               message: `Anda saat ini berada di menu ${toolName} yang membutuhkan file PDF. File "${file.name}" yang Anda unggah adalah dokumen Microsoft Word. Silakan ubah file Word ini menjadi PDF terlebih dahulu dengan membuka menu Word to PDF di bawah:`,
               primaryAction: {
-                label: '👉 Buka Menu Word to PDF',
+                label: 'Buka Menu Word to PDF',
                 href: '/word-to-pdf',
               },
               secondaryAction: {
@@ -127,11 +127,11 @@ export default function Dropzone({
           if ((isJpgToPdf || isJpgToWord) && (ext === '.png' || file.type === 'image/png')) {
             const toolName = isJpgToWord ? 'JPG to Word' : 'JPG to PDF';
             const targetHref = isJpgToWord ? '/png-to-word' : '/png-to-pdf';
-            const targetLabel = isJpgToWord ? '👉 Buka Menu PNG to Word' : '👉 Buka Menu PNG to PDF';
+            const targetLabel = isJpgToWord ? 'Buka Menu PNG to Word' : 'Buka Menu PNG to PDF';
             suggestions.push({
               fileName: file.name,
               detectedType: 'image',
-              title: `⚠️ Format Ditolak: Menu ${toolName} Khusus File JPG / JPEG`,
+              title: `Format Ditolak: Menu ${toolName} Khusus File JPG / JPEG`,
               message: `Menu ${toolName} hanya menerima file gambar berformat .jpg atau .jpeg. File "${file.name}" yang Anda pilih berformat PNG. Silakan gunakan menu khusus PNG di bawah:`,
               primaryAction: {
                 label: targetLabel,
@@ -151,11 +151,11 @@ export default function Dropzone({
           if ((isPngToPdf || isPngToWord) && (ext === '.jpg' || ext === '.jpeg' || file.type === 'image/jpeg')) {
             const toolName = isPngToWord ? 'PNG to Word' : 'PNG to PDF';
             const targetHref = isPngToWord ? '/jpg-to-word' : '/jpg-to-pdf';
-            const targetLabel = isPngToWord ? '👉 Buka Menu JPG to Word' : '👉 Buka Menu JPG to PDF';
+            const targetLabel = isPngToWord ? 'Buka Menu JPG to Word' : 'Buka Menu JPG to PDF';
             suggestions.push({
               fileName: file.name,
               detectedType: 'image',
-              title: `⚠️ Format Ditolak: Menu ${toolName} Khusus File PNG`,
+              title: `Format Ditolak: Menu ${toolName} Khusus File PNG`,
               message: `Menu ${toolName} hanya menerima file gambar berformat .png. File "${file.name}" yang Anda pilih berformat JPG/JPEG. Silakan gunakan menu khusus JPG di bawah:`,
               primaryAction: {
                 label: targetLabel,
@@ -202,10 +202,10 @@ export default function Dropzone({
             suggestions.push({
               fileName: file.name,
               detectedType: 'image',
-              title: `⚠️ Format File Tidak Sesuai: File Ini Berupa Gambar (${ext.toUpperCase()})`,
+              title: `Format File Tidak Sesuai: File Ini Berupa Gambar (${ext.toUpperCase()})`,
               message: `Menu ${currentToolName} memerlukan dokumen PDF. Jika Anda ingin mengubah atau menyusun gambar "${file.name}" menjadi dokumen PDF, gunakan menu ${targetTool} di bawah:`,
               primaryAction: {
-                label: `👉 Buka Menu ${targetTool}`,
+                label: `Buka Menu ${targetTool}`,
                 href: targetHref,
               },
             });
@@ -246,7 +246,7 @@ export default function Dropzone({
             let targetLabel = isPng ? 'Buka PNG to PDF' : 'Buka JPG to PDF';
             if (isWordToJpg || isWordToPng) {
               targetHref = isPng ? '/png-to-word' : '/jpg-to-word';
-              targetLabel = isPng ? '👉 Buka PNG to Word' : '👉 Buka JPG to Word';
+              targetLabel = isPng ? 'Buka PNG to Word' : 'Buka JPG to Word';
             }
 
             suggestions.push({
@@ -320,10 +320,10 @@ export default function Dropzone({
             suggestions.push({
               fileName: file.name,
               detectedType: 'word',
-              title: `⚠️ Peringatan: Dokumen Word (${ext.toUpperCase()}) di Menu ${currentName}`,
+              title: `Peringatan: Dokumen Word (${ext.toUpperCase()}) di Menu ${currentName}`,
               message: `Halaman ini khusus untuk gambar. Anda mengunggah dokumen Word "${file.name}". Ingin mengubah dokumen Word ini menjadi PDF?`,
               primaryAction: {
-                label: '👉 Buka Menu Word to PDF',
+                label: 'Buka Menu Word to PDF',
                 href: '/word-to-pdf',
               },
               secondaryAction: {

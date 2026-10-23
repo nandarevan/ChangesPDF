@@ -20,6 +20,7 @@ import {
   Lock,
   Unlock,
   Eraser,
+  Presentation,
   Zap,
   ShieldCheck,
   Search,
@@ -42,6 +43,7 @@ const iconMap: Record<string, React.ElementType> = {
   Lock,
   Unlock,
   Eraser,
+  Presentation,
 };
 
 const categoryColors: Record<ToolData['category'], string> = {

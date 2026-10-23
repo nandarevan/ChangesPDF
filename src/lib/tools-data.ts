@@ -747,6 +747,146 @@ export const tools: ToolData[] = [
       },
     ],
   },
+  {
+    id: 'pdf-to-ppt',
+    slug: 'pdf-to-ppt',
+    title: 'PDF to PPT',
+    description:
+      'Convert PDF documents to editable PowerPoint presentations (.pptx). Each page is converted into a presentation slide.',
+    iconName: 'Presentation',
+    category: 'convert',
+    acceptedFormats: ['.pdf'],
+    seoTitle: 'PDF to PPT Converter – Convert PDF to PowerPoint Online Free | ChangesPDF',
+    seoDescription:
+      'Convert PDF to PowerPoint presentation slides online for free. Convert PDF pages to PPTX slides fast, secure, and private.',
+    seoKeywords: [
+      'pdf to ppt',
+      'convert pdf to ppt',
+      'pdf to pptx',
+      'pdf to powerpoint',
+      'changes pdf to ppt',
+    ],
+    faqs: [
+      {
+        question: 'How do I convert PDF to PowerPoint?',
+        answer:
+          'Upload your PDF file and click "Convert to PowerPoint". Each page in your PDF document will be converted into an individual presentation slide.',
+      },
+      {
+        question: 'Will formatting and images be preserved?',
+        answer:
+          'Yes! All text, colors, tables, and images are rendered with crisp high resolution across your PowerPoint slides.',
+      },
+    ],
+  },
+  {
+    id: 'ppt-to-pdf',
+    slug: 'ppt-to-pdf',
+    title: 'PPT to PDF',
+    description:
+      'Convert PowerPoint presentations (.pptx, .ppt) to PDF format. Preserves original slide layouts, typography, and graphics.',
+    iconName: 'Presentation',
+    category: 'convert',
+    acceptedFormats: ['.ppt', '.pptx'],
+    seoTitle: 'PPT to PDF Converter – Convert PowerPoint to PDF Online Free | ChangesPDF',
+    seoDescription:
+      'Convert PowerPoint presentations (.pptx, .ppt) to PDF online for free. Keep all slide formatting and graphics intact.',
+    seoKeywords: [
+      'ppt to pdf',
+      'convert ppt to pdf',
+      'pptx to pdf',
+      'powerpoint to pdf',
+      'changes ppt to pdf',
+    ],
+    faqs: [
+      {
+        question: 'How do I convert PowerPoint to PDF?',
+        answer:
+          'Upload your PowerPoint file (.pptx or .ppt) and click "Convert to PDF". Your slides will be compiled into a single high-quality PDF document.',
+      },
+    ],
+  },
+  {
+    id: 'compress-jpg',
+    slug: 'compress-jpg',
+    title: 'Compress JPG',
+    description:
+      'Reduce JPG and JPEG image file sizes while maintaining sharp quality. Fast compression for web, email, and storage.',
+    iconName: 'ImageDown',
+    category: 'optimize',
+    acceptedFormats: ['.jpg', '.jpeg'],
+    seoTitle: 'Compress JPG – Reduce JPG Image Size Online Free | ChangesPDF',
+    seoDescription:
+      'Compress JPG and JPEG images online for free. Reduce image file size by up to 80% without noticeable quality loss.',
+    seoKeywords: [
+      'compress jpg',
+      'reduce jpg size',
+      'jpg compressor',
+      'compress jpeg online',
+      'small jpg',
+    ],
+    faqs: [
+      {
+        question: 'How do I compress JPG images?',
+        answer:
+          'Upload your JPG image, select your preferred compression level (Extreme, Recommended, or Low), and click "Compress JPG".',
+      },
+    ],
+  },
+  {
+    id: 'compress-png',
+    slug: 'compress-png',
+    title: 'Compress PNG',
+    description:
+      'Reduce PNG image file sizes while preserving 100% transparency, crisp edges, and graphic sharpness.',
+    iconName: 'ImageDown',
+    category: 'optimize',
+    acceptedFormats: ['.png'],
+    seoTitle: 'Compress PNG – Reduce PNG Image Size Online Free | ChangesPDF',
+    seoDescription:
+      'Compress PNG images online for free. Keep transparent backgrounds 100% intact with zero black boxes.',
+    seoKeywords: [
+      'compress png',
+      'reduce png size',
+      'png compressor',
+      'compress png transparent',
+      'small png',
+    ],
+    faqs: [
+      {
+        question: 'Will PNG transparency be kept after compression?',
+        answer:
+          'Yes! ChangesPDF preserves 100% alpha transparency. Logos and icons will never have black or distorted background artifacts.',
+      },
+    ],
+  },
+  {
+    id: 'compress-ppt',
+    slug: 'compress-ppt',
+    title: 'Compress PPT',
+    description:
+      'Reduce PowerPoint presentation (.pptx, .ppt) file size by 50% - 85% while keeping slides, fonts, and animations intact.',
+    iconName: 'FileArchive',
+    category: 'optimize',
+    acceptedFormats: ['.ppt', '.pptx'],
+    seoTitle: 'Compress PPT – Reduce PowerPoint File Size Online Free | ChangesPDF',
+    seoDescription:
+      'Compress PowerPoint presentations (.pptx, .ppt) online for free. Reduce file size for email sharing while preserving presentation quality.',
+    seoKeywords: [
+      'compress ppt',
+      'reduce ppt size',
+      'compress pptx',
+      'powerpoint compressor',
+      'small ppt',
+    ],
+    faqs: [
+      {
+        question: 'How much can I reduce PowerPoint file size?',
+        answer:
+          'PowerPoint presentations with multiple slide images typically see 50% to 85% file size reduction.',
+      },
+    ],
+  },
 ];
 
 export function getToolBySlug(slug: string): ToolData | undefined {
@@ -779,6 +919,21 @@ export function getToolBySlug(slug: string): ToolData | undefined {
   }
   if (slug === 'hapus-watermark' || slug === 'delete-watermark' || slug === 'clear-watermark') {
     return tools.find((t) => t.id === 'remove-watermark');
+  }
+  if (slug === 'pdf-to-pptx' || slug === 'pdf-to-powerpoint') {
+    return tools.find((t) => t.id === 'pdf-to-ppt');
+  }
+  if (slug === 'pptx-to-pdf' || slug === 'powerpoint-to-pdf') {
+    return tools.find((t) => t.id === 'ppt-to-pdf');
+  }
+  if (slug === 'compress-jpeg' || slug === 'small-jpg' || slug === 'small-jpeg') {
+    return tools.find((t) => t.id === 'compress-jpg');
+  }
+  if (slug === 'small-png') {
+    return tools.find((t) => t.id === 'compress-png');
+  }
+  if (slug === 'compress-pptx' || slug === 'small-ppt' || slug === 'small-pptx') {
+    return tools.find((t) => t.id === 'compress-ppt');
   }
   return tools.find((tool) => tool.slug === slug || tool.id === slug);
 }
