@@ -21,6 +21,7 @@ import {
   Unlock,
   Eraser,
   Zap,
+  ShieldCheck,
   Search,
   X,
 } from 'lucide-react';
@@ -177,7 +178,7 @@ export default function HomePage() {
                 <span>Proses Instan di Memori</span>
               </div>
               <div className="flex items-center gap-1.5">
-                <Sparkles className="h-3.5 w-3.5 text-[#e5322d]" />
+                <ShieldCheck className="h-3.5 w-3.5 text-[#e5322d]" />
                 <span>Tanpa Watermark Tambahan</span>
               </div>
             </div>
