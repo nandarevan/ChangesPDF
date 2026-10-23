@@ -515,17 +515,30 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
 
         case 'compress-pdf': {
           let compressed: Uint8Array | null = null;
+          const backendUrl =
+            process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL ||
+            'https://changespdf-backend.onrender.com';
+
           try {
             const formData = new FormData();
             formData.append('file', files[0]);
             formData.append('level', compressionLevel);
 
-            const resp = await fetch('/api/compress-pdf', {
+            // 1. Direct call to Render Python backend (supports files up to 50MB, bypassing Vercel 4.5MB limit)
+            let resp: Response | null = await fetch(`${backendUrl}/api/compress-pdf`, {
               method: 'POST',
               body: formData,
-            });
+            }).catch(() => null);
 
-            if (resp.ok) {
+            // 2. If direct call was unavailable, try Vercel API proxy
+            if (!resp || !resp.ok) {
+              resp = await fetch('/api/compress-pdf', {
+                method: 'POST',
+                body: formData,
+              }).catch(() => null);
+            }
+
+            if (resp && resp.ok) {
               const arrayBuffer = await resp.arrayBuffer();
               compressed = new Uint8Array(arrayBuffer);
             }
@@ -548,26 +561,39 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
 
         case 'compress-word': {
           let compressed: Uint8Array | null = null;
+          const backendUrl =
+            process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL ||
+            'https://changespdf-backend.onrender.com';
+
           try {
             const formData = new FormData();
             formData.append('file', files[0]);
             formData.append('level', compressionLevel);
 
-            const resp = await fetch('/api/compress-word', {
+            // 1. Direct call to Render Python backend (supports files up to 50MB, bypassing Vercel 4.5MB limit)
+            let resp: Response | null = await fetch(`${backendUrl}/api/compress-word`, {
               method: 'POST',
               body: formData,
-            });
+            }).catch(() => null);
 
-            if (resp.ok) {
+            // 2. If direct call was unavailable, try Vercel API proxy
+            if (!resp || !resp.ok) {
+              resp = await fetch('/api/compress-word', {
+                method: 'POST',
+                body: formData,
+              }).catch(() => null);
+            }
+
+            if (resp && resp.ok) {
               const arrayBuffer = await resp.arrayBuffer();
               compressed = new Uint8Array(arrayBuffer);
             } else {
-              const errJson = await resp.json().catch(() => ({}));
-              throw new Error(errJson.error || 'Word compression failed');
+              const errJson = resp ? await resp.json().catch(() => ({})) : {};
+              throw new Error(errJson.detail || errJson.error || 'Gagal mengompres dokumen Word.');
             }
           } catch (err: any) {
             console.error('Word compression error:', err);
-            throw new Error(err.message || 'Failed to compress Word document');
+            throw new Error(err.message || 'Gagal mengompres dokumen Word.');
           }
 
           outputResult = {
