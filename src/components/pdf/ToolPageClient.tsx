@@ -1104,7 +1104,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <div>
-                      <h4 className="text-sm font-semibold text-white">Metode Pemisahan PDF</h4>
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Metode Pemisahan PDF</h4>
                       <p className="text-xs text-gray-500 dark:text-white/50 mt-0.5">
                         Dokumen memiliki{' '}
                         <span className="font-semibold text-[#e5322d]">
@@ -1298,7 +1298,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                 <div>
                   <div className="flex items-center justify-between mb-3">
                     <div>
-                      <h4 className="text-sm font-semibold text-white">Orientasi Halaman PDF</h4>
+                      <h4 className="text-sm font-semibold text-gray-900 dark:text-white">Orientasi Halaman PDF</h4>
                       <p className="text-xs text-gray-500 dark:text-white/50 mt-0.5">
                         Tentukan arah orientasi dokumen PDF yang akan dihasilkan.
                       </p>
@@ -1367,7 +1367,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
 
                 {/* 2. Ukuran Halaman & Margin PDF */}
                 <div className="pt-4 border-t border-gray-200 dark:border-white/[0.06]">
-                  <h4 className="text-sm font-semibold text-white mb-1">Ukuran Halaman & Margin PDF</h4>
+                  <h4 className="text-sm font-semibold text-gray-900 dark:text-white mb-1">Ukuran Halaman & Margin PDF</h4>
                   <p className="text-xs text-gray-500 dark:text-white/50 mb-3.5">
                     Pilih bagaimana gambar ditempatkan pada dokumen PDF hasil konversi.
                   </p>
@@ -1509,7 +1509,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                   <FileImage className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-white">
+                  <h4 className="text-sm font-bold text-gray-900 dark:text-white">
                     Konversi Gambar 100% Full Resolution
                   </h4>
                   <p className="text-xs text-gray-600 dark:text-white/60 mt-0.5 leading-relaxed">
@@ -1526,7 +1526,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                   <FileImage className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-white">
+                  <h4 className="text-sm font-bold text-gray-900 dark:text-white">
                     Format Output: {tool.id === 'word-to-jpg' ? 'JPG Beresolusi Tinggi (300 DPI)' : 'PNG Berkualitas Tajam (Lossless)'}
                   </h4>
                   <p className="text-xs text-gray-600 dark:text-white/60 mt-0.5 leading-relaxed">
@@ -1544,7 +1544,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                     <FileText className="h-5 w-5" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold text-white">
+                    <h4 className="text-sm font-bold text-gray-900 dark:text-white">
                       Konversi Gambar ke Dokumen Word (.docx)
                     </h4>
                     <p className="text-xs text-gray-600 dark:text-white/60 mt-0.5 leading-relaxed">
@@ -1640,7 +1640,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                   <FileImage className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-white">Format Output: PNG Berkualitas Tinggi (Lossless)</h4>
+                  <h4 className="text-sm font-bold text-gray-900 dark:text-white">Format Output: PNG Berkualitas Tinggi (Lossless)</h4>
                   <p className="text-xs text-gray-600 dark:text-white/60 mt-0.5 leading-relaxed">
                     Setiap halaman PDF akan dikonversi menjadi gambar PNG beresolusi tinggi (200 DPI) dengan mempertahankan kejernihan grafik dan detail teks.
                   </p>
@@ -1685,7 +1685,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                   <Presentation className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-white">Konversi PDF ke Slide PowerPoint (.pptx)</h4>
+                  <h4 className="text-sm font-bold text-gray-900 dark:text-white">Konversi PDF ke Slide PowerPoint (.pptx)</h4>
                   <p className="text-xs text-gray-600 dark:text-white/60 mt-0.5 leading-relaxed">
                     Setiap halaman dari dokumen PDF Anda akan dikonversi menjadi slide presentasi PowerPoint dengan ketajaman visual tinggi dan proporsi asli yang dipertahankan.
                   </p>
@@ -1700,7 +1700,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                   <Presentation className="h-5 w-5" />
                 </div>
                 <div>
-                  <h4 className="text-sm font-bold text-white">Konversi Presentasi PowerPoint ke Dokumen PDF</h4>
+                  <h4 className="text-sm font-bold text-gray-900 dark:text-white">Konversi Presentasi PowerPoint ke Dokumen PDF</h4>
                   <p className="text-xs text-gray-600 dark:text-white/60 mt-0.5 leading-relaxed">
                     File presentasi PowerPoint (.pptx / .ppt) Anda akan dikonversi menjadi satu dokumen PDF yang rapi dengan tata letak slide dan grafik yang terjaga.
                   </p>

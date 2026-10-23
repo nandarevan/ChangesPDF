@@ -2587,24 +2587,35 @@ export async function pdfToPPT(file: File): Promise<Uint8Array> {
   const formData = new FormData();
   formData.append('file', file);
 
-  let resp = await fetch(`${backendUrl}/api/pdf-to-ppt`, {
+  // 1. Direct call to Render backend
+  let resp: Response | null = await fetch(`${backendUrl}/api/pdf-to-ppt`, {
     method: 'POST',
     body: formData,
   }).catch(() => null);
 
-  if (!resp || !resp.ok) {
+  // If Render is waking up from cold start, wait 2.5s and retry
+  if (!resp || resp.status === 502 || resp.status === 503) {
+    await new Promise((r) => setTimeout(r, 2500));
+    resp = await fetch(`${backendUrl}/api/pdf-to-ppt`, {
+      method: 'POST',
+      body: formData,
+    }).catch(() => null);
+  }
+
+  // 2. Fallback to Vercel API proxy for files under 4MB
+  if ((!resp || !resp.ok) && file.size < 4 * 1024 * 1024) {
     resp = await fetch('/api/pdf-to-ppt', {
       method: 'POST',
       body: formData,
     }).catch(() => null);
   }
 
-  if (!resp || !resp.ok) {
-    const errJson = resp ? await resp.json().catch(() => ({})) : {};
-    throw new Error(errJson.detail || errJson.error || 'Gagal mengonversi PDF ke PowerPoint.');
+  if (resp && resp.ok) {
+    return new Uint8Array(await resp.arrayBuffer());
   }
 
-  return new Uint8Array(await resp.arrayBuffer());
+  const errJson = resp ? await resp.json().catch(() => ({})) : {};
+  throw new Error(errJson.detail || errJson.error || 'Gagal mengonversi PDF ke PowerPoint.');
 }
 
 /**
@@ -2615,24 +2626,35 @@ export async function pptToPDF(file: File): Promise<Uint8Array> {
   const formData = new FormData();
   formData.append('file', file);
 
-  let resp = await fetch(`${backendUrl}/api/ppt-to-pdf`, {
+  // 1. Direct call to Render backend
+  let resp: Response | null = await fetch(`${backendUrl}/api/ppt-to-pdf`, {
     method: 'POST',
     body: formData,
   }).catch(() => null);
 
-  if (!resp || !resp.ok) {
+  // If Render is waking up from cold start, wait 2.5s and retry
+  if (!resp || resp.status === 502 || resp.status === 503) {
+    await new Promise((r) => setTimeout(r, 2500));
+    resp = await fetch(`${backendUrl}/api/ppt-to-pdf`, {
+      method: 'POST',
+      body: formData,
+    }).catch(() => null);
+  }
+
+  // 2. Fallback to Vercel API proxy for files under 4MB
+  if ((!resp || !resp.ok) && file.size < 4 * 1024 * 1024) {
     resp = await fetch('/api/ppt-to-pdf', {
       method: 'POST',
       body: formData,
     }).catch(() => null);
   }
 
-  if (!resp || !resp.ok) {
-    const errJson = resp ? await resp.json().catch(() => ({})) : {};
-    throw new Error(errJson.detail || errJson.error || 'Gagal mengonversi PowerPoint ke PDF.');
+  if (resp && resp.ok) {
+    return new Uint8Array(await resp.arrayBuffer());
   }
 
-  return new Uint8Array(await resp.arrayBuffer());
+  const errJson = resp ? await resp.json().catch(() => ({})) : {};
+  throw new Error(errJson.detail || errJson.error || 'Gagal mengonversi PowerPoint ke PDF.');
 }
 
 /**
