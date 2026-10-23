@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import { LanguageProvider } from '@/lib/LanguageContext';
 import { SITE_URL } from '@/lib/seo-config';
 import './globals.css';
 
@@ -104,7 +105,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable} suppressHydrationWarning>
+    <html lang="id" className={inter.variable} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -116,15 +117,29 @@ export default function RootLayout({
                 } else {
                   document.documentElement.classList.remove('dark');
                 }
+
+                var savedLang = localStorage.getItem('changespdf_lang');
+                if (!savedLang) {
+                  var tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+                  var navLang = (navigator.language || '').toLowerCase();
+                  if (navLang.startsWith('id') || tz.indexOf('Jakarta') !== -1 || tz.indexOf('Makassar') !== -1 || tz.indexOf('Jayapura') !== -1 || tz.indexOf('Pontianak') !== -1) {
+                    savedLang = 'id';
+                  } else {
+                    savedLang = 'en';
+                  }
+                }
+                document.documentElement.lang = savedLang;
               } catch (e) {}
             `,
           }}
         />
       </head>
       <body className="min-h-dvh flex flex-col antialiased bg-[var(--color-bg)] text-[var(--color-text-main)] transition-colors duration-200">
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <LanguageProvider>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </LanguageProvider>
       </body>
     </html>
   );

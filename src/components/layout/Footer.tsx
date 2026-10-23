@@ -4,13 +4,15 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ShieldCheck, Zap, CheckCircle2, ArrowUp } from 'lucide-react';
 import { tools } from '@/lib/tools-data';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export default function Footer() {
+  const { t } = useLanguage();
   const getTool = (id: string) => tools.find((t) => t.id === id);
 
   const columns = [
     {
-      title: 'Organisasi & Keamanan',
+      title: t.footer.col1,
       toolIds: [
         'merge-pdf',
         'split-pdf',
@@ -22,7 +24,7 @@ export default function Footer() {
       ],
     },
     {
-      title: 'Konversi PDF',
+      title: t.footer.col2,
       toolIds: [
         'pdf-to-word',
         'word-to-pdf',
@@ -35,7 +37,7 @@ export default function Footer() {
       ],
     },
     {
-      title: 'Gambar & Dokumen',
+      title: t.footer.col3,
       toolIds: [
         'jpg-to-png',
         'png-to-jpg',
@@ -46,7 +48,7 @@ export default function Footer() {
       ],
     },
     {
-      title: 'Kompresi & Optimasi',
+      title: t.footer.col4,
       toolIds: [
         'compress-pdf',
         'compress-word',
@@ -74,10 +76,10 @@ export default function Footer() {
             </div>
             <div>
               <h4 className="text-sm font-semibold text-gray-900 dark:text-white">
-                100% Privasi Terjamin
+                {t.footer.badge1Title}
               </h4>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                Dokumen diproses di browser Anda tanpa risiko kebocoran data.
+                {t.footer.badge1Desc}
               </p>
             </div>
           </div>
@@ -88,10 +90,10 @@ export default function Footer() {
             </div>
             <div>
               <h4 className="text-sm font-semibold text-gray-900 dark:text-white">
-                Cepat &amp; Efisien
+                {t.footer.badge2Title}
               </h4>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                Pemrosesan dokumen instan dengan akselerasi memori modern.
+                {t.footer.badge2Desc}
               </p>
             </div>
           </div>
@@ -102,10 +104,10 @@ export default function Footer() {
             </div>
             <div>
               <h4 className="text-sm font-semibold text-gray-900 dark:text-white">
-                Bebas Biaya
+                {t.footer.badge3Title}
               </h4>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-                Akses ke seluruh fitur PDF, Word, PowerPoint, dan gambar tanpa batas.
+                {t.footer.badge3Desc}
               </p>
             </div>
           </div>
@@ -161,23 +163,23 @@ export default function Footer() {
               </Link>
               <div className="space-y-1">
                 <h4 className="text-sm font-bold text-gray-900 dark:text-white">
-                  ChangesPDF: Platform Dokumen PDF &amp; Format Kantor Lengkap
+                  {t.footer.brandCardTitle}
                 </h4>
                 <p className="text-xs sm:text-sm text-gray-500 dark:text-gray-400 leading-relaxed">
-                  Toolkit online gratis untuk mengelola file PDF, Word, PowerPoint, dan gambar langsung di browser. Menggabungkan berkas, pisahkan halaman, kompresi ukuran, dan konversi multi-format dengan privasi penuh.
+                  {t.footer.brandCardDesc}
                 </p>
               </div>
             </div>
 
             <div className="flex flex-wrap items-center gap-2 shrink-0">
               <span className="px-3 py-1 rounded-full text-xs font-medium border border-gray-200 dark:border-white/[0.08] bg-gray-50 dark:bg-white/[0.04] text-gray-600 dark:text-gray-300">
-                100% Privat
+                {t.footer.pillPrivat}
               </span>
               <span className="px-3 py-1 rounded-full text-xs font-medium border border-gray-200 dark:border-white/[0.08] bg-gray-50 dark:bg-white/[0.04] text-gray-600 dark:text-gray-300">
-                Tanpa Server Upload
+                {t.footer.pillNoUpload}
               </span>
               <span className="px-3 py-1 rounded-full text-xs font-medium border border-red-500/20 bg-red-500/10 text-[#e5322d]">
-                Bebas Biaya
+                {t.footer.pillFree}
               </span>
             </div>
           </div>
@@ -186,24 +188,24 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-gray-200/70 dark:border-white/[0.06]">
           <p className="text-xs text-gray-500 dark:text-gray-400 text-center sm:text-left">
-            © 2026 ChangesPDF. Dibuat oleh{' '}
+            © 2026 ChangesPDF. {t.footer.copyright}{' '}
             <span className="text-gray-900 dark:text-white font-semibold">
               Nanda Revan Saputro
             </span>
-            . Hak cipta dilindungi.
+            . {t.footer.rights}
           </p>
           <div className="flex items-center gap-5 sm:gap-6">
             <Link
               href="/"
               className="text-xs text-gray-500 dark:text-gray-400 hover:text-[#e5322d] dark:hover:text-[#f2443f] transition-colors"
             >
-              Kebijakan Privasi
+              {t.footer.privacyPolicy}
             </Link>
             <Link
               href="/"
               className="text-xs text-gray-500 dark:text-gray-400 hover:text-[#e5322d] dark:hover:text-[#f2443f] transition-colors"
             >
-              Syarat &amp; Ketentuan
+              {t.footer.terms}
             </Link>
             <button
               type="button"
@@ -211,7 +213,7 @@ export default function Footer() {
               className="flex items-center gap-1 text-xs font-medium text-gray-500 dark:text-gray-400 hover:text-[#e5322d] dark:hover:text-[#f2443f] transition-colors"
               aria-label="Kembali ke atas"
             >
-              <span>Ke Atas</span>
+              <span>{t.footer.backToTop}</span>
               <ArrowUp className="h-3.5 w-3.5" />
             </button>
           </div>

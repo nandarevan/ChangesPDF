@@ -25,10 +25,12 @@ import {
   Presentation,
   Sun,
   Moon,
+  Globe,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { tools } from '@/lib/tools-data';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/lib/LanguageContext';
 
 const iconMap: Record<string, React.ElementType> = {
   Layers,
@@ -49,6 +51,7 @@ const iconMap: Record<string, React.ElementType> = {
 };
 
 export default function Navbar() {
+  const { lang, toggleLang, t, getToolDesc } = useLanguage();
   const [activeDropdown, setActiveDropdown] = useState<'convert' | 'compress' | 'all' | null>(null);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isDark, setIsDark] = useState(false);
@@ -144,7 +147,7 @@ export default function Navbar() {
                   : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/[0.05] hover:text-[#e5322d]'
               )}
             >
-              Convert PDF
+              {t.nav.convert}
               <ChevronDown
                 className={cn(
                   'h-4 w-4 transition-transform text-gray-500 dark:text-gray-400',
@@ -188,7 +191,7 @@ export default function Navbar() {
                                 </span>
                               )}
                             </div>
-                            <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">{tool.description}</p>
+                            <p className="text-[10px] text-gray-500 dark:text-gray-400 truncate">{getToolDesc(tool.id, tool.description)}</p>
                           </div>
                         </Link>
                       );
@@ -210,7 +213,7 @@ export default function Navbar() {
                   : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/[0.05] hover:text-[#e5322d]'
               )}
             >
-              Compress
+              {t.nav.compress}
               <ChevronDown
                 className={cn(
                   'h-4 w-4 transition-transform text-gray-500 dark:text-gray-400',
@@ -247,7 +250,7 @@ export default function Navbar() {
                           </div>
                           <div>
                             <p className="text-sm font-semibold truncate">{tool.title}</p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{tool.description}</p>
+                            <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">{getToolDesc(tool.id, tool.description)}</p>
                           </div>
                         </Link>
                       );
@@ -269,7 +272,7 @@ export default function Navbar() {
                   : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-white/[0.05] hover:text-[#e5322d]'
               )}
             >
-              All Tools
+              {t.nav.allTools}
               <ChevronDown
                 className={cn(
                   'h-4 w-4 transition-transform text-gray-500 dark:text-gray-400',
@@ -314,7 +317,7 @@ export default function Navbar() {
                               )}
                             </div>
                             <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-1">
-                              {tool.description}
+                              {getToolDesc(tool.id, tool.description)}
                             </p>
                           </div>
                         </Link>
@@ -330,7 +333,7 @@ export default function Navbar() {
           <div className="flex items-center gap-1.5 rounded-full bg-red-500/10 border border-red-500/20 px-3 py-1.5 ml-1">
             <Shield className="h-3.5 w-3.5 text-[#e5322d]" />
             <span className="text-xs font-semibold text-[#e5322d]">
-              100% Client-Side
+              {t.nav.privacyBadge}
             </span>
           </div>
 
@@ -339,13 +342,24 @@ export default function Navbar() {
             onClick={toggleTheme}
             className="flex items-center justify-center h-9 w-9 rounded-xl border border-gray-200 dark:border-[#2c2e35] bg-gray-50 dark:bg-[#1a1b1f] text-gray-700 dark:text-gray-200 hover:border-[#e5322d] hover:text-[#e5322d] transition-all ml-1 shadow-sm"
             aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
-            title={isDark ? 'Mode Terang (Light)' : 'Mode Gelap (Dark)'}
+            title={isDark ? t.nav.themeLight : t.nav.themeDark}
           >
             {isDark ? (
               <Sun className="h-4 w-4 text-amber-400 transition-transform rotate-0 hover:rotate-45" />
             ) : (
               <Moon className="h-4 w-4 text-gray-700 transition-transform hover:-rotate-12" />
             )}
+          </button>
+
+          {/* Language Switcher Button (EN / ID) */}
+          <button
+            onClick={toggleLang}
+            className="flex items-center gap-1.5 h-9 px-2.5 rounded-xl border border-gray-200 dark:border-[#2c2e35] bg-gray-50 dark:bg-[#1a1b1f] text-gray-700 dark:text-gray-200 hover:border-[#e5322d] hover:text-[#e5322d] transition-all ml-1 shadow-sm text-xs font-bold"
+            aria-label={t.nav.langTitle}
+            title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+          >
+            <Globe className="h-4 w-4 text-[#e5322d]" />
+            <span>{lang.toUpperCase()}</span>
           </button>
         </div>
 
@@ -362,6 +376,17 @@ export default function Navbar() {
             ) : (
               <Moon className="h-4 w-4 text-gray-700" />
             )}
+          </button>
+
+          {/* Mobile Language Toggle */}
+          <button
+            onClick={toggleLang}
+            className="flex items-center gap-1 h-9 px-2 rounded-xl border border-gray-200 dark:border-[#2c2e35] bg-gray-50 dark:bg-[#1a1b1f] text-gray-700 dark:text-gray-200 text-xs font-bold"
+            aria-label={t.nav.langTitle}
+            title={lang === 'id' ? 'Switch to English' : 'Ganti ke Bahasa Indonesia'}
+          >
+            <Globe className="h-3.5 w-3.5 text-[#e5322d]" />
+            <span>{lang.toUpperCase()}</span>
           </button>
 
           {/* Mobile Menu Hamburger */}
@@ -388,7 +413,7 @@ export default function Navbar() {
               {/* Convert Section */}
               <div>
                 <p className="text-xs font-bold uppercase tracking-wider text-[#e5322d] px-3 mb-2">
-                  Convert
+                  {t.nav.convert}
                 </p>
                 <div className="space-y-1">
                   {convertTools.map((tool) => {
@@ -415,7 +440,7 @@ export default function Navbar() {
               {/* Compress Section */}
               <div>
                 <p className="text-xs font-bold uppercase tracking-wider text-[#e5322d] px-3 mb-2">
-                  Compress & Optimize
+                  {t.nav.compress}
                 </p>
                 <div className="space-y-1">
                   {optimizeTools.map((tool) => {
@@ -442,7 +467,7 @@ export default function Navbar() {
               {/* Other Tools Section */}
               <div>
                 <p className="text-xs font-bold uppercase tracking-wider text-gray-500 dark:text-gray-400 px-3 mb-2">
-                  Organize & Security
+                  {t.footer.col1}
                 </p>
                 <div className="space-y-1">
                   {otherTools.map((tool) => {
@@ -469,7 +494,7 @@ export default function Navbar() {
               <div className="flex items-center gap-1.5 rounded-full bg-red-500/10 border border-red-500/20 px-4 py-2 mt-3 w-fit">
                 <Shield className="h-3.5 w-3.5 text-[#e5322d]" />
                 <span className="text-xs font-semibold text-[#e5322d]">
-                  100% Client-Side & Secure
+                  {t.nav.privacyBadge}
                 </span>
               </div>
             </div>

@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn, formatFileSize } from '@/lib/utils';
+import { useLanguage } from '@/lib/LanguageContext';
 
 export interface SmartSuggestion {
   fileName: string;
@@ -49,6 +50,7 @@ export default function Dropzone({
   toolTitle,
   toolSlug,
 }: DropzoneProps) {
+  const { t } = useLanguage();
   const [isDragOver, setIsDragOver] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [errors, setErrors] = useState<string[]>([]);
@@ -476,17 +478,17 @@ export default function Dropzone({
           }}
           className="btn-brand-red px-8 py-3.5 text-base sm:text-lg font-bold flex items-center gap-2.5 my-1"
         >
-          <span>Pilih File {acceptedFormats.includes('.pdf') ? 'PDF' : ''}</span>
+          <span>{t.dropzone.selectFile} {acceptedFormats.includes('.pdf') ? 'PDF' : ''}</span>
         </button>
 
         <div className="text-center mt-1">
           <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
             {isDragOver
-              ? 'Lepaskan file di sini'
-              : label || 'atau letakkan dan tarik file ke sini'}
+              ? t.dropzone.dropActive
+              : label || t.dropzone.dropPrompt}
           </p>
           <p className="mt-1 text-xs text-gray-400 dark:text-gray-500">
-            Format: <span className="font-semibold text-gray-600 dark:text-gray-400">{acceptedFormats.map((f) => f.toUpperCase()).join(', ')}</span> • Maksimal {formatFileSize(maxFileSize)}
+            {t.dropzone.formatLabel} <span className="font-semibold text-gray-600 dark:text-gray-400">{acceptedFormats.map((f) => f.toUpperCase()).join(', ')}</span> • {t.dropzone.maxLabel} {formatFileSize(maxFileSize)}
           </p>
         </div>
       </motion.div>

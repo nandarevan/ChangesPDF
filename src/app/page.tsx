@@ -28,6 +28,7 @@ import {
 } from 'lucide-react';
 import { tools, categoryLabels, type ToolData } from '@/lib/tools-data';
 import { getHomepageSchemas } from '@/lib/seo-config';
+import { useLanguage } from '@/lib/LanguageContext';
 
 const iconMap: Record<string, React.ElementType> = {
   Layers,
@@ -80,6 +81,7 @@ const itemVariants = {
 } as const;
 
 export default function HomePage() {
+  const { t, getToolDesc, getCategoryLabel } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<'all' | ToolData['category']>('all');
 
@@ -94,6 +96,8 @@ export default function HomePage() {
       const matchesCat = activeCategory === 'all' || tool.category === activeCategory;
       return matchesSearch && matchesCat;
     });
+  }, [searchQuery, activeCategory]);
+
   const homepageSchemas = useMemo(() => getHomepageSchemas(), []);
 
   return (
@@ -143,35 +147,34 @@ export default function HomePage() {
               className="inline-flex items-center rounded-full bg-red-500/10 border border-red-500/20 px-4 py-1.5 mb-6"
             >
               <span className="text-xs font-semibold text-[#e5322d]">
-                100% Gratis &amp; Langsung di Browser, File Anda Tidak Pernah Keluar dari Perangkat
+                {t.home.topBadge}
               </span>
             </motion.div>
 
             {/* Main Headline (iLovePDF Style) */}
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.15] text-[#1e2022] dark:text-white">
-              Setiap Alat PDF yang Anda Butuhkan, <br className="hidden sm:inline" />
-              <span className="text-[#e5322d]">Dalam Satu Tempat</span>
+              {t.home.heroTitle1} <br className="hidden sm:inline" />
+              <span className="text-[#e5322d]">{t.home.heroTitle2}</span>
             </h1>
 
             {/* Subheadline */}
             <p className="mt-4 text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
-              Ubah, gabung, pisah, kompres, lindungi, dan konversi dokumen PDF Anda
-              dengan cepat dan aman 100% di memori browser. Tanpa antrean server.
+              {t.home.heroSubtitle}
             </p>
 
             {/* Trust Badges */}
             <div className="mt-6 flex flex-wrap justify-center gap-5 text-xs font-medium text-gray-500 dark:text-gray-400">
               <div className="flex items-center gap-1.5">
                 <Lock className="h-3.5 w-3.5 text-[#e5322d]" />
-                <span>Privasi 100% Terjaga</span>
+                <span>{t.home.trustPrivacy}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <Zap className="h-3.5 w-3.5 text-[#e5322d]" />
-                <span>Proses Instan di Memori</span>
+                <span>{t.home.trustSpeed}</span>
               </div>
               <div className="flex items-center gap-1.5">
                 <ShieldCheck className="h-3.5 w-3.5 text-[#e5322d]" />
-                <span>Tanpa Watermark Tambahan</span>
+                <span>{t.home.trustWatermark}</span>
               </div>
             </div>
 
@@ -183,7 +186,7 @@ export default function HomePage() {
                   type="text"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Cari alat (misal: word, merge, split, compress, protect, watermark)..."
+                  placeholder={t.home.searchPlaceholder}
                   className="w-full rounded-2xl bg-white dark:bg-[#1a1b1f] border border-gray-200 dark:border-[#2c2e35] pl-12 pr-10 py-3.5 text-sm text-[#1e2022] dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-[#e5322d] focus:outline-none transition-all shadow-sm focus:shadow-md"
                 />
                 {searchQuery && (
@@ -207,7 +210,7 @@ export default function HomePage() {
                     : 'bg-white dark:bg-[#1a1b1f] border border-gray-200 dark:border-[#2c2e35] text-gray-600 dark:text-gray-300 hover:border-[#e5322d] hover:text-[#e5322d]'
                 }`}
               >
-                Semua Alat ({tools.length})
+                {t.home.allFilter} ({tools.length})
               </button>
               {(Object.keys(categoryLabels) as ToolData['category'][]).map((cat) => (
                 <button
@@ -219,7 +222,7 @@ export default function HomePage() {
                       : 'bg-white dark:bg-[#1a1b1f] border border-gray-200 dark:border-[#2c2e35] text-gray-600 dark:text-gray-300 hover:border-[#e5322d] hover:text-[#e5322d]'
                   }`}
                 >
-                  {categoryLabels[cat]}
+                  {getCategoryLabel(cat)}
                 </button>
               ))}
             </div>
@@ -232,7 +235,9 @@ export default function HomePage() {
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {filteredTools.length === 0 ? (
             <div className="text-center py-16 bg-white dark:bg-[#1a1b1f] rounded-2xl border border-gray-200 dark:border-[#2c2e35] p-8 max-w-md mx-auto">
-              <p className="text-base text-gray-600 dark:text-gray-300">Tidak ada alat yang cocok dengan &quot;{searchQuery}&quot;</p>
+              <p className="text-base text-gray-600 dark:text-gray-300">
+                {t.home.noResults} &quot;{searchQuery}&quot;
+              </p>
               <button
                 onClick={() => {
                   setSearchQuery('');
@@ -240,7 +245,7 @@ export default function HomePage() {
                 }}
                 className="mt-4 text-sm font-semibold text-[#e5322d] hover:underline"
               >
-                Hapus filter pencarian
+                {t.home.clearFilter}
               </button>
             </div>
           ) : (
@@ -248,12 +253,16 @@ export default function HomePage() {
               variants={containerVariants}
               initial="hidden"
               animate="visible"
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
+              className="flex flex-wrap justify-center gap-5"
             >
               {filteredTools.map((tool) => {
                 const Icon = iconMap[tool.iconName] || FileText;
                 return (
-                  <motion.div key={tool.id} variants={itemVariants}>
+                  <motion.div
+                    key={tool.id}
+                    variants={itemVariants}
+                    className="w-full sm:w-[calc((100%-1.25rem)/2)] lg:w-[calc((100%-2.5rem)/3)] flex-none"
+                  >
                     <Link href={`/${tool.slug}`} className="block group h-full">
                       <div className="tool-card relative h-full flex flex-col justify-between p-6">
                         <div>
@@ -263,7 +272,7 @@ export default function HomePage() {
                               <Icon className="h-5 w-5" />
                             </div>
                             <span className="text-[11px] font-semibold uppercase tracking-wider text-gray-400 dark:text-gray-500">
-                              {categoryLabels[tool.category]}
+                              {getCategoryLabel(tool.category)}
                             </span>
                           </div>
 
@@ -272,13 +281,13 @@ export default function HomePage() {
                             {tool.title}
                           </h2>
                           <p className="text-sm text-gray-500 dark:text-gray-400 leading-relaxed line-clamp-2">
-                            {tool.description}
+                            {getToolDesc(tool.id, tool.description)}
                           </p>
                         </div>
 
                         {/* CTA Link */}
                         <div className="mt-5 flex items-center justify-between text-xs font-semibold text-gray-500 dark:text-gray-400 group-hover:text-[#e5322d] transition-colors pt-3 border-t border-gray-100 dark:border-[#2c2e35]">
-                          <span>Buka {tool.title}</span>
+                          <span>{t.home.openTool} {tool.title}</span>
                           <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-1 transition-transform text-[#e5322d]" />
                         </div>
                       </div>
@@ -302,29 +311,26 @@ export default function HomePage() {
           >
             <div className="text-center">
               <h2 className="text-2xl sm:text-3xl font-bold text-[#1e2022] dark:text-white mb-3">
-                Solusi Cerdas Pengelolaan Dokumen PDF
+                {t.home.solutionTitle}
               </h2>
               <p className="text-gray-600 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed text-sm sm:text-base">
-                ChangesPDF menyediakan semua kemampuan alat PDF lengkap tanpa instalasi software, tanpa langganan, dan dengan keamanan privasi tertinggi.
+                {t.home.solutionDesc}
               </p>
             </div>
 
             <div className="grid sm:grid-cols-3 gap-5">
               {[
                 {
-                  title: 'Ubah PDF ke Word',
-                  description:
-                    'Konversi PDF ke Word (.docx) dengan layout rapi, penomoran presisi, dan fitur AI OCR untuk scan dokumen.',
+                  title: t.home.card1Title,
+                  description: t.home.card1Desc,
                 },
                 {
-                  title: 'Gabung & Pisah PDF',
-                  description:
-                    'Kombinasikan beberapa file atau ambil rentang halaman terpilih dengan preview thumbnail visual yang interaktif.',
+                  title: t.home.card2Title,
+                  description: t.home.card2Desc,
                 },
                 {
-                  title: 'Kompres & Lindungi',
-                  description:
-                    'Kecilkan ukuran file untuk kirim email atau enkripsi dengan kata sandi langsung di memori perangkat Anda.',
+                  title: t.home.card3Title,
+                  description: t.home.card3Desc,
                 },
               ].map((item) => (
                 <div
@@ -343,13 +349,13 @@ export default function HomePage() {
 
             <div className="rounded-2xl border border-gray-200 dark:border-[#2c2e35] bg-gray-50/50 dark:bg-[#1a1b1f] p-8 space-y-3">
               <h3 className="text-lg font-bold text-[#1e2022] dark:text-white">
-                Mengapa Memilih ChangesPDF?
+                {t.home.whyTitle}
               </h3>
               <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                Kebanyakan converter online mengharuskan pengunggahan dokumen ke server luar. ChangesPDF memberikan kemudahan dengan memproses langsung di perangkat Anda tanpa risiko kebocoran data.
+                {t.home.whyP1}
               </p>
               <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                Baik Anda membutuhkan <strong className="text-[#1e2022] dark:text-gray-200">PDF ke Word</strong>, penggabungan berkas, hapus watermark, atau buka kunci PDF, semua dapat diselesaikan dalam hitungan detik.
+                {t.home.whyP2}
               </p>
             </div>
           </motion.div>
