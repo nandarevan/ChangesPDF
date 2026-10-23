@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShieldCheck, Zap, Sparkles, ArrowUp } from 'lucide-react';
+import { ShieldCheck, Zap, CheckCircle2, ArrowUp } from 'lucide-react';
 import { tools } from '@/lib/tools-data';
 
 export default function Footer() {
@@ -98,7 +98,7 @@ export default function Footer() {
 
           <div className="flex items-center gap-3.5 p-4 rounded-2xl border border-gray-200/80 dark:border-white/[0.06] bg-white dark:bg-white/[0.02] shadow-sm dark:shadow-none">
             <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-red-500/10 text-[#e5322d]">
-              <Sparkles className="h-5 w-5" />
+              <CheckCircle2 className="h-5 w-5" />
             </div>
             <div>
               <h4 className="text-sm font-semibold text-gray-900 dark:text-white">
@@ -115,11 +115,11 @@ export default function Footer() {
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10 mb-12">
           {columns.map((col, idx) => (
             <div key={idx} className="flex flex-col">
-              <div className="mb-3">
+              <div className="inline-block w-fit mb-3.5">
                 <h3 className="text-xs font-bold uppercase tracking-wider text-gray-900 dark:text-white">
                   {col.title}
                 </h3>
-                <div className="w-6 h-0.5 bg-[#e5322d] rounded-full mt-2" />
+                <div className="h-0.5 w-full bg-[#e5322d] rounded-full mt-2" />
               </div>
               <ul className="space-y-2.5">
                 {col.toolIds.map((id) => {
