@@ -27,6 +27,7 @@ import {
   X,
 } from 'lucide-react';
 import { tools, categoryLabels, type ToolData } from '@/lib/tools-data';
+import { getHomepageSchemas } from '@/lib/seo-config';
 
 const iconMap: Record<string, React.ElementType> = {
   Layers,
@@ -93,29 +94,18 @@ export default function HomePage() {
       const matchesCat = activeCategory === 'all' || tool.category === activeCategory;
       return matchesSearch && matchesCat;
     });
-  }, [searchQuery, activeCategory]);
-
-  const websiteSchema = {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    name: 'ChangesPDF',
-    url: 'https://changespdf.com',
-    description:
-      'Free online PDF tools to change PDF to Word, merge, split, compress, protect, and convert PDF files directly in your browser.',
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: 'https://changespdf.com/{search_term_string}',
-      'query-input': 'required name=search_term_string',
-    },
-  };
+  const homepageSchemas = useMemo(() => getHomepageSchemas(), []);
 
   return (
     <div className="relative min-h-screen">
       {/* Search Engine Structured Data */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-      />
+      {homepageSchemas.map((schema, index) => (
+        <script
+          key={index}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
 
       {/* Hero Section */}
       <section className="relative pt-16 pb-10 sm:pt-24 sm:pb-14 text-center">

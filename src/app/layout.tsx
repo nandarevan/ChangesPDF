@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
+import { SITE_URL } from '@/lib/seo-config';
 import './globals.css';
 
 const inter = Inter({
@@ -12,47 +13,64 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: {
-    default: 'ChangesPDF – Change, Convert & Edit PDF Files Online for Free',
+    default: 'ChangesPDF - Change, Convert & Edit PDF Files Online Free',
     template: '%s | ChangesPDF',
   },
   description:
-    'Free online PDF tools to change PDF to Word, merge, split, compress, protect, and convert PDF files. 100% client-side processing – your files never leave your device.',
+    'Free online PDF tools to change PDF to Word, convert PDF, merge, split, compress, protect, and edit PDF documents. 100% private client-side processing directly in your browser.',
   keywords: [
     'changes pdf',
-    'pdf tools',
-    'merge pdf',
-    'split pdf',
-    'compress pdf',
+    'change pdf',
+    'convert pdf',
+    'pdf converter',
     'pdf to word',
     'word to pdf',
-    'image to pdf',
-    'free pdf editor',
+    'change pdf to word',
+    'convert pdf to word',
+    'compress pdf',
+    'merge pdf',
+    'split pdf',
+    'protect pdf',
+    'unlock pdf',
+    'pdf to ppt',
+    'ppt to pdf',
     'ilovepdf alternative',
+    'smallpdf alternative',
+    'ubah pdf',
+    'konversi pdf',
+    'kompres pdf',
+    'gabung pdf',
+    'free pdf tools',
+    'online pdf editor',
   ],
-  metadataBase: new URL('https://changespdf.vercel.app'),
+  metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: SITE_URL,
+  },
   openGraph: {
-    title: 'ChangesPDF – Change, Convert & Edit PDF Files Online for Free',
+    title: 'ChangesPDF - Change, Convert & Edit PDF Files Online Free',
     description:
-      'Free online PDF tools to change PDF to Word, merge, split, compress, protect, and convert PDF files. 100% client-side processing – your files never leave your device.',
-    url: 'https://changespdf.vercel.app',
+      'Free online PDF tools to change PDF to Word, convert PDF, merge, split, compress, and protect documents. 100% private in-browser processing.',
+    url: SITE_URL,
     siteName: 'ChangesPDF',
     images: [
       {
-        url: '/og-image.png',
-        width: 800,
-        height: 800,
+        url: '/opengraph-image.png',
+        width: 1200,
+        height: 630,
         alt: 'ChangesPDF - Free Online PDF Tools',
       },
     ],
     locale: 'id_ID',
+    alternateLocale: ['en_US'],
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ChangesPDF – Change, Convert & Edit PDF Files Online for Free',
+    title: 'ChangesPDF - Free Online PDF Converter & Tools',
     description:
       'Free online PDF tools to change PDF to Word, merge, split, compress, protect, and convert PDF files.',
-    images: ['/og-image.png'],
+    images: ['/opengraph-image.png'],
   },
   icons: {
     icon: [
@@ -64,6 +82,13 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 

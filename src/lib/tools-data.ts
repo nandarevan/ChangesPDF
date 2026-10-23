@@ -28,15 +28,18 @@ export const tools: ToolData[] = [
     iconName: 'Layers',
     category: 'organize',
     acceptedFormats: ['.pdf'],
-    seoTitle: 'Merge PDF Files Online – Combine PDFs for Free | ChangesPDF',
+    seoTitle: 'Merge PDF Files Online - Combine PDFs for Free | ChangesPDF',
     seoDescription:
-      'Merge and combine multiple PDF files into one document online for free. No upload needed – 100% client-side processing. Fast, secure, and private.',
+      'Merge and combine multiple PDF files into one document online for free. No upload needed - 100% client-side processing. Fast, secure, and private.',
     seoKeywords: [
       'merge pdf',
       'combine pdf',
       'join pdf',
       'merge pdf online free',
       'changes pdf merge',
+      'gabung pdf',
+      'gabungkan pdf',
+      'cara menggabungkan file pdf',
     ],
     faqs: [
       {
@@ -65,7 +68,7 @@ export const tools: ToolData[] = [
     iconName: 'Scissors',
     category: 'organize',
     acceptedFormats: ['.pdf'],
-    seoTitle: 'Split PDF Online – Extract Pages from PDF for Free | ChangesPDF',
+    seoTitle: 'Split PDF Online - Extract Pages from PDF for Free | ChangesPDF',
     seoDescription:
       'Split PDF files and extract specific pages online for free. Select page ranges, remove pages, or split into individual files. 100% private and secure.',
     seoKeywords: [
@@ -74,6 +77,9 @@ export const tools: ToolData[] = [
       'separate pdf pages',
       'split pdf online free',
       'changes pdf split',
+      'pisah pdf',
+      'pisahkan pdf',
+      'potong file pdf',
     ],
     faqs: [
       {
@@ -104,17 +110,21 @@ export const tools: ToolData[] = [
     category: 'convert',
     acceptedFormats: ['.pdf'],
     seoTitle:
-      'Changes PDF to Word Online with OCR – Convert Scanned PDF to DOCX Free | ChangesPDF',
+      'Changes PDF to Word Online with OCR - Convert Scanned PDF to DOCX Free | ChangesPDF',
     seoDescription:
       'Convert PDF and scanned documents to editable Word DOCX online for free. AI-Powered OCR accurately extracts text from scanned pages and images.',
     seoKeywords: [
       'pdf to word',
       'changes pdf to word',
+      'change pdf to word',
+      'convert pdf to word',
       'convert pdf to docx',
       'ocr pdf to word',
       'scanned pdf to word',
       'pdf to word converter',
       'pdf to word online free',
+      'ubah pdf ke word',
+      'konversi pdf ke word',
     ],
     faqs: [
       {
@@ -149,7 +159,7 @@ export const tools: ToolData[] = [
     category: 'convert',
     acceptedFormats: ['.doc', '.docx'],
     seoTitle:
-      'Word to PDF Converter – Convert DOCX to PDF Online Free | ChangesPDF',
+      'Word to PDF Converter - Convert DOCX to PDF Online Free | ChangesPDF',
     seoDescription:
       'Convert Word documents to PDF online for free. Change DOCX to PDF while preserving formatting and layout. Fast, secure, and no installation needed.',
     seoKeywords: [
@@ -158,6 +168,8 @@ export const tools: ToolData[] = [
       'docx to pdf',
       'word to pdf converter',
       'change word to pdf',
+      'ubah word ke pdf',
+      'konversi docx ke pdf',
     ],
     faqs: [
       {
@@ -186,7 +198,7 @@ export const tools: ToolData[] = [
     iconName: 'Image',
     category: 'convert',
     acceptedFormats: ['.jpg', '.jpeg'],
-    seoTitle: 'JPG to PDF Converter – Convert JPG Images to PDF Online Free | ChangesPDF',
+    seoTitle: 'JPG to PDF Converter - Convert JPG Images to PDF Online Free | ChangesPDF',
     seoDescription:
       'Convert JPG and JPEG images to PDF online for free. Combine multiple JPG photos into one clean PDF document with landscape and portrait options.',
     seoKeywords: [
@@ -195,6 +207,8 @@ export const tools: ToolData[] = [
       'jpeg to pdf',
       'image to pdf',
       'change jpg to pdf',
+      'ubah jpg ke pdf',
+      'konversi foto ke pdf',
     ],
     faqs: [
       {
@@ -223,7 +237,7 @@ export const tools: ToolData[] = [
     iconName: 'ImageDown',
     category: 'convert',
     acceptedFormats: ['.pdf'],
-    seoTitle: 'PDF to JPG Converter – Convert PDF to Images Online Free | ChangesPDF',
+    seoTitle: 'PDF to JPG Converter - Convert PDF to Images Online Free | ChangesPDF',
     seoDescription:
       'Convert PDF pages to high-quality JPG or PNG images online for free. Export all pages or individual image files.',
     seoKeywords: [
@@ -232,6 +246,8 @@ export const tools: ToolData[] = [
       'pdf to png',
       'convert pdf to jpg',
       'changes pdf to jpg',
+      'ubah pdf ke gambar',
+      'konversi pdf ke jpg',
     ],
     faqs: [
       {
@@ -260,7 +276,7 @@ export const tools: ToolData[] = [
     iconName: 'ImageDown',
     category: 'convert',
     acceptedFormats: ['.pdf'],
-    seoTitle: 'PDF to PNG Converter – Convert PDF to PNG Online Free | ChangesPDF',
+    seoTitle: 'PDF to PNG Converter - Convert PDF to PNG Online Free | ChangesPDF',
     seoDescription:
       'Convert PDF pages to lossless high-resolution PNG images online for free. Export all pages or individual PNG files.',
     seoKeywords: [
@@ -269,6 +285,8 @@ export const tools: ToolData[] = [
       'pdf to png converter',
       'export pdf to png',
       'changes pdf to png',
+      'ubah pdf ke png',
+      'ekspor pdf ke png',
     ],
     faqs: [
       {
@@ -297,7 +315,7 @@ export const tools: ToolData[] = [
     iconName: 'Image',
     category: 'convert',
     acceptedFormats: ['.png'],
-    seoTitle: 'PNG to PDF Converter – Convert PNG Images to PDF Online Free | ChangesPDF',
+    seoTitle: 'PNG to PDF Converter - Convert PNG Images to PDF Online Free | ChangesPDF',
     seoDescription:
       'Convert PNG images to PDF online for free. Combine multiple PNG files into one clean PDF document.',
     seoKeywords: [
@@ -306,6 +324,8 @@ export const tools: ToolData[] = [
       'png to pdf converter',
       'combine png to pdf',
       'change png to pdf',
+      'ubah png ke pdf',
+      'gabung png ke pdf',
     ],
     faqs: [
       {
@@ -334,7 +354,7 @@ export const tools: ToolData[] = [
     iconName: 'Image',
     category: 'convert',
     acceptedFormats: ['.jpg', '.jpeg'],
-    seoTitle: 'JPG to PNG Converter – Convert JPG to PNG Online Free | ChangesPDF',
+    seoTitle: 'JPG to PNG Converter - Convert JPG to PNG Online Free | ChangesPDF',
     seoDescription:
       'Convert JPG images to PNG online for free. 100% full resolution with zero borders or quality loss.',
     seoKeywords: [
@@ -342,6 +362,7 @@ export const tools: ToolData[] = [
       'convert jpg to png',
       'jpg to png converter',
       'jpeg to png',
+      'ubah format jpg ke png',
     ],
     faqs: [
       {
@@ -365,7 +386,7 @@ export const tools: ToolData[] = [
     iconName: 'ImageDown',
     category: 'convert',
     acceptedFormats: ['.png'],
-    seoTitle: 'PNG to JPG Converter – Convert PNG to JPG Online Free | ChangesPDF',
+    seoTitle: 'PNG to JPG Converter - Convert PNG to JPG Online Free | ChangesPDF',
     seoDescription:
       'Convert PNG images to JPG online for free. Fast, high-quality, 100% full original resolution.',
     seoKeywords: [
@@ -373,6 +394,7 @@ export const tools: ToolData[] = [
       'convert png to jpg',
       'png to jpg converter',
       'png to jpeg',
+      'ubah png ke jpg',
     ],
     faqs: [
       {
@@ -391,7 +413,7 @@ export const tools: ToolData[] = [
     iconName: 'ImageDown',
     category: 'convert',
     acceptedFormats: ['.doc', '.docx'],
-    seoTitle: 'Word to JPG Converter – Convert DOCX to JPG Online Free | ChangesPDF',
+    seoTitle: 'Word to JPG Converter - Convert DOCX to JPG Online Free | ChangesPDF',
     seoDescription:
       'Convert Word documents (.docx, .doc) to JPG images online for free. High resolution 300 DPI output with preserved formatting.',
     seoKeywords: [
@@ -399,6 +421,8 @@ export const tools: ToolData[] = [
       'convert word to jpg',
       'docx to jpg',
       'word to jpg converter',
+      'ubah word ke gambar',
+      'konversi docx ke jpg',
     ],
     faqs: [
       {
@@ -422,7 +446,7 @@ export const tools: ToolData[] = [
     iconName: 'FileOutput',
     category: 'convert',
     acceptedFormats: ['.jpg', '.jpeg'],
-    seoTitle: 'JPG to Word Converter – Convert JPG to DOCX Online Free | ChangesPDF',
+    seoTitle: 'JPG to Word Converter - Convert JPG to DOCX Online Free | ChangesPDF',
     seoDescription:
       'Convert JPG images into Microsoft Word documents (.docx) online for free. Fast, private, and preserves full image quality.',
     seoKeywords: [
@@ -430,6 +454,8 @@ export const tools: ToolData[] = [
       'convert jpg to word',
       'jpg to docx',
       'image to word',
+      'ubah gambar ke word',
+      'konversi foto ke docx',
     ],
     faqs: [
       {
@@ -453,7 +479,7 @@ export const tools: ToolData[] = [
     iconName: 'ImageDown',
     category: 'convert',
     acceptedFormats: ['.doc', '.docx'],
-    seoTitle: 'Word to PNG Converter – Convert DOCX to PNG Online Free | ChangesPDF',
+    seoTitle: 'Word to PNG Converter - Convert DOCX to PNG Online Free | ChangesPDF',
     seoDescription:
       'Convert Word documents to lossless PNG images online for free. Pixel-perfect rendering for presentations, web, and printing.',
     seoKeywords: [
@@ -461,6 +487,7 @@ export const tools: ToolData[] = [
       'convert word to png',
       'docx to png',
       'word to png converter',
+      'ubah word ke png',
     ],
     faqs: [
       {
@@ -479,7 +506,7 @@ export const tools: ToolData[] = [
     iconName: 'FileOutput',
     category: 'convert',
     acceptedFormats: ['.png'],
-    seoTitle: 'PNG to Word Converter – Convert PNG to DOCX Online Free | ChangesPDF',
+    seoTitle: 'PNG to Word Converter - Convert PNG to DOCX Online Free | ChangesPDF',
     seoDescription:
       'Convert PNG images into Microsoft Word documents (.docx) online for free. High resolution and perfectly scaled document pages.',
     seoKeywords: [
@@ -487,6 +514,7 @@ export const tools: ToolData[] = [
       'convert png to word',
       'png to docx',
       'image to word',
+      'ubah png ke word',
     ],
     faqs: [
       {
@@ -505,7 +533,7 @@ export const tools: ToolData[] = [
     iconName: 'Minimize2',
     category: 'optimize',
     acceptedFormats: ['.pdf'],
-    seoTitle: 'Compress PDF – Reduce PDF File Size Online Free | ChangesPDF',
+    seoTitle: 'Compress PDF - Reduce PDF File Size Online Free | ChangesPDF',
     seoDescription:
       'Compress PDF files and reduce file size online for free. Optimize PDFs for email, web upload, or storage. No quality loss, 100% secure and private.',
     seoKeywords: [
@@ -542,7 +570,7 @@ export const tools: ToolData[] = [
     iconName: 'FileArchive',
     category: 'optimize',
     acceptedFormats: ['.doc', '.docx'],
-    seoTitle: 'Compress Word – Reduce DOCX File Size Online Free | ChangesPDF',
+    seoTitle: 'Compress Word - Reduce DOCX File Size Online Free | ChangesPDF',
     seoDescription:
       'Compress Word documents (.docx, .doc) online for free. Reduce file size for email or storage while preserving formatting, images, and layout.',
     seoKeywords: [
@@ -552,6 +580,8 @@ export const tools: ToolData[] = [
       'compress docx online free',
       'small word',
       'reduce word file size',
+      'kompres word',
+      'kecilkan ukuran word',
     ],
     faqs: [
       {
@@ -581,7 +611,7 @@ export const tools: ToolData[] = [
     category: 'organize',
     acceptedFormats: ['.pdf'],
     seoTitle:
-      'Organize PDF Pages – Reorder, Rotate & Delete Pages Free | ChangesPDF',
+      'Organize PDF Pages - Reorder, Rotate & Delete Pages Free | ChangesPDF',
     seoDescription:
       'Organize PDF pages online for free. Rearrange, rotate, and delete pages with a visual drag-and-drop editor. Thumbnail previews for easy page management.',
     seoKeywords: [
@@ -590,6 +620,9 @@ export const tools: ToolData[] = [
       'rotate pdf pages',
       'delete pdf pages',
       'reorder pdf',
+      'atur halaman pdf',
+      'hapus halaman pdf',
+      'putar pdf',
     ],
     faqs: [
       {
@@ -619,15 +652,18 @@ export const tools: ToolData[] = [
     category: 'security',
     acceptedFormats: ['.pdf'],
     seoTitle:
-      'Protect PDF with Password – Encrypt PDF Online Free | ChangesPDF',
+      'Protect PDF with Password - Encrypt PDF Online Free | ChangesPDF',
     seoDescription:
-      'Add password protection to your PDF files online for free. Encrypt PDFs with secure passwords. 100% client-side – your files never leave your device.',
+      'Add password protection to your PDF files online for free. Encrypt PDFs with secure passwords. 100% client-side, your files never leave your device.',
     seoKeywords: [
       'protect pdf',
       'password protect pdf',
       'encrypt pdf',
       'secure pdf',
       'lock pdf',
+      'kunci pdf',
+      'beri password pdf',
+      'amankan file pdf',
     ],
     faqs: [
       {
@@ -665,6 +701,8 @@ export const tools: ToolData[] = [
       'pdf watermark',
       'stamp pdf',
       'changes pdf watermark',
+      'tambah watermark pdf',
+      'watermark pdf online',
     ],
     faqs: [
       {
@@ -693,7 +731,7 @@ export const tools: ToolData[] = [
     iconName: 'Unlock',
     category: 'security',
     acceptedFormats: ['.pdf'],
-    seoTitle: 'Unlock PDF Online – Remove PDF Password Free | ChangesPDF',
+    seoTitle: 'Unlock PDF Online - Remove PDF Password Free | ChangesPDF',
     seoDescription:
       'Unlock password-protected PDF files online for free. Remove owner and user passwords instantly. Fast, secure, and private.',
     seoKeywords: [
@@ -702,6 +740,8 @@ export const tools: ToolData[] = [
       'decrypt pdf',
       'hapus protect pdf',
       'buka password pdf',
+      'hapus kata sandi pdf',
+      'unlock pdf online',
     ],
     faqs: [
       {
@@ -733,6 +773,7 @@ export const tools: ToolData[] = [
       'hapus watermark pdf',
       'delete pdf watermark',
       'clean pdf watermark',
+      'hilangkan watermark pdf',
     ],
     faqs: [
       {
@@ -756,7 +797,7 @@ export const tools: ToolData[] = [
     iconName: 'Presentation',
     category: 'convert',
     acceptedFormats: ['.pdf'],
-    seoTitle: 'PDF to PPT Converter – Convert PDF to PowerPoint Online Free | ChangesPDF',
+    seoTitle: 'PDF to PPT Converter - Convert PDF to PowerPoint Online Free | ChangesPDF',
     seoDescription:
       'Convert PDF to PowerPoint presentation slides online for free. Convert PDF pages to PPTX slides fast, secure, and private.',
     seoKeywords: [
@@ -765,6 +806,8 @@ export const tools: ToolData[] = [
       'pdf to pptx',
       'pdf to powerpoint',
       'changes pdf to ppt',
+      'ubah pdf ke ppt',
+      'konversi pdf ke powerpoint',
     ],
     faqs: [
       {
@@ -788,7 +831,7 @@ export const tools: ToolData[] = [
     iconName: 'Presentation',
     category: 'convert',
     acceptedFormats: ['.ppt', '.pptx'],
-    seoTitle: 'PPT to PDF Converter – Convert PowerPoint to PDF Online Free | ChangesPDF',
+    seoTitle: 'PPT to PDF Converter - Convert PowerPoint to PDF Online Free | ChangesPDF',
     seoDescription:
       'Convert PowerPoint presentations (.pptx, .ppt) to PDF online for free. Keep all slide formatting and graphics intact.',
     seoKeywords: [
@@ -797,6 +840,8 @@ export const tools: ToolData[] = [
       'pptx to pdf',
       'powerpoint to pdf',
       'changes ppt to pdf',
+      'ubah ppt ke pdf',
+      'konversi powerpoint ke pdf',
     ],
     faqs: [
       {
@@ -815,7 +860,7 @@ export const tools: ToolData[] = [
     iconName: 'ImageDown',
     category: 'optimize',
     acceptedFormats: ['.jpg', '.jpeg'],
-    seoTitle: 'Compress JPG – Reduce JPG Image Size Online Free | ChangesPDF',
+    seoTitle: 'Compress JPG - Reduce JPG Image Size Online Free | ChangesPDF',
     seoDescription:
       'Compress JPG and JPEG images online for free. Reduce image file size by up to 80% without noticeable quality loss.',
     seoKeywords: [
@@ -824,6 +869,8 @@ export const tools: ToolData[] = [
       'jpg compressor',
       'compress jpeg online',
       'small jpg',
+      'kompres jpg',
+      'kecilkan foto jpg',
     ],
     faqs: [
       {
@@ -842,7 +889,7 @@ export const tools: ToolData[] = [
     iconName: 'ImageDown',
     category: 'optimize',
     acceptedFormats: ['.png'],
-    seoTitle: 'Compress PNG – Reduce PNG Image Size Online Free | ChangesPDF',
+    seoTitle: 'Compress PNG - Reduce PNG Image Size Online Free | ChangesPDF',
     seoDescription:
       'Compress PNG images online for free. Keep transparent backgrounds 100% intact with zero black boxes.',
     seoKeywords: [
@@ -851,6 +898,8 @@ export const tools: ToolData[] = [
       'png compressor',
       'compress png transparent',
       'small png',
+      'kompres png',
+      'kecilkan foto png',
     ],
     faqs: [
       {
@@ -869,7 +918,7 @@ export const tools: ToolData[] = [
     iconName: 'FileArchive',
     category: 'optimize',
     acceptedFormats: ['.ppt', '.pptx'],
-    seoTitle: 'Compress PPT – Reduce PowerPoint File Size Online Free | ChangesPDF',
+    seoTitle: 'Compress PPT - Reduce PowerPoint File Size Online Free | ChangesPDF',
     seoDescription:
       'Compress PowerPoint presentations (.pptx, .ppt) online for free. Reduce file size for email sharing while preserving presentation quality.',
     seoKeywords: [
@@ -878,6 +927,8 @@ export const tools: ToolData[] = [
       'compress pptx',
       'powerpoint compressor',
       'small ppt',
+      'kompres ppt',
+      'kecilkan file ppt',
     ],
     faqs: [
       {
