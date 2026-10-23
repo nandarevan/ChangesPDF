@@ -57,8 +57,11 @@ export async function POST(req: NextRequest) {
       } else {
         const errJson = await renderResp.json().catch(() => ({}));
         if (renderResp.status === 400) {
+          const defaultMsg = forceUnlock
+            ? 'Maaf, dokumen ini dilindungi kata sandi yang kuat dan kompleks (kombinasi huruf, angka, atau simbol) sehingga tidak dapat dibuka paksa. Silakan gunakan opsi "Ketik Password Dokumen" jika Anda mengetahui kata sandinya.'
+            : 'Password salah. Pastikan password yang dimasukkan benar.';
           return NextResponse.json(
-            { ok: false, error: errJson.detail || 'Password salah. Pastikan password yang dimasukkan benar.' },
+            { ok: false, error: errJson.detail || defaultMsg },
             { status: 400 }
           );
         }
@@ -96,10 +99,13 @@ export async function POST(req: NextRequest) {
       });
     } catch (procErr: any) {
       const errMsg = (procErr.stderr || procErr.message || '').replace(/^ERROR:\s*/, '').trim();
+      const defaultMsg = forceUnlock
+        ? 'Maaf, dokumen ini dilindungi kata sandi yang kuat dan kompleks (kombinasi huruf, angka, atau simbol) sehingga tidak dapat dibuka paksa. Silakan gunakan opsi "Ketik Password Dokumen" jika Anda mengetahui kata sandinya.'
+        : 'Gagal membuka proteksi dokumen PDF.';
       return NextResponse.json(
         {
           ok: false,
-          error: errMsg || 'Gagal membuka proteksi dokumen PDF.',
+          error: errMsg || defaultMsg,
           isWrongPassword: errMsg.includes('Password salah'),
         },
         { status: 400 }

@@ -124,7 +124,14 @@ async def unlock_pdf_endpoint(
         if proc.returncode != 0:
             cleanup_file(tmp_in_path)
             cleanup_file(tmp_out_path)
-            err_msg = (proc.stderr or proc.stdout or "Gagal membuka proteksi dokumen PDF.").strip()
+            err_raw = (proc.stderr or proc.stdout or "").strip()
+            err_msg = err_raw.split("ERROR:", 1)[-1].strip() if "ERROR:" in err_raw else err_raw
+            if not err_msg:
+                err_msg = (
+                    "Maaf, dokumen ini dilindungi kata sandi yang kuat dan kompleks (kombinasi huruf, angka, atau simbol) sehingga tidak dapat dibuka paksa. Silakan gunakan opsi 'Ketik Password Dokumen' jika Anda mengetahui kata sandinya."
+                    if forceUnlock.lower() == "true"
+                    else "Password yang Anda masukkan salah. Mohon periksa kembali huruf besar/kecil, angka, atau simbol password Anda."
+                )
             raise HTTPException(status_code=400, detail=err_msg)
 
         if not os.path.exists(tmp_out_path) or os.path.getsize(tmp_out_path) == 0:

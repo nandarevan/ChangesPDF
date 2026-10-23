@@ -701,13 +701,30 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
         case 'unlock-pdf': {
           const isForce = unlockMode === 'force';
           const pwToSend = isForce ? '' : unlockPassword.trim();
-          const unlockedPdf = await unlockPDF(files[0], pwToSend, isForce);
-          outputResult = {
-            type: 'single',
-            data: unlockedPdf,
-            filename: `${baseName}_unlocked.pdf`,
-            mimeType: 'application/pdf',
-          };
+          if (!isForce && !pwToSend) {
+            throw new Error('Harap masukkan password dokumen PDF Anda.');
+          }
+          try {
+            const unlockedPdf = await unlockPDF(files[0], pwToSend, isForce);
+            outputResult = {
+              type: 'single',
+              data: unlockedPdf,
+              filename: `${baseName}_unlocked.pdf`,
+              mimeType: 'application/pdf',
+            };
+          } catch (err: any) {
+            if (isForce) {
+              throw new Error(
+                'Maaf, dokumen ini dilindungi kata sandi yang kuat dan kompleks (kombinasi huruf, angka, atau simbol) sehingga tidak dapat dibuka paksa. Silakan gunakan opsi "Ketik Password Dokumen" jika Anda mengetahui kata sandinya.'
+              );
+            } else {
+              throw new Error(
+                err?.message?.includes('masukkan password')
+                  ? 'Harap masukkan password dokumen PDF Anda.'
+                  : 'Password yang Anda masukkan salah. Mohon periksa kembali huruf besar/kecil, angka, atau simbol password Anda.'
+              );
+            }
+          }
           break;
         }
 
@@ -2168,7 +2185,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                             <AlertCircle className="h-4 w-4 shrink-0 text-red-400 mt-0.5" />
                             <div className="space-y-1">
                               <div className="font-bold text-red-400 flex items-center gap-1.5">
-                                <span>❌ Watermark Salah / Tidak Ditemukan</span>
+                                <span>Watermark Salah / Tidak Ditemukan</span>
                               </div>
                               <p className="text-white/85 leading-relaxed">
                                 Teks &quot;<span className="text-white font-semibold underline decoration-red-400">{removeWatermarkText}</span>&quot; tidak ada di dalam dokumen PDF ini. Tombol proses dinonaktifkan agar tidak merusak dokumen.
@@ -2182,7 +2199,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                           <div className="flex items-center gap-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20 p-3 mt-2 text-xs text-emerald-300">
                             <Check className="h-4 w-4 shrink-0 text-emerald-400" />
                             <span>
-                              ✓ Watermark &quot;<strong>{removeWatermarkText}</strong>&quot; ditemukan pada dokumen ({watermarkMatchesCount} lokasi/halaman). Siap dihapus!
+                              Watermark &quot;<strong>{removeWatermarkText}</strong>&quot; ditemukan pada dokumen ({watermarkMatchesCount} lokasi/halaman). Siap dihapus!
                             </span>
                           </div>
                         )}
@@ -2363,7 +2380,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                   ? 'Kunci & Proteksi PDF'
                   : tool.id === 'unlock-pdf'
                   ? unlockMode === 'force'
-                    ? '⚡ Buka Paksa PDF Ini (Tanpa Password)'
+                    ? 'Buka Paksa PDF Ini (Tanpa Password)'
                     : !unlockPassword.trim()
                     ? 'Ketik Password Dokumen Dulu'
                     : 'Buka & Hapus Password PDF'
@@ -2376,7 +2393,7 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
                       : watermarkFoundStatus === 'checking'
                       ? 'Memeriksa Watermark di Dokumen...'
                       : watermarkFoundStatus === 'not_found'
-                      ? '❌ Watermark Salah / Tidak Ditemukan'
+                      ? 'Watermark Salah / Tidak Ditemukan'
                       : 'Hapus Teks Watermark Terpilih'
                     : 'Bersihkan Watermark Otomatis'
                   : tool.title}

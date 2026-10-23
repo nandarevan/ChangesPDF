@@ -339,7 +339,7 @@ export async function wordToImages(
 
 /**
  * Compress a PDF by removing unused objects and optimizing structure.
- * Note: Client-side compression is limited — this removes duplicates and
+ * Note: Client-side compression is limited - this removes duplicates and
  * re-serializes the document for a smaller file.
  */
 export async function compressPDF(file: File): Promise<Uint8Array> {
@@ -666,7 +666,10 @@ export async function unlockPDF(
 
   if (!res || !res.ok) {
     const data = res ? await res.json().catch(() => ({})) : {};
-    throw new Error(data.detail || data.error || 'Password salah. Pastikan password yang dimasukkan benar.');
+    const defaultMsg = forceUnlock
+      ? 'Maaf, dokumen ini dilindungi kata sandi yang kuat dan kompleks (kombinasi huruf, angka, atau simbol) sehingga tidak dapat dibuka paksa. Silakan gunakan opsi "Ketik Password Dokumen" jika Anda mengetahui kata sandinya.'
+      : 'Password yang Anda masukkan salah. Mohon periksa kembali huruf besar/kecil, angka, atau simbol password Anda.';
+    throw new Error(data.detail || data.error || defaultMsg);
   }
 
   const ab = await res.arrayBuffer();

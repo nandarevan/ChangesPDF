@@ -59,15 +59,15 @@ export function formatUserErrorMessage(rawError: any): string {
 
   const str = String(rawError?.message || rawError || '').trim();
 
-  // 1. Password errors
+  // 1. Password & Force Unlock errors
+  if (/buka paksa|aes-256|password pembuka khusus|tidak dapat dibuka paksa|kuat dan kompleks|kombinasi password/i.test(str)) {
+    return 'Maaf, dokumen ini dilindungi kata sandi yang kuat dan kompleks (kombinasi huruf, angka, atau simbol) sehingga tidak dapat dibuka paksa. Silakan gunakan opsi "Ketik Password Dokumen" jika Anda mengetahui kata sandinya.';
+  }
   if (/password salah/i.test(str)) {
-    return 'Password yang Anda masukkan salah. Mohon periksa kembali huruf besar/kecil dan angka password Anda.';
+    return 'Password yang Anda masukkan salah. Mohon periksa kembali huruf besar/kecil, angka, atau simbol password Anda.';
   }
-  if (/harap masukkan password/i.test(str)) {
+  if (/harap masukkan password|masukkan kata sandi/i.test(str)) {
     return 'Harap masukkan password dokumen PDF Anda.';
-  }
-  if (/buka paksa|aes-256|password pembuka khusus/i.test(str)) {
-    return 'Dokumen ini memiliki proteksi enkripsi tingkat tinggi (Open Password khusus). Silakan gunakan opsi "Ketik Password Dokumen" dan masukkan password dokumen Anda.';
   }
 
   // 2. Watermark errors

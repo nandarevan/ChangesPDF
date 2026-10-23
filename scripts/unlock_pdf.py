@@ -88,8 +88,8 @@ def unlock_pdf(input_path: str, output_path: str, password: str = "", force_unlo
                     
         if not unlocked:
             raise ValueError(
-                "Dokumen ini menggunakan enkripsi berkas tingkat tinggi (AES-256) dengan Password Pembuka khusus. "
-                "Silakan pilih opsi 'Ketik Password Dokumen' dan masukkan password yang benar."
+                "Maaf, dokumen ini dilindungi kata sandi yang kuat dan kompleks (kombinasi huruf, angka, atau simbol) sehingga tidak dapat dibuka paksa. "
+                "Silakan gunakan opsi 'Ketik Password Dokumen' jika Anda mengetahui kata sandinya."
             )
                 
     # Cleanly remove all encryption and permissions permanently:
