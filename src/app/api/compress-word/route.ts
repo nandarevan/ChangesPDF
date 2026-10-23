@@ -66,20 +66,21 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Fallback to Local Python (only runs in local dev where python is installed)
+    const scriptPath = path.join(process.cwd(), 'scripts', 'compress_docx.py');
+    if (!fs.existsSync(scriptPath)) {
+      return NextResponse.json(
+        { ok: false, error: 'Server kompresi Word sedang memulai ulang. Silakan coba kembali dalam 1 menit.' },
+        { status: 503 }
+      );
+    }
+
     const tempDir = os.tmpdir();
     const uniqueId = `compress_word_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
     tempInDocx = path.join(tempDir, `${uniqueId}_in${extension}`);
     tempOutDocx = path.join(tempDir, `${uniqueId}_out.docx`);
-
     fs.writeFileSync(tempInDocx, buffer);
 
     const pythonPath = getPythonPath();
-    const scriptPath = path.join(process.cwd(), 'scripts', 'compress_docx.py');
-
-    if (!fs.existsSync(scriptPath)) {
-      throw new Error(`Compress script not found at ${scriptPath}`);
-    }
-
     const { stdout } = await execFileAsync(pythonPath, [scriptPath, tempInDocx, tempOutDocx, '--level', level], {
       timeout: 120000,
     });

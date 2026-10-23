@@ -530,8 +530,17 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
               body: formData,
             }).catch(() => null);
 
-            // 2. If direct call was unavailable, try Vercel API proxy
-            if (!resp || !resp.ok) {
+            // If Render is waking up from cold start, wait 2.5s and retry
+            if (!resp || resp.status === 502 || resp.status === 503) {
+              await new Promise((r) => setTimeout(r, 2500));
+              resp = await fetch(`${backendUrl}/api/compress-pdf`, {
+                method: 'POST',
+                body: formData,
+              }).catch(() => null);
+            }
+
+            // 2. If direct call was unavailable and file is under 4MB, try Vercel API proxy
+            if ((!resp || !resp.ok) && files[0].size < 4 * 1024 * 1024) {
               resp = await fetch('/api/compress-pdf', {
                 method: 'POST',
                 body: formData,
@@ -576,8 +585,17 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
               body: formData,
             }).catch(() => null);
 
-            // 2. If direct call was unavailable, try Vercel API proxy
-            if (!resp || !resp.ok) {
+            // If Render is waking up from cold start, wait 2.5s and retry
+            if (!resp || resp.status === 502 || resp.status === 503) {
+              await new Promise((r) => setTimeout(r, 2500));
+              resp = await fetch(`${backendUrl}/api/compress-word`, {
+                method: 'POST',
+                body: formData,
+              }).catch(() => null);
+            }
+
+            // 2. If direct call was unavailable and file is under 4MB, try Vercel API proxy
+            if ((!resp || !resp.ok) && files[0].size < 4 * 1024 * 1024) {
               resp = await fetch('/api/compress-word', {
                 method: 'POST',
                 body: formData,

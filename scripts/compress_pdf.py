@@ -121,9 +121,8 @@ def compress_pdf(input_path: str, output_path: str, level: str = 'recommended') 
 
                 buf = io.BytesIO()
                 if has_true_alpha:
-                    # Optimize as PNG preserving transparency
-                    im_quant = im.quantize(colors=png_colors)
-                    im_quant.save(buf, format='PNG', optimize=True)
+                    # Optimize as clean PNG preserving full transparency (never quantize to avoid black box)
+                    im.save(buf, format='PNG', optimize=True)
                 else:
                     # Convert to RGB and compress as clean JPEG
                     rgb_im = im.convert('RGB')

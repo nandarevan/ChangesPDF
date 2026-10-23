@@ -75,7 +75,10 @@ export async function POST(req: NextRequest) {
     const scriptPath = path.join(process.cwd(), 'scripts', 'compress_pdf.py');
 
     if (!fs.existsSync(scriptPath)) {
-      throw new Error(`Compress script not found at ${scriptPath}`);
+      return NextResponse.json(
+        { ok: false, error: 'Server kompresi PDF sedang memulai ulang. Silakan coba kembali dalam 1 menit.' },
+        { status: 503 }
+      );
     }
 
     const { stdout } = await execFileAsync(pythonPath, [scriptPath, tempInPdf, tempOutPdf, '--level', level], {

@@ -4,7 +4,7 @@ High-Ratio Word (.docx / .doc) Document Compressor.
 Supports Extreme, Recommended, and Low compression levels.
 Aggressively optimizes embedded media (resizing & re-encoding images) while preserving
 document structure, text, and formatting.
-Maintains exact file extensions (PNG stays valid PNG, JPEG stays JPEG) so Word never reports corruption.
+Maintains 100% transparency for logos and icons (no black box background artifacts).
 """
 
 import sys
@@ -22,8 +22,11 @@ except ImportError:
     Image = None
 
 def convert_doc_to_docx_if_needed(file_path: str) -> tuple[str, bool]:
-    """If file is a legacy .doc binary file, convert to .docx using Word COM."""
+    """If file is a legacy .doc binary file, convert to .docx using Word COM on Windows."""
     if not file_path.lower().endswith('.doc'):
+        return file_path, False
+
+    if sys.platform != 'win32' or shutil.which("powershell.exe") is None:
         return file_path, False
 
     docx_path = file_path + 'x'
@@ -87,19 +90,16 @@ def compress_docx(input_path: str, output_path: str, level: str = 'recommended')
     # Parameters tuned for 50% - 85% file size reduction with crisp visual clarity
     if level == 'extreme':
         scale_factor = 0.40
-        jpg_quality = 45
-        max_dim = 900
-        png_colors = 64
+        jpg_quality = 48
+        max_dim = 1000
     elif level == 'low':
         scale_factor = 0.75
-        jpg_quality = 70
+        jpg_quality = 72
         max_dim = 1800
-        png_colors = 256
     else:  # recommended
         scale_factor = 0.55
-        jpg_quality = 55
-        max_dim = 1200
-        png_colors = 128
+        jpg_quality = 58
+        max_dim = 1300
 
     try:
         in_zip = zipfile.ZipFile(actual_input, 'r')
@@ -130,30 +130,63 @@ def compress_docx(input_path: str, output_path: str, level: str = 'recommended')
                     im = Image.open(io.BytesIO(data))
                     w, h = im.size
 
-                    target_scale = scale_factor
-                    if max(w, h) * target_scale > max_dim:
-                        target_scale = max_dim / float(max(w, h))
-
-                    new_w = max(1, int(w * target_scale))
-                    new_h = max(1, int(h * target_scale))
-
-                    im_resized = im.resize((new_w, new_h), Image.Resampling.LANCZOS)
-                    buf = io.BytesIO()
-
                     is_png = item.filename.lower().endswith('.png')
 
-                    if is_png:
-                        # Keep PNG format so Word parser does not corrupt!
-                        im_quant = im_resized.quantize(colors=png_colors)
-                        im_quant.save(buf, format='PNG', optimize=True)
-                    else:
-                        # JPEG or other format: convert to clean RGB JPEG
-                        rgb_im = im_resized.convert('RGB')
-                        rgb_im.save(buf, format='JPEG', quality=jpg_quality, optimize=True)
+                    # Check for real alpha transparency
+                    has_transparency = False
+                    if im.mode in ('RGBA', 'LA') or (im.mode == 'P' and 'transparency' in im.info):
+                        try:
+                            im_rgba = im.convert('RGBA')
+                            alpha = im_rgba.getchannel('A')
+                            min_a, _ = alpha.getextrema()
+                            if min_a < 250:
+                                has_transparency = True
+                        except Exception:
+                            has_transparency = True
 
-                    new_data = buf.getvalue()
-                    if len(new_data) < len(data):
-                        data = new_data
+                    # 1. Images with transparency (logos, emblems, signatures):
+                    # Never quantize! Quantization turns transparent pixels into a black rectangle.
+                    # Keep original dimensions for logos (< 250 KB) to ensure crisp text and sharp lines.
+                    if has_transparency:
+                        buf = io.BytesIO()
+                        if len(data) < 250 * 1024:
+                            # Optimize PNG without resizing
+                            im.save(buf, format='PNG', optimize=True)
+                        else:
+                            # Large transparent image: resize safely with Lanczos
+                            target_scale = scale_factor
+                            if max(w, h) * target_scale > max_dim:
+                                target_scale = max_dim / float(max(w, h))
+                            new_w = max(1, int(w * target_scale))
+                            new_h = max(1, int(h * target_scale))
+                            im_resized = im.resize((new_w, new_h), Image.Resampling.LANCZOS)
+                            im_resized.save(buf, format='PNG', optimize=True)
+
+                        new_data = buf.getvalue()
+                        if len(new_data) < len(data):
+                            data = new_data
+
+                    # 2. Fully opaque images: photos, document scans, screenshots
+                    else:
+                        target_scale = scale_factor
+                        if max(w, h) * target_scale > max_dim:
+                            target_scale = max_dim / float(max(w, h))
+                        new_w = max(1, int(w * target_scale))
+                        new_h = max(1, int(h * target_scale))
+                        im_resized = im.resize((new_w, new_h), Image.Resampling.LANCZOS)
+
+                        buf = io.BytesIO()
+                        if is_png:
+                            # Keep PNG format so Word document structure is valid
+                            im_resized.save(buf, format='PNG', optimize=True)
+                        else:
+                            # Clean RGB JPEG recompression
+                            rgb_im = im_resized.convert('RGB')
+                            rgb_im.save(buf, format='JPEG', quality=jpg_quality, optimize=True)
+
+                        new_data = buf.getvalue()
+                        if len(new_data) < len(data):
+                            data = new_data
             except Exception:
                 pass
 
