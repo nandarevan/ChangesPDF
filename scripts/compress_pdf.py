@@ -34,56 +34,35 @@ def compress_pdf(input_path: str, output_path: str, level: str = 'recommended') 
             "savings_percent": 0.0
         }
 
-    # High-ratio parameters
+    # Balanced parameters: aim for 50% - 70% reduction with 100% visual integrity
     if level == 'extreme':
-        scale_factor = 0.35
-        jpg_quality = 32
-        max_dim = 800
-        dpi_target = 72
-        dpi_threshold = 100
-        png_colors = 48
+        scale_factor = 0.55
+        jpg_quality = 55
+        max_dim = 1200
+        png_colors = 128
     elif level == 'low':
-        scale_factor = 0.65
-        jpg_quality = 65
-        max_dim = 1600
-        dpi_target = 150
-        dpi_threshold = 200
+        scale_factor = 0.85
+        jpg_quality = 75
+        max_dim = 2000
         png_colors = 256
     else:  # recommended
-        scale_factor = 0.45
-        jpg_quality = 45
-        max_dim = 1000
-        dpi_target = 96
-        dpi_threshold = 120
-        png_colors = 96
+        scale_factor = 0.70
+        jpg_quality = 65
+        max_dim = 1600
+        png_colors = 192
 
     doc = fitz.open(input_path)
 
-    # 1. Native PyMuPDF rewrite_images engine (if supported by installed PyMuPDF)
-    try:
-        if hasattr(doc, 'rewrite_images'):
-            doc.rewrite_images(
-                dpi_threshold=dpi_threshold,
-                dpi_target=dpi_target,
-                quality=jpg_quality,
-                lossy=True,
-                lossless=True,
-            )
-    except Exception:
-        pass
-
-    # 2. Identify all images with /SMask (transparency masks) or cover logos
+    # 1. Identify all images with /SMask (transparency masks) or logos to protect them
     smask_xrefs = set()
     for pno in range(len(doc)):
         for img in doc[pno].get_images():
             xref = img[0]
             try:
-                # Check get_images tuple smask element
                 if len(img) > 1 and img[1] > 0:
                     smask_xrefs.add(img[1])
                     smask_xrefs.add(xref)
 
-                # Check raw dictionary for SMask or Mask
                 raw_dict = doc.xref_object(xref)
                 if '/SMask' in raw_dict or '/Mask' in raw_dict:
                     smask_xrefs.add(xref)
@@ -95,31 +74,28 @@ def compress_pdf(input_path: str, output_path: str, level: str = 'recommended') 
             except Exception:
                 pass
 
-    # 3. Process all content images (downscale and optimize streams)
+    # 2. Process all content images safely using page.replace_image
+    # page.replace_image automatically handles PDF dictionary synchronizations
+    # (/Width, /Height, /Filter, /ColorSpace), preventing static noise / black screens.
     processed_xrefs = set()
     for pno in range(len(doc)):
-        for img in doc[pno].get_images():
+        page = doc[pno]
+        for img in page.get_images():
             xref = img[0]
             if xref in processed_xrefs or xref in smask_xrefs:
                 continue
             processed_xrefs.add(xref)
 
             try:
-                info = doc.extract_image(xref)
-                if not info or not info.get("image"):
+                # Use Pixmap to safely decode any filter combination (JPEG, Flate, JPX, CMYK)
+                pix = fitz.Pixmap(doc, xref)
+
+                # Skip if image is tiny icon (< 10 KB in raw dimensions)
+                w, h = pix.width, pix.height
+                if w < 100 or h < 100:
                     continue
 
-                raw_bytes = info["image"]
-                ext = info.get("ext", "").lower()
-                w, h = info["width"], info["height"]
-
-                # Don't touch tiny icons (< 3 KB)
-                if len(raw_bytes) < 3072:
-                    continue
-
-                im = Image.open(io.BytesIO(raw_bytes))
-
-                # Calculate downscale dimensions
+                # Determine if image should be resized
                 target_scale = scale_factor
                 if max(w, h) * target_scale > max_dim:
                     target_scale = max_dim / float(max(w, h))
@@ -127,33 +103,32 @@ def compress_pdf(input_path: str, output_path: str, level: str = 'recommended') 
                 new_w = max(1, int(w * target_scale))
                 new_h = max(1, int(h * target_scale))
 
-                # Resize image with high-quality resampling
-                im_resized = im.resize((new_w, new_h), Image.Resampling.LANCZOS)
+                # Convert to Pillow image for optimized compression
+                img_bytes = pix.tobytes("png")
+                im = Image.open(io.BytesIO(img_bytes))
+
+                # Resize if needed
+                if new_w < w or new_h < h:
+                    im = im.resize((new_w, new_h), Image.Resampling.LANCZOS)
 
                 buf = io.BytesIO()
-                has_alpha = im_resized.mode in ('RGBA', 'LA') or (im_resized.mode == 'P' and 'transparency' in im_resized.info)
+                has_alpha = im.mode in ('RGBA', 'LA') or (im.mode == 'P' and 'transparency' in im.info)
 
                 if has_alpha:
-                    # Preserve alpha with adaptive color quantization
-                    im_quant = im_resized.quantize(colors=png_colors)
+                    # Optimize PNG while preserving transparency
+                    im_quant = im.quantize(colors=png_colors)
                     im_quant.save(buf, format='PNG', optimize=True)
-                    new_bytes = buf.getvalue()
-                    if len(new_bytes) < len(raw_bytes):
-                        doc.xref_set_key(xref, 'Width', str(new_w))
-                        doc.xref_set_key(xref, 'Height', str(new_h))
-                        doc.update_stream(xref, new_bytes)
                 else:
-                    # Clean RGB JPEG compression
-                    rgb_im = im_resized.convert('RGB')
+                    # Convert to RGB and compress as clean JPEG
+                    rgb_im = im.convert('RGB')
                     rgb_im.save(buf, format='JPEG', quality=jpg_quality, optimize=True)
-                    new_bytes = buf.getvalue()
-                    if len(new_bytes) < len(raw_bytes):
-                        doc.xref_set_key(xref, 'Width', str(new_w))
-                        doc.xref_set_key(xref, 'Height', str(new_h))
-                        doc.xref_set_key(xref, 'Filter', '/DCTDecode')
-                        doc.xref_set_key(xref, 'ColorSpace', '/DeviceRGB')
-                        doc.xref_set_key(xref, 'BitsPerComponent', '8')
-                        doc.update_stream(xref, new_bytes)
+
+                new_bytes = buf.getvalue()
+                orig_raw_len = len(pix.tobytes())
+
+                # Only replace if new bytes are genuinely smaller
+                if len(new_bytes) < orig_raw_len:
+                    page.replace_image(xref, stream=new_bytes)
             except Exception:
                 pass
 
@@ -162,15 +137,12 @@ def compress_pdf(input_path: str, output_path: str, level: str = 'recommended') 
     if out_dir and not os.path.exists(out_dir):
         os.makedirs(out_dir, exist_ok=True)
 
-    # Save with full garbage collection, object streams packing, and stream deflation
+    # Save with clean garbage collection and stream deflation
     doc.save(
         output_path,
-        garbage=4,
+        garbage=3,
         clean=True,
-        deflate=True,
-        deflate_images=True,
-        deflate_fonts=True,
-        use_objstms=True
+        deflate=True
     )
     doc.close()
 

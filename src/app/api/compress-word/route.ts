@@ -32,6 +32,34 @@ export async function POST(req: NextRequest) {
     const extension = path.extname(originalName).toLowerCase() || '.docx';
     const buffer = Buffer.from(await file.arrayBuffer());
 
+    // 1. Try Render Backend Python if running in serverless / production
+    const backendUrl = process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL || 'https://changespdf-backend.onrender.com';
+    try {
+      const renderFormData = new FormData();
+      renderFormData.append('file', new Blob([buffer], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }), originalName);
+      renderFormData.append('level', level);
+
+      const renderResp = await fetch(`${backendUrl}/api/compress-word`, {
+        method: 'POST',
+        body: renderFormData,
+      });
+
+      if (renderResp.ok) {
+        const compressedBuffer = await renderResp.arrayBuffer();
+        return new NextResponse(Buffer.from(compressedBuffer), {
+          status: 200,
+          headers: {
+            'Content-Type': 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+            'Content-Disposition': `attachment; filename="${encodeURIComponent(baseName)}_compressed.docx"`,
+            'X-Compressed-By': 'render-python',
+          },
+        });
+      }
+    } catch (renderErr) {
+      console.warn('Render backend compress-word failed, trying local python...', renderErr);
+    }
+
+    // 2. Fallback to Local Python
     const tempDir = os.tmpdir();
     const uniqueId = `compress_word_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
     tempInDocx = path.join(tempDir, `${uniqueId}_in${extension}`);
