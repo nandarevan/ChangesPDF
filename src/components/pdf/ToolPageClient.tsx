@@ -60,6 +60,7 @@ import {
   compressPPT,
 } from '@/lib/pdf-engine';
 import { downloadBlob, downloadFileList, formatFileSize, formatUserErrorMessage } from '@/lib/utils';
+import { track } from '@vercel/analytics';
 
 type Stage = 'upload' | 'configure' | 'processing' | 'done';
 
@@ -872,6 +873,13 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
       }
 
       setTimeout(() => setStage('done'), 400);
+      try {
+        track('tool_process_success', {
+          tool: tool.slug,
+          toolTitle: tool.title,
+          category: tool.category,
+        });
+      } catch (e) {}
     } catch (err) {
       if (progressInterval) clearInterval(progressInterval);
       setError(formatUserErrorMessage(err));
@@ -879,6 +887,9 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
     }
   }, [
     tool.id,
+    tool.slug,
+    tool.title,
+    tool.category,
     files,
     splitMode,
     splitRanges,
@@ -913,12 +924,19 @@ export default function ToolPageClient({ tool }: ToolPageClientProps) {
 
   const handleDownload = useCallback(() => {
     if (!result) return;
+    try {
+      track('tool_download', {
+        tool: tool.slug,
+        toolTitle: tool.title,
+        category: tool.category,
+      });
+    } catch (e) {}
     if (result.type === 'single') {
       downloadBlob(result.data, result.filename, result.mimeType);
     } else {
       downloadFileList(result.files);
     }
-  }, [result]);
+  }, [result, tool.slug, tool.title, tool.category]);
 
   const handleReset = useCallback(() => {
     setStage('upload');

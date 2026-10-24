@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { LanguageProvider } from '@/lib/LanguageContext';
+import { Analytics } from '@vercel/analytics/next';
 import { SITE_URL } from '@/lib/seo-config';
 import './globals.css';
 
@@ -139,6 +140,7 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
+          <Analytics />
         </LanguageProvider>
       </body>
     </html>
